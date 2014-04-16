@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use GitElephant\Repository as GitRepository;
+use Webcreate\Vcs\Git;
 
 class RepositoryCommand extends ContainerAwareCommand
 {
@@ -55,10 +55,12 @@ EOF
 
        	foreach ($repositories as $repository) {
        		var_dump($repository->getUrl());
-       		
-       		$gitRepository = new GitRepository($repository->getUrl());
 
+       		//$gitRepository = new GitRepository($repository->getUrl());
+            $git = new Git($repository->getUrl());
+            var_dump($git->branches());
 
+/*
 			$repo = new Repository('/path/to/git/repository');
 			$connection = ssh_connect('host', 'port');
 			// authorize the connection with the method you want
@@ -66,7 +68,7 @@ EOF
 			$caller = new CallerSSH2($connection, '/path/to/git/binary/on/server');
 			$repo = Repository::open('/path/to/git/repository');
 			$repo->setCaller($caller);
-
+*/
 
 
        	}

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "11edc3dd4645d8c8b09723a5d12bc6f5",
+    "hash": "7df264bbf7b897a1185f0c1fdc995542",
     "packages": [
         {
             "name": "cypresslab/gitelephant",
@@ -1708,6 +1708,102 @@
                 "templating"
             ],
             "time": "2014-02-13 10:19:29"
+        },
+        {
+            "name": "webcreate/util",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webcreate/util.git",
+                "reference": "1cfed31017ee92e6db1b291699ef39eeabd3f82d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webcreate/util/zipball/1cfed31017ee92e6db1b291699ef39eeabd3f82d",
+                "reference": "1cfed31017ee92e6db1b291699ef39eeabd3f82d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/process": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Webcreate": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeroen Fiege",
+                    "email": "jeroen@webcreate.nl",
+                    "homepage": "http://www.fieg.nl"
+                }
+            ],
+            "description": "Webcreate/Util is a PHP library containing some simple utility classes.",
+            "homepage": "https://github.com/webcreate/util",
+            "keywords": [
+                "util"
+            ],
+            "time": "2013-10-29 21:14:10"
+        },
+        {
+            "name": "webcreate/vcs",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webcreate/vcs.git",
+                "reference": "4f62520aa0a04fd4d47882ff53c5ba439a3a9b4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webcreate/vcs/zipball/4f62520aa0a04fd4d47882ff53c5ba439a3a9b4e",
+                "reference": "4f62520aa0a04fd4d47882ff53c5ba439a3a9b4e",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/filesystem": ">=v2.1.2",
+                "symfony/finder": ">=v2.1.2",
+                "symfony/process": "~2.3",
+                "webcreate/util": "1.*"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": "Allows to hook into VCS with events"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Webcreate": [
+                        "src/",
+                        "tests/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "fieg",
+                    "email": "jeroen@webcreate.nl",
+                    "homepage": "http://www.fieg.nl"
+                }
+            ],
+            "description": "PHP interface for version control systems",
+            "homepage": "https://github.com/webcreate/vcs",
+            "keywords": [
+                "git",
+                "subversion",
+                "svn",
+                "vcs",
+                "versioncontrol"
+            ],
+            "time": "2014-01-13 09:38:32"
         }
     ],
     "packages-dev": [
