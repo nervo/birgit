@@ -1,0 +1,10 @@
+birgit_repository:
+    resource: "@BirgitRepositoryBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+birgit_project:
+    resource: "@BirgitProjectBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
