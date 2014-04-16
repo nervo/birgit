@@ -3,6 +3,10 @@
 namespace Birgit\Bundle\RepositoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Birgit\Bundle\ProjectBundle\Entity\Project;
 
 /**
  * Repository
@@ -28,6 +32,20 @@ class Repository
      */
     private $url;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Birgit\Bundle\ProjectBundle\Entity\Project", mappedBy="repository")
+     */
+    private $projects;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -43,6 +61,7 @@ class Repository
      * Set url
      *
      * @param string $url
+     *
      * @return Repository
      */
     public function setUrl($url)
@@ -60,5 +79,39 @@ class Repository
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add project
+     *
+     * @param Project $project
+     *
+     * @return Repository
+     */
+    public function addProject(Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param Project $project
+     */
+    public function removeProject(Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return Collection 
+     */
+    public function getProjects()
+    {
+        return $this->projects;
     }
 }

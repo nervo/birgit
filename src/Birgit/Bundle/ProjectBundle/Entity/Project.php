@@ -4,6 +4,8 @@ namespace Birgit\Bundle\ProjectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Birgit\Bundle\RepositoryBundle\Entity\Repository;
+
 /**
  * Project
  *
@@ -28,6 +30,14 @@ class Project
      */
     private $name;
 
+    /**
+     * @var Repository
+     *
+     * @ORM\ManyToOne(targetEntity="Birgit\Bundle\RepositoryBundle\Entity\Repository", inversedBy="projects")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $repository;
+
 
     /**
      * Get id
@@ -43,6 +53,7 @@ class Project
      * Set name
      *
      * @param string $name
+     *
      * @return Project
      */
     public function setName($name)
@@ -60,5 +71,29 @@ class Project
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set repository
+     *
+     * @param Repository $repository
+     *
+     * @return Project
+     */
+    public function setRepository(Repository $repository)
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
+    /**
+     * Get repository
+     *
+     * @return Repository 
+     */
+    public function getRepository()
+    {
+        return $this->repository;
     }
 }
