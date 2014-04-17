@@ -1,48 +1,72 @@
 <?php
 
-namespace Birgit\Bundle\RepositoryBundle\Entity;
+namespace Birgit\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Birgit\Bundle\ProjectBundle\Entity\Project;
-
 /**
  * Repository
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Birgit\Bundle\RepositoryBundle\Entity\RepositoryRepository")
+ * @ORM\Table(
+ *     name="repository"
+ * )
+ * @ORM\Entity(
+ *     repositoryClass="Birgit\Entity\RepositoryRepository"
+ * )
  */
 class Repository
 {
     /**
-     * @var integer
+     * Id
+     * 
+     * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(
+     *     name="id",
+     *     type="integer"
+     * )
+     * @ORM\GeneratedValue(
+     *     strategy="AUTO"
+     * )
      */
     private $id;
 
     /**
+     * Url
+     *
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255)
+     * @ORM\Column(
+     *     name="url",
+     *     type="string", length=255
+     * )
      */
     private $url;
 
     /**
+     * Branches
+     *
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Birgit\Bundle\RepositoryBundle\Entity\Repository\Branch", mappedBy="repository")
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Repository\Branch",
+     *     mappedBy="repository",
+     *     cascade={"persist"}
+     * )
      */
     private $branches;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Birgit\Bundle\ProjectBundle\Entity\Project", mappedBy="repository")
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Project",
+     *     mappedBy="repository",
+     *     cascade={"persist"}
+     * )
      */
     private $projects;
 
@@ -51,13 +75,17 @@ class Repository
      */
     public function __construct()
     {
+        // Branches
+        $this->branches = new ArrayCollection();
+
+        // Projects
         $this->projects = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -91,13 +119,16 @@ class Repository
     /**
      * Add branch
      *
-     * @param Branch $branch
+     * @param Repository\Branch $branch
      *
      * @return Repository
      */
-    public function addBranch(Branch $branch)
+    public function addBranch(Repository\Branch $branch)
     {
-        $this->branches[] = $branch;
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+            $branch->setRepository($this);
+        }
 
         return $this;
     }
@@ -105,9 +136,9 @@ class Repository
     /**
      * Remove branch
      *
-     * @param Branch $branch
+     * @param Repository\Branch $branch
      */
-    public function removeBranch(Branch $branch)
+    public function removeBranch(Repository\Branch $branch)
     {
         $this->branches->removeElement($branch);
     }
@@ -131,7 +162,10 @@ class Repository
      */
     public function addProject(Project $project)
     {
-        $this->projects[] = $project;
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->setRepository($this);
+        }
 
         return $this;
     }

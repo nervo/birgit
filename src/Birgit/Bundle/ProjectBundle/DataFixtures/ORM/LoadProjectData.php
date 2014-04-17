@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Birgit\Bundle\ProjectBundle\Entity\Project;
+use Birgit\Entity\Project;
 
 class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -23,11 +23,27 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $project = new Project();
-        $project->setName('test');
-        $project->setRepository($this->getReference('repository_1'));
+        $projectsDefinitions = array(
+            'test'  => array(
+                'repository' => 'test'
+            ),
+            'adele' => array(
+                'repository' => 'adele'
+            )
+        );
 
-        $manager->persist($project);
+        $projects = array();
+
+        foreach ($projectsDefinitions as $projectName => $projectParameters) {
+            $projects[$projectName] = new Project();
+            $projects[$projectName]->setName($projectName);
+            $projects[$projectName]->setRepository($this->getReference('repository_' . $projectParameters['repository']));
+
+            $manager->persist($projects[$projectName]);
+
+            $this->addReference('project_' . $projectName, $projects[$projectName]);
+        }
+
         $manager->flush();
     }
 }

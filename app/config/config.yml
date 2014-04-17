@@ -58,7 +58,13 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+        mappings:
+            Birgit:
+                type: annotation
+                is_bundle: false
+                dir: %kernel.root_dir%/../src/Birgit/Entity
+                prefix: Birgit\Entity
+                alias: Birgit
 
 # Swiftmailer Configuration
 swiftmailer:

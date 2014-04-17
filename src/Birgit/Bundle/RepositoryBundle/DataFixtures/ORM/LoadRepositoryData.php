@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Birgit\Bundle\RepositoryBundle\Entity\Repository;
+use Birgit\Entity\Repository;
 
 class LoadRepositoryData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -23,12 +23,26 @@ class LoadRepositoryData extends AbstractFixture implements OrderedFixtureInterf
      */
     public function load(ObjectManager $manager)
     {
-        $repository = new Repository();
-        $repository->setUrl('git@github.com:nervo/birgit-test.git');
+        $repositoriesDefinitions = array(
+            'test'  => array(
+                'url' => 'git@github.com:nervo/birgit-test.git'
+            ),
+            'adele' => array(
+                'url' => 'git@github.com:Elao/adele.git'
+            )
+        );
 
-        $manager->persist($repository);
+        $repositories = array();
+
+        foreach ($repositoriesDefinitions as $repositoryName => $repositoryParameters) {
+            $repositories[$repositoryName] = new Repository();
+            $repositories[$repositoryName]->setUrl($repositoryParameters['url']);
+
+            $manager->persist($repositories[$repositoryName]);
+
+            $this->addReference('repository_' . $repositoryName, $repositories[$repositoryName]);
+        }
+
         $manager->flush();
-
-        $this->addReference('repository_1', $repository);
     }
 }

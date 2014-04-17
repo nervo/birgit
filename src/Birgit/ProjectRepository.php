@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Bundle\ProjectBundle\Entity;
+namespace Birgit\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -9,6 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Webcreate\Vcs\Git;
 
+use Birgit\Entity\Repository;
+
 class RepositoryCommand extends ContainerAwareCommand
 {
     /**
@@ -33,44 +35,75 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    	// Logger
-    	$logger = $this->getContainer()->get('logger');
+    	$doctrine = $this->getContainer()
+        	->get('doctrine');
 
-    	//$logger->emergency('emergency');
-    	//$logger->alert('alert');
-    	//$logger->critical('critical');
-    	//$logger->error('error');
-    	//$logger->warning('warning');
-    	//$logger->notice('notice');
-    	//$logger->info('info');
-    	//$logger->debug('debug');
-
-        //$output->writeln(sprintf('Hello <comment>%s</comment>!', $input->getArgument('who')));
-
-        $repositoryRepository = $this->getContainer()
-        	->get('doctrine')
-        	->getRepository('BirgitRepositoryBundle:Repository');
+        $repositoryRepository = $doctrine
+        	->getRepository('Birgit:Repository');
 
        	$repositories = $repositoryRepository->findAll();
 
        	foreach ($repositories as $repository) {
-       		var_dump($repository->getUrl());
+       		$output->writeln(
+       			sprintf(
+       				'Handle <comment>%s</comment> repository',
+       				$repository->getUrl()
+       			)
+       		);
 
-       		//$gitRepository = new GitRepository($repository->getUrl());
             $git = new Git($repository->getUrl());
-            var_dump($git->branches());
 
-/*
-			$repo = new Repository('/path/to/git/repository');
-			$connection = ssh_connect('host', 'port');
-			// authorize the connection with the method you want
-			ssh2_auth_password($connection, 'user', 'password');
-			$caller = new CallerSSH2($connection, '/path/to/git/binary/on/server');
-			$repo = Repository::open('/path/to/git/repository');
-			$repo->setCaller($caller);
-*/
+            foreach ($git->branches() as $gitBranch) {
+	       		$output->writeln(
+	       			sprintf(
+	       				' - Branch <comment>%s</comment> @ <comment>%s</comment>',
+	       				$gitBranch->getName(),
+	       				$gitBranch->getRevision()
+	       			)
+	       		);
 
+	       		// Search branch
+	       		$repositoryBranchFound = false;
+	       		foreach ($repository->getBranches() as $repositoryBranch) {
+	       			if ($repositoryBranch->getName() == $gitBranch->getName()) {
+	       				$repositoryBranchFound = true;
+	       				break;
+	       			}
+	       		}
 
+	       		if (!$repositoryBranchFound) {
+		       		$output->writeln(' -> Create branch');
+
+		       		$repositoryBranch = new Repository\Branch();
+		       		$repositoryBranch->setName($gitBranch->getName());
+
+		       		$repository->addBranch($repositoryBranch);
+	       		}
+
+	       		// Search branch revision
+	       		$repositoryBranchRevisionFound = false;
+	       		foreach ($repositoryBranch->getRevisions() as $repositoryBranchRevision) {
+	       			if ($repositoryBranchRevision->getName() == $gitBranch->getRevision()) {
+	       				$repositoryBranchRevisionFound = true;
+	       				break;
+	       			}
+	       		}
+
+	       		if (!$repositoryBranchRevisionFound) {
+		       		$output->writeln(' -> Create revision');
+
+		       		$repositoryBranchRevision = new Repository\Branch\Revision();
+		       		$repositoryBranchRevision->setName($gitBranch->getRevision());
+
+		       		$repositoryBranch->addRevision($repositoryBranchRevision);
+	       		}
+            }
+
+            $doctrine->getManager()
+            	->persist($repository);
        	}
+
+       	$doctrine->getManager()
+       		->flush();
     }
 }
