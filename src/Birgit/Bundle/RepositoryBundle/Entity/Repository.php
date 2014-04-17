@@ -35,6 +35,13 @@ class Repository
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="Birgit\Bundle\RepositoryBundle\Entity\Repository\Branch", mappedBy="repository")
+     */
+    private $branches;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Birgit\Bundle\ProjectBundle\Entity\Project", mappedBy="repository")
      */
     private $projects;
@@ -50,7 +57,7 @@ class Repository
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -74,11 +81,45 @@ class Repository
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add branch
+     *
+     * @param Branch $branch
+     *
+     * @return Repository
+     */
+    public function addBranch(Branch $branch)
+    {
+        $this->branches[] = $branch;
+
+        return $this;
+    }
+
+    /**
+     * Remove branch
+     *
+     * @param Branch $branch
+     */
+    public function removeBranch(Branch $branch)
+    {
+        $this->branches->removeElement($branch);
+    }
+
+    /**
+     * Get branches
+     *
+     * @return Collection
+     */
+    public function getBranches()
+    {
+        return $this->branches;
     }
 
     /**
@@ -108,7 +149,7 @@ class Repository
     /**
      * Get projects
      *
-     * @return Collection 
+     * @return Collection
      */
     public function getProjects()
     {
