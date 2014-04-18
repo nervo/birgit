@@ -37,8 +37,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $projects = array();
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
-            $projects[$projectName] = new Project();
-            $projects[$projectName]
+            $projects[$projectName] = (new Project())
                 ->setName($projectName)
                 ->setRepository($this->getReference('repository.' . $projectParameters['repository']))
                 ->setHostProvider($this->getReference('host_provider.' . $projectParameters['host_provider']));

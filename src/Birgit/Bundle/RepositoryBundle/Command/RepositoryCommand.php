@@ -88,6 +88,8 @@ EOF
                         
                         $doctrine->getManager()
                             ->persist($host);
+
+                        $host->checkout();
                     }
                 
                     if ($projectBranch->getRevision() != $gitBranch->getRevision()) {

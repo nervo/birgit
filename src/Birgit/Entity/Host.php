@@ -4,6 +4,8 @@ namespace Birgit\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Webcreate\Vcs\Git;
+
 use Birgit\Entity\Project;
 
 /**
@@ -122,5 +124,33 @@ class Host
     public function getProjectBranch()
     {
         return $this->projectBranch;
+    }
+
+    /**
+     * Checkout
+     */
+    public function checkout()
+    {
+        $projectBranch = $this->getProjectBranch();
+        $project = $projectBranch->getProject();
+
+        $git = new Git(
+            $project
+                ->getRepository()
+                ->getUrl()
+        );
+
+        // Set head
+        $git->setHead($projectBranch->getRevision());
+
+        // Set path
+        $path = $this->getHostProvider()->getPath() .
+            '/' .
+            $project->getName() .
+            '/' .
+            $projectBranch->getName();
+
+        // Checkout
+        $git->checkout($path);
     }
 }

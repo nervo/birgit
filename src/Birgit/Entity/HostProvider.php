@@ -35,6 +35,19 @@ class HostProvider
     private $id;
 
     /**
+     * Path
+     *
+     * @var string
+     *
+     * @ORM\Column(
+     *     name="path",
+     *     type="string",
+     *     length=255
+     * )
+     */
+    private $path;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
@@ -73,6 +86,30 @@ class HostProvider
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     *
+     * @return Project
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
     }
 
     /**

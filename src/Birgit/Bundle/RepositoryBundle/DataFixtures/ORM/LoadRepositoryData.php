@@ -35,8 +35,7 @@ class LoadRepositoryData extends AbstractFixture implements OrderedFixtureInterf
         $repositories = array();
 
         foreach ($repositoriesDefinitions as $repositoryName => $repositoryParameters) {
-            $repositories[$repositoryName] = new Repository();
-            $repositories[$repositoryName]
+            $repositories[$repositoryName] = (new Repository())
                 ->setUrl($repositoryParameters['url']);
 
             $manager->persist($repositories[$repositoryName]);
