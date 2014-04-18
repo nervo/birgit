@@ -1,21 +1,21 @@
 <?php
 
-namespace Birgit\Entity\Repository;
+namespace Birgit\Entity\Project;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Birgit\Entity\Repository;
+use Birgit\Entity\Project;
 
 /**
- * Repository branch
+ * Project branch
  *
  * @ORM\Table(
- *     name="repository_branch"
+ *     name="project_branch"
  * )
  * @ORM\Entity(
- *     repositoryClass="Birgit\Entity\Repository\BranchRepository"
+ *     repositoryClass="Birgit\Entity\Project\BranchRepository"
  * )
  */
 class Branch
@@ -50,33 +50,33 @@ class Branch
     private $name;
 
     /**
-     * Repository
+     * Revision
      *
-     * @var Repository
+     * @var string
+     *
+     * @ORM\Column(
+     *     name="revision",
+     *     type="string",
+     *     length=255
+     * )
+     */
+    private $revision;
+
+    /**
+     * Project
+     *
+     * @var Project
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\Repository",
+     *     targetEntity="Birgit\Entity\Project",
      *     inversedBy="branches"
      * )
      * @ORM\JoinColumn(
-     *     name="repository_id",
+     *     name="project_id",
      *     nullable=false
      * )
      */
-    private $repository;
-
-    /**
-     * Revisions
-     *
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Repository\Branch\Revision",
-     *     mappedBy="branch",
-     *     cascade={"persist"}
-     * )
-     */
-    private $revisions;
+    private $project;
 
     /**
      * Constructor
@@ -122,63 +122,50 @@ class Branch
     }
 
     /**
-     * Set repository
+     * Set revision
      *
-     * @param Repository $repository
+     * @param string $revision
      *
      * @return Branch
      */
-    public function setRepository(Repository $repository)
+    public function setRevision($revision)
     {
-        $this->repository = $repository;
+        $this->revision = $revision;
 
         return $this;
     }
 
     /**
-     * Get repository
+     * Get revision
      *
-     * @return Repository
+     * @return string
      */
-    public function getRepository()
+    public function getRevision()
     {
-        return $this->repository;
+        return $this->revision;
     }
 
     /**
-     * Add revision
+     * Set project
      *
-     * @param Branch\Revision $revision
+     * @param Project $project
      *
      * @return Branch
      */
-    public function addRevision(Branch\Revision $revision)
+    public function setProject(Project $project)
     {
-        if (!$this->revisions->contains($revision)) {
-            $this->revisions->add($revision);
-            $revision->setBRanch($this);
-        }
+        $this->project = $project;
 
         return $this;
     }
 
     /**
-     * Remove revision
+     * Get project
      *
-     * @param Branch\Revision $revision
+     * @return Project
      */
-    public function removeRevision(Branch\Revision $revision)
+    public function getProject()
     {
-        $this->revisions->removeElement($revision);
-    }
-
-    /**
-     * Get revisions
-     *
-     * @return Collection
-     */
-    public function getRevisions()
-    {
-        return $this->revisions;
+        return $this->project;
     }
 }

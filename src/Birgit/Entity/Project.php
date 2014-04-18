@@ -3,6 +3,8 @@
 namespace Birgit\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Project
@@ -76,6 +78,28 @@ class Project
      * )
      */
     private $hostProvider;
+
+    /**
+     * Branches
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Project\Branch",
+     *     mappedBy="project",
+     *     cascade={"persist"}
+     * )
+     */
+    private $branches;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        // Branches
+        $this->branches = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -157,5 +181,46 @@ class Project
     public function getHostProvider()
     {
         return $this->hostProvider;
+    }
+
+    /**
+     * Add branch
+     *
+     * @param Project\Branch $branch
+     *
+     * @return Project
+     */
+    public function addBranch(Project\Branch $branch)
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+            $branch->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove branch
+     *
+     * @param Project\Branch $branch
+     *
+     * @return Project
+     */
+    public function removeBranch(Project\Branch $branch)
+    {
+        $this->branches->removeElement($branch);
+
+        return $this;
+    }
+
+    /**
+     * Get branches
+     *
+     * @return Collection
+     */
+    public function getBranches()
+    {
+        return $this->branches;
     }
 }

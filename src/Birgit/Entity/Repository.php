@@ -47,19 +47,6 @@ class Repository
     private $url;
 
     /**
-     * Branches
-     *
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Repository\Branch",
-     *     mappedBy="repository",
-     *     cascade={"persist"}
-     * )
-     */
-    private $branches;
-
-    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
@@ -75,9 +62,6 @@ class Repository
      */
     public function __construct()
     {
-        // Branches
-        $this->branches = new ArrayCollection();
-
         // Projects
         $this->projects = new ArrayCollection();
     }
@@ -117,43 +101,6 @@ class Repository
     }
 
     /**
-     * Add branch
-     *
-     * @param Repository\Branch $branch
-     *
-     * @return Repository
-     */
-    public function addBranch(Repository\Branch $branch)
-    {
-        if (!$this->branches->contains($branch)) {
-            $this->branches->add($branch);
-            $branch->setRepository($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove branch
-     *
-     * @param Repository\Branch $branch
-     */
-    public function removeBranch(Repository\Branch $branch)
-    {
-        $this->branches->removeElement($branch);
-    }
-
-    /**
-     * Get branches
-     *
-     * @return Collection
-     */
-    public function getBranches()
-    {
-        return $this->branches;
-    }
-
-    /**
      * Add project
      *
      * @param Project $project
@@ -174,10 +121,14 @@ class Repository
      * Remove project
      *
      * @param Project $project
+     *
+     * @return Repository
      */
     public function removeProject(Project $project)
     {
         $this->projects->removeElement($project);
+
+        return $this;
     }
 
     /**

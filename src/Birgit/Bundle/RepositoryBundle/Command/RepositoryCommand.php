@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Webcreate\Vcs\Git;
 
 use Birgit\Entity\Repository;
+use Birgit\Entity\Project;
 
 class RepositoryCommand extends ContainerAwareCommand
 {
@@ -35,75 +36,66 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    	$doctrine = $this->getContainer()
-        	->get('doctrine');
+        $doctrine = $this->getContainer()
+            ->get('doctrine');
 
         $repositoryRepository = $doctrine
-        	->getRepository('Birgit:Repository');
+            ->getRepository('Birgit:Repository');
 
-       	$repositories = $repositoryRepository->findAll();
+        $repositories = $repositoryRepository->findAll();
 
-       	foreach ($repositories as $repository) {
-       		$output->writeln(
-       			sprintf(
-       				'Handle <comment>%s</comment> repository',
-       				$repository->getUrl()
-       			)
-       		);
+        foreach ($repositories as $repository) {
+            $output->writeln(
+                sprintf(
+                    'Handle <comment>%s</comment> repository',
+                    $repository->getUrl()
+                )
+            );
 
             $git = new Git($repository->getUrl());
 
             foreach ($git->branches() as $gitBranch) {
-	       		$output->writeln(
-	       			sprintf(
-	       				' - Branch <comment>%s</comment> @ <comment>%s</comment>',
-	       				$gitBranch->getName(),
-	       				$gitBranch->getRevision()
-	       			)
-	       		);
+                
+                $output->writeln(
+                    sprintf(
+                        ' - Branch <comment>%s</comment> @ <comment>%s</comment>',
+                        $gitBranch->getName(),
+                        $gitBranch->getRevision()
+                    )
+                );
 
-	       		// Search branch
-	       		$repositoryBranchFound = false;
-	       		foreach ($repository->getBranches() as $repositoryBranch) {
-	       			if ($repositoryBranch->getName() == $gitBranch->getName()) {
-	       				$repositoryBranchFound = true;
-	       				break;
-	       			}
-	       		}
+                foreach ($repository->getProjects() as $project) {
+                    
+                    // Search project branch
+                    $projectBranchFound = false;
+                    foreach ($project->getBranches() as $projectBranch) {
+                        if ($projectBranch->getName() == $gitBranch->getName()) {
+                            $projectBranchFound = true;
+                            break;
+                        }
+                    }                    
 
-	       		if (!$repositoryBranchFound) {
-		       		$output->writeln(' -> Create branch');
+                    if (!$projectBranchFound) {
+                        $output->writeln(' -> Create project branch');
 
-		       		$repositoryBranch = new Repository\Branch();
-		       		$repositoryBranch->setName($gitBranch->getName());
+                        $projectBranch = new Project\Branch();
+                        $projectBranch->setName($gitBranch->getName());
 
-		       		$repository->addBranch($repositoryBranch);
-	       		}
-
-	       		// Search branch revision
-	       		$repositoryBranchRevisionFound = false;
-	       		foreach ($repositoryBranch->getRevisions() as $repositoryBranchRevision) {
-	       			if ($repositoryBranchRevision->getName() == $gitBranch->getRevision()) {
-	       				$repositoryBranchRevisionFound = true;
-	       				break;
-	       			}
-	       		}
-
-	       		if (!$repositoryBranchRevisionFound) {
-		       		$output->writeln(' -> Create revision');
-
-		       		$repositoryBranchRevision = new Repository\Branch\Revision();
-		       		$repositoryBranchRevision->setName($gitBranch->getRevision());
-
-		       		$repositoryBranch->addRevision($repositoryBranchRevision);
-	       		}
+                        $project->addBranch($projectBranch);
+                    }
+                
+                    if ($projectBranch->getRevision() != $gitBranch->getRevision()) {
+                        $output->writeln(' -> Update project branch revision');
+                        $projectBranch->setRevision($gitBranch->getRevision());
+                    }
+                }
             }
 
             $doctrine->getManager()
-            	->persist($repository);
-       	}
+                ->persist($repository);
+        }
 
-       	$doctrine->getManager()
-       		->flush();
+        $doctrine->getManager()
+            ->flush();
     }
 }

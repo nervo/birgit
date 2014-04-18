@@ -39,7 +39,7 @@ class HostProvider
      *
      * @ORM\OneToMany(
      *     targetEntity="Birgit\Entity\Project",
-     *     mappedBy="repository",
+     *     mappedBy="hostProvider",
      *     cascade={"persist"}
      * )
      */
@@ -69,13 +69,13 @@ class HostProvider
      *
      * @param Project $project
      *
-     * @return Repository
+     * @return HostProvider
      */
     public function addProject(Project $project)
     {
         if (!$this->projects->contains($project)) {
             $this->projects->add($project);
-            $project->setRepository($this);
+            $project->setHostProvider($this);
         }
 
         return $this;
@@ -85,10 +85,14 @@ class HostProvider
      * Remove project
      *
      * @param Project $project
+     *
+     * @return HostProvider
      */
     public function removeProject(Project $project)
     {
         $this->projects->removeElement($project);
+
+        return $this;
     }
 
     /**
