@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Entity\Project;
+use Birgit\Entity\Host;
 
 /**
  * Project branch
@@ -77,6 +78,17 @@ class Branch
      * )
      */
     private $project;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Host",
+     *     mappedBy="projectBranch",
+     *     cascade={"persist"}
+     * )
+     */
+    private $hosts;
 
     /**
      * Constructor
@@ -167,5 +179,46 @@ class Branch
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Add host
+     *
+     * @param Host $host
+     *
+     * @return Branch
+     */
+    public function addHost(Host $host)
+    {
+        if (!$this->hosts->contains($host)) {
+            $this->hosts->add($host);
+            $host->setProjectBranch($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove host
+     *
+     * @param Host $host
+     *
+     * @return Branch
+     */
+    public function removeHost(Host $host)
+    {
+        $this->hosts->removeElement($host);
+
+        return $this;
+    }
+
+    /**
+     * Get hosts
+     *
+     * @return Collection
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
     }
 }

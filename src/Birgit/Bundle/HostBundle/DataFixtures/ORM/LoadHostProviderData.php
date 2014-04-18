@@ -24,8 +24,7 @@ class LoadHostProviderData extends AbstractFixture implements OrderedFixtureInte
     public function load(ObjectManager $manager)
     {
         $hostProvidersDefinitions = array(
-            'test'  => array(),
-            'adele' => array()
+            'local' => array()
         );
 
         $hostProviders = array();

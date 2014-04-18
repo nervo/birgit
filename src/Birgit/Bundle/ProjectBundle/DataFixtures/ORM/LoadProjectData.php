@@ -26,11 +26,11 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $projectsDefinitions = array(
             'test'  => array(
                 'repository'    => 'test',
-                'host_provider' => 'test'
+                'host_provider' => 'local'
             ),
             'adele' => array(
                 'repository'    => 'adele',
-                'host_provider' => 'adele'
+                'host_provider' => 'local'
             )
         );
 

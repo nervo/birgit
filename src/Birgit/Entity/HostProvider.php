@@ -38,6 +38,17 @@ class HostProvider
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Host",
+     *     mappedBy="hostProvider",
+     *     cascade={"persist"}
+     * )
+     */
+    private $hosts;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
      *     targetEntity="Birgit\Entity\Project",
      *     mappedBy="hostProvider",
      *     cascade={"persist"}
@@ -62,6 +73,47 @@ class HostProvider
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add host
+     *
+     * @param Host $host
+     *
+     * @return HostProvider
+     */
+    public function addHost(Host $host)
+    {
+        if (!$this->hosts->contains($host)) {
+            $this->hosts->add($host);
+            $host->setHostProvider($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove host
+     *
+     * @param Host $host
+     *
+     * @return HostProvider
+     */
+    public function removeHost(Host $host)
+    {
+        $this->hosts->removeElement($host);
+
+        return $this;
+    }
+
+    /**
+     * Get hosts
+     *
+     * @return Collection
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
     }
 
     /**
@@ -103,5 +155,21 @@ class HostProvider
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * Create host
+     *
+     * @param Project\Branch $projectBranch
+     *
+     * @return Host
+     */
+    public function createHost(Project\Branch $projectBranch)
+    {
+        $host = (new Host())
+            ->setHostProvider($this)
+            ->setProjectBranch($projectBranch);
+
+        return $host;
     }
 }

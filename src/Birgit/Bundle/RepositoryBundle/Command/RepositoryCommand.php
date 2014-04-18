@@ -82,6 +82,12 @@ EOF
                         $projectBranch->setName($gitBranch->getName());
 
                         $project->addBranch($projectBranch);
+
+                        $host = $project->getHostProvider()
+                            ->createHost($projectBranch);
+                        
+                        $doctrine->getManager()
+                            ->persist($host);
                     }
                 
                     if ($projectBranch->getRevision() != $gitBranch->getRevision()) {
