@@ -15,7 +15,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 
     /**
@@ -25,10 +25,12 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
     {
         $projectsDefinitions = array(
             'test'  => array(
-                'repository' => 'test'
+                'repository'    => 'test',
+                'host_provider' => 'test'
             ),
             'adele' => array(
-                'repository' => 'adele'
+                'repository'    => 'adele',
+                'host_provider' => 'adele'
             )
         );
 
@@ -36,12 +38,14 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
             $projects[$projectName] = new Project();
-            $projects[$projectName]->setName($projectName);
-            $projects[$projectName]->setRepository($this->getReference('repository_' . $projectParameters['repository']));
+            $projects[$projectName]
+                ->setName($projectName)
+                ->setRepository($this->getReference('repository.' . $projectParameters['repository']))
+                ->setHostProvider($this->getReference('host_provider.' . $projectParameters['host_provider']));
 
             $manager->persist($projects[$projectName]);
 
-            $this->addReference('project_' . $projectName, $projects[$projectName]);
+            $this->addReference('project.' . $projectName, $projects[$projectName]);
         }
 
         $manager->flush();

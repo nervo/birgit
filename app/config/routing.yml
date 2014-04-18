@@ -1,3 +1,8 @@
+birgit_host:
+    resource: "@BirgitHostBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 birgit_repository:
     resource: "@BirgitRepositoryBundle/Controller/"
     type:     annotation

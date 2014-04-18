@@ -59,6 +59,7 @@ class Revision
      *     inversedBy="revisions"
      * )
      * @ORM\JoinColumn(
+     *     name="branch_id",
      *     nullable=false
      * )
      */

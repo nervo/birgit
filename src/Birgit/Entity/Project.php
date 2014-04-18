@@ -4,8 +4,6 @@ namespace Birgit\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Birgit\Entity\Repository;
-
 /**
  * Project
  *
@@ -57,16 +55,32 @@ class Project
      *     inversedBy="projects"
      * )
      * @ORM\JoinColumn(
+     *     name="repository_id",
      *     nullable=false
      * )
      */
     private $repository;
 
+    /**
+     * Host provider
+     *
+     * @var HostProvider
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Birgit\Entity\HostProvider",
+     *     inversedBy="projects"
+     * )
+     * @ORM\JoinColumn(
+     *     name="host_provider_id",
+     *     nullable=false
+     * )
+     */
+    private $hostProvider;
 
     /**
      * Get id
      *
-     * @return int 
+     * @return int
      */
     public function getId()
     {
@@ -90,7 +104,7 @@ class Project
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -114,10 +128,34 @@ class Project
     /**
      * Get repository
      *
-     * @return Repository 
+     * @return Repository
      */
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    /**
+     * Set host provider
+     *
+     * @param HostProvider $hostProvider
+     *
+     * @return Project
+     */
+    public function setHostProvider(HostProvider $hostProvider)
+    {
+        $this->hostProvider = $hostProvider;
+
+        return $this;
+    }
+
+    /**
+     * Get host provider
+     *
+     * @return HostProvider
+     */
+    public function getHostProvider()
+    {
+        return $this->hostProvider;
     }
 }

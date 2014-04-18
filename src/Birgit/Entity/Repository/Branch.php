@@ -59,6 +59,7 @@ class Branch
      *     inversedBy="branches"
      * )
      * @ORM\JoinColumn(
+     *     name="repository_id",
      *     nullable=false
      * )
      */
