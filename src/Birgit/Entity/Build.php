@@ -35,20 +35,20 @@ class Build
     private $id;
 
     /**
-     * Project reference
+     * Project environment repository reference
      *
-     * @var Project\Reference
+     * @var Project\Environment\RepositoryReference
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\Project\Reference",
+     *     targetEntity="Birgit\Entity\Project\Environment\RepositoryReference",
      *     inversedBy="builds"
      * )
      * @ORM\JoinColumn(
-     *     name="project_reference_id",
+     *     name="project_environment_repository_reference_id",
      *     nullable=false
      * )
      */
-    private $projectReference;
+    private $projectEnvironmentRepositoryReference;
 
     /**
      * Hash
@@ -74,27 +74,27 @@ class Build
     }
 
     /**
-     * Set project reference
+     * Set project environment repository reference
      *
-     * @param Project\Reference $projectReference
+     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
      *
      * @return Build
      */
-    public function setProjectReference(Project\Reference $projectReference)
+    public function setProjectEnvironmentRepositoryReference(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference)
     {
-        $this->projectReference = $projectReference;
+        $this->projectEnvironmentRepositoryReference = $projectEnvironmentRepositoryReference;
 
         return $this;
     }
 
     /**
-     * Get project reference
+     * Get project environment repository reference
      *
-     * @return Project\Reference
+     * @return Project\Environment\RepositoryReference
      */
-    public function getProjectReference()
+    public function getProjectEnvironmentRepositoryReference()
     {
-        return $this->projectReference;
+        return $this->projectEnvironmentRepositoryReference;
     }
 
     /**
@@ -102,7 +102,7 @@ class Build
      *
      * @param string $hash
      *
-     * @return Reference
+     * @return Build
      */
     public function setHash($hash)
     {

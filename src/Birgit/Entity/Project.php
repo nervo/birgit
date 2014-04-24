@@ -65,33 +65,17 @@ class Project
     private $repository;
 
     /**
-     * Host provider
-     *
-     * @var HostProvider
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\HostProvider",
-     *     inversedBy="projects"
-     * )
-     * @ORM\JoinColumn(
-     *     name="host_provider_id",
-     *     nullable=false
-     * )
-     */
-    private $hostProvider;
-
-    /**
-     * References
+     * Environments
      *
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Project\Reference",
+     *     targetEntity="Birgit\Entity\Project\Environment",
      *     mappedBy="project",
      *     cascade={"persist"}
      * )
      */
-    private $references;
+    private $environments;
 
     /**
      * Active
@@ -110,8 +94,8 @@ class Project
      */
     public function __construct()
     {
-        // References
-        $this->references = new ArrayCollection();
+        // Environments
+        $this->environments = new ArrayCollection();
     }
 
     /**
@@ -173,68 +157,44 @@ class Project
     }
 
     /**
-     * Set host provider
+     * Add environment
      *
-     * @param HostProvider $hostProvider
-     *
-     * @return Project
-     */
-    public function setHostProvider(HostProvider $hostProvider)
-    {
-        $this->hostProvider = $hostProvider;
-
-        return $this;
-    }
-
-    /**
-     * Get host provider
-     *
-     * @return HostProvider
-     */
-    public function getHostProvider()
-    {
-        return $this->hostProvider;
-    }
-
-    /**
-     * Add reference
-     *
-     * @param Project\Reference $reference
+     * @param Project\Environment $environment
      *
      * @return Project
      */
-    public function addReference(Project\Reference $reference)
+    public function addEnvironment(Project\Environment $environment)
     {
-        if (!$this->references->contains($reference)) {
-            $this->references->add($reference);
-            $reference->setProject($this);
+        if (!$this->environments->contains($environment)) {
+            $this->environments->add($environment);
+            $environment->setProject($this);
         }
 
         return $this;
     }
 
     /**
-     * Remove reference
+     * Remove environment
      *
-     * @param Project\Reference $reference
+     * @param Project\Environment $environment
      *
      * @return Project
      */
-    public function removeReference(Project\Reference $reference)
+    public function removeEnvironment(Project\Environment $environment)
     {
-        $this->references->removeElement($reference);
+        $this->environments->removeElement($environment);
 
         return $this;
     }
 
     /**
-     * Get references
+     * Get environments
      *
      * @return Collection
      */
-    public function getReferences()
+    public function getEnvironments()
     {
-        return $this->references;
+        return $this->environments;
     }
 
     /**

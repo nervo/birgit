@@ -193,20 +193,4 @@ class HostProvider
     {
         return $this->projects;
     }
-
-    /**
-     * Create host
-     *
-     * @param Project\Reference $projectReference
-     *
-     * @return Host
-     */
-    public function createHost(Project\Reference $projectReference)
-    {
-        $host = (new Host())
-            ->setHostProvider($this)
-            ->setProjectReference($projectReference);
-
-        return $host;
-    }
 }

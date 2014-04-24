@@ -3,6 +3,8 @@
 namespace Birgit\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Entity\Project;
 
@@ -35,36 +37,26 @@ class Host
     private $id;
 
     /**
-     * Host provider
+     * Project environment repository references
      *
-     * @var HostProvider
+     * @var ArrayCollection
      *
-     * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\HostProvider",
-     *     inversedBy="hosts"
-     * )
-     * @ORM\JoinColumn(
-     *     name="host_provider_id",
-     *     nullable=false
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Project\Environment\RepositoryReference",
+     *     mappedBy="host",
+     *     cascade={"persist"}
      * )
      */
-    private $hostProvider;
+    private $projectEnvironmentRepositoryReferences;
 
     /**
-     * Project reference
-     *
-     * @var Project\Reference
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\Project\Reference",
-     *     inversedBy="hosts"
-     * )
-     * @ORM\JoinColumn(
-     *     name="project_reference_id",
-     *     nullable=false
-     * )
+     * Constructor
      */
-    private $projectReference;
+    public function __construct()
+    {
+        // Project environment repository references
+        $this->projectEnvironmentRepositoryReferences = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -77,50 +69,43 @@ class Host
     }
 
     /**
-     * Set host provider
+     * Add project environment repository reference
      *
-     * @param HostProvider $hostProvider
-     *
-     * @return Project
-     */
-    public function setHostProvider(HostProvider $hostProvider)
-    {
-        $this->hostProvider = $hostProvider;
-
-        return $this;
-    }
-
-    /**
-     * Get host provider
-     *
-     * @return HostProvider
-     */
-    public function getHostProvider()
-    {
-        return $this->hostProvider;
-    }
-
-    /**
-     * Set project reference
-     *
-     * @param Project\Reference $projectReference
+     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
      *
      * @return Host
      */
-    public function setProjectReference(Project\Reference $projectReference)
+    public function addProjectEnvironmentRepositoryReference(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference)
     {
-        $this->projectReference = $projectReference;
+        if (!$this->projectEnvironmentRepositoryReferences->contains($projectEnvironmentRepositoryReference)) {
+            $this->projectEnvironmentRepositoryReferences->add($projectEnvironmentRepositoryReference);
+            $projectEnvironmentRepositoryReference->setHost($this);
+        }
 
         return $this;
     }
 
     /**
-     * Get project reference
+     * Remove project environment repository reference
      *
-     * @return Project\Reference
+     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
+     *
+     * @return Host
      */
-    public function getProjectReference()
+    public function removeProjectEnvironmentRepositoryReference(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference)
     {
-        return $this->projectReference;
+        $this->projectEnvironmentRepositoryReferences->removeElement($projectEnvironmentRepositoryReference);
+
+        return $this;
+    }
+
+    /**
+     * Get project environment repository references
+     *
+     * @return Collection
+     */
+    public function getProjectEnvironmentRepositoryReferences()
+    {
+        return $this->projectEnvironmentRepositoryReferences;
     }
 }

@@ -60,11 +60,56 @@ EOF
             }
 
             $output->writeln(sprintf('Handle <comment>%s</comment> project', $project->getName()));
-            
+
             // Get repository
             $repository = $project->getrepository();
 
             $output->writeln(sprintf('On <comment>%s</comment> repository', $repository->getPath()));
+
+            // Create git client
+            $gitClient = new GitClient($logger);
+            $gitClient->setRepository($repository->getPath());
+
+            // Get git branches
+            $gitBranches = $gitClient->getBranches();
+
+            foreach ($project->getEnvironments() as $projectEnvironment) {
+                // Don't handle inactive project environments
+                if (!$projectEnvironment->isActive()) {
+                    continue;
+                }
+
+                $output->writeln(sprintf('For <comment>%s</comment> project environment', $projectEnvironment->getName()));
+
+                foreach ($gitBranches as $gitBranch) {
+                
+                    $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $gitBranch->getName(), $gitBranch->getHash()));
+
+                    // Search project environment repository reference
+                    $projectEnvironmentRepositoryReferenceFound = false;
+                    foreach ($projectEnvironment->getRepositoryReferences() as $projectEnvironmentRepositoryReference) {
+                        if ($projectEnvironmentRepositoryReference->getName() == $gitBranch->getName()) {
+                            $projectEnvironmentRepositoryReferenceFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!$projectEnvironmentRepositoryReferenceFound) {
+                        $output->writeln(' -> Create project environment repository reference');
+
+                        $projectEnvironmentRepositoryReference = new Project\Environment\RepositoryReference();
+                        $projectEnvironmentRepositoryReference->setName($gitBranch->getName());
+                        $projectEnvironmentRepositoryReference->setProjectEnvironment($projectEnvironment);
+
+                        $doctrine->getManager()
+                            ->persist($projectEnvironmentRepositoryReference);
+
+                        // Host...
+                    }
+                }
+            }
+            
+            /*
 
             // Create git client
             $gitClient = new GitClient($logger);
@@ -114,6 +159,8 @@ EOF
 
             $doctrine->getManager()
                 ->persist($repository);
+
+            */
         }
 
         $doctrine->getManager()

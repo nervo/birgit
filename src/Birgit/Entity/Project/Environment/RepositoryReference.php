@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Entity\Project;
+namespace Birgit\Entity\Project\Environment;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
@@ -11,16 +11,16 @@ use Birgit\Entity\Host;
 use Birgit\Entity\Build;
 
 /**
- * Project reference
+ * Project environment repository reference
  *
  * @ORM\Table(
- *     name="project_reference"
+ *     name="project_environment_repository_reference"
  * )
  * @ORM\Entity(
- *     repositoryClass="Birgit\Entity\Project\ReferenceRepository"
+ *     repositoryClass="Birgit\Entity\Project\Environment\RepositoryReferenceRepository"
  * )
  */
-class Reference
+class RepositoryReference
 {
     /**
      * Id
@@ -52,33 +52,36 @@ class Reference
     private $name;
 
     /**
-     * Project
+     * Project environment
      *
-     * @var Project
+     * @var Project\Environment
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\Project",
-     *     inversedBy="references"
+     *     targetEntity="Birgit\Entity\Project\Environment",
+     *     inversedBy="repositoryReferences"
      * )
      * @ORM\JoinColumn(
-     *     name="project_id",
+     *     name="project_environment_id",
      *     nullable=false
      * )
      */
-    private $project;
+    private $projectEnvironment;
 
     /**
-     * Hosts
+     * Host
      *
-     * @var ArrayCollection
+     * @var Host
      *
-     * @ORM\OneToMany(
+     * @ORM\ManyToOne(
      *     targetEntity="Birgit\Entity\Host",
-     *     mappedBy="projectReference",
-     *     cascade={"persist"}
+     *     inversedBy="projectEnvironmentRepositoryReferences"
+     * )
+     * @ORM\JoinColumn(
+     *     name="host_id",
+     *     nullable=false
      * )
      */
-    private $hosts;
+    private $host;
 
     /**
      * Builds
@@ -87,7 +90,7 @@ class Reference
      *
      * @ORM\OneToMany(
      *     targetEntity="Birgit\Entity\Build",
-     *     mappedBy="projectReference",
+     *     mappedBy="projectEnvironmentRepositoryReference",
      *     cascade={"persist"}
      * )
      */
@@ -98,9 +101,6 @@ class Reference
      */
     public function __construct()
     {
-        // Hosts
-        $this->hosts = new ArrayCollection();
-
         // Builds
         $this->builds = new ArrayCollection();
     }
@@ -120,7 +120,7 @@ class Reference
      *
      * @param string $name
      *
-     * @return Reference
+     * @return RepositoryReference
      */
     public function setName($name)
     {
@@ -140,68 +140,51 @@ class Reference
     }
 
     /**
-     * Set project
+     * Set project environment
      *
-     * @param Project $project
+     * @param Project\Environment $projectEnvironment
      *
-     * @return Reference
+     * @return RepositoryReference
      */
-    public function setProject(Project $project)
+    public function setProjectEnvironment(Project\Environment $projectEnvironment)
     {
-        $this->project = $project;
+        $this->projectEnvironment = $projectEnvironment;
 
         return $this;
     }
 
     /**
-     * Get project
+     * Get project environment
      *
-     * @return Project
+     * @return Project\Environment
      */
-    public function getProject()
+    public function getProjectEnvironment()
     {
-        return $this->project;
+        return $this->projectEnvironment;
     }
 
     /**
-     * Add host
+     * Set host
      *
      * @param Host $host
      *
-     * @return Reference
+     * @return RepositoryReference
      */
-    public function addHost(Host $host)
+    public function setHost(Host $host)
     {
-        if (!$this->hosts->contains($host)) {
-            $this->hosts->add($host);
-            $host->setProjectReference($this);
-        }
+        $this->host = $host;
 
         return $this;
     }
 
     /**
-     * Remove host
+     * Get host
      *
-     * @param Host $host
-     *
-     * @return Reference
+     * @return Host
      */
-    public function removeHost(Host $host)
+    public function getHost()
     {
-        $this->hosts->removeElement($host);
-
-        return $this;
-    }
-
-    /**
-     * Get hosts
-     *
-     * @return Collection
-     */
-    public function getHosts()
-    {
-        return $this->hosts;
+        return $this->host;
     }
 
     /**
@@ -209,13 +192,13 @@ class Reference
      *
      * @param Build $build
      *
-     * @return Reference
+     * @return RepositoryReference
      */
     public function addBuild(Build $build)
     {
         if (!$this->builds->contains($build)) {
             $this->builds->add($build);
-            $build->setProjectReference($this);
+            $build->setProjectEnvironmentRepositoryReference($this);
         }
 
         return $this;
@@ -226,7 +209,7 @@ class Reference
      *
      * @param Build $build
      *
-     * @return Reference
+     * @return RepositoryReference
      */
     public function removeBuild(Build $build)
     {

@@ -25,14 +25,36 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
     {
         $projectsDefinitions = array(
             'test'  => array(
-                'repository'    => 'test',
-                'host_provider' => 'local',
-                'active'        => true
+                'repository'   => 'test',
+                'environments' => array(
+                    'test'    => array(
+                        'host_provider' => 'local',
+                        'active'        => true
+                    ),
+                    'quality' => array(
+                        'host_provider' => 'local',
+                        'active'        => true
+                    )
+                ),
+                'active'       => true
             ),
             'adele' => array(
-                'repository'    => 'adele',
-                'host_provider' => 'local',
-                'active'        => false
+                'repository'   => 'adele',
+                'environments' => array(
+                    'test'    => array(
+                        'host_provider' => 'local',
+                        'active'        => true
+                    ),
+                    'quality' => array(
+                        'host_provider' => 'local',
+                        'active'        => true
+                    ),
+                    'demo'    => array(
+                        'host_provider' => 'local',
+                        'active'        => true
+                    )
+                ),
+                'active'       => false
             )
         );
 
@@ -41,8 +63,21 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
             $projects[$projectName] = (new Project())
                 ->setName($projectName)
-                ->setRepository($this->getReference('repository.' . $projectParameters['repository']))
-                ->setHostProvider($this->getReference('host_provider.' . $projectParameters['host_provider']))
+                ->setRepository($this->getReference('repository.' . $projectParameters['repository']));
+
+            $projectEnvironments = array();
+
+            foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
+                $projectEnvironments[$projectEnvironmentName] = (new Project\Environment())
+                    ->setName($projectEnvironmentName)
+                    ->setHostProvider($this->getReference('host_provider.' . $projectEnvironmentParameters['host_provider']))
+                    ->setActive($projectEnvironmentParameters['active']);
+
+                $projects[$projectName]
+                    ->addEnvironment($projectEnvironments[$projectEnvironmentName]);
+            }
+
+            $projects[$projectName]
                 ->setActive($projectParameters['active']);
 
             $manager->persist($projects[$projectName]);
