@@ -197,15 +197,15 @@ class HostProvider
     /**
      * Create host
      *
-     * @param Project\Branch $projectBranch
+     * @param Project\Reference $projectReference
      *
      * @return Host
      */
-    public function createHost(Project\Branch $projectBranch)
+    public function createHost(Project\Reference $projectReference)
     {
         $host = (new Host())
             ->setHostProvider($this)
-            ->setProjectBranch($projectBranch);
+            ->setProjectReference($projectReference);
 
         return $host;
     }

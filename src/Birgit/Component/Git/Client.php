@@ -36,6 +36,8 @@ class Client
 
     /**
      * Constructor
+     *
+     * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger = null)
     {

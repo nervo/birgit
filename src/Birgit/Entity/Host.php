@@ -51,20 +51,20 @@ class Host
     private $hostProvider;
 
     /**
-     * Project branch
+     * Project reference
      *
-     * @var Project\Branch
+     * @var Project\Reference
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\Project\Branch",
+     *     targetEntity="Birgit\Entity\Project\Reference",
      *     inversedBy="hosts"
      * )
      * @ORM\JoinColumn(
-     *     name="project_branch_id",
+     *     name="project_reference_id",
      *     nullable=false
      * )
      */
-    private $projectBranch;
+    private $projectReference;
 
     /**
      * Get id
@@ -101,26 +101,26 @@ class Host
     }
 
     /**
-     * Set project branch
+     * Set project reference
      *
-     * @param Project\Branch $projectBranch
+     * @param Project\Reference $projectReference
      *
      * @return Host
      */
-    public function setProjectBranch(Project\Branch $projectBranch)
+    public function setProjectReference(Project\Reference $projectReference)
     {
-        $this->projectBranch = $projectBranch;
+        $this->projectReference = $projectReference;
 
         return $this;
     }
 
     /**
-     * Get project branch
+     * Get project reference
      *
-     * @return Project\Branch
+     * @return Project\Reference
      */
-    public function getProjectBranch()
+    public function getProjectReference()
     {
-        return $this->projectBranch;
+        return $this->projectReference;
     }
 }

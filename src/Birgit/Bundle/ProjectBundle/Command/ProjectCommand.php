@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Birgit\Component\Git\Client as GitClient;
+use Birgit\Component\Build\Manager as BuildManager;
 
 use Birgit\Entity\Repository;
 use Birgit\Entity\Project;
@@ -39,77 +40,75 @@ EOF
         // Get logger
         $logger = $this->getContainer()->get('logger');
 
+        // Get build manager
+        $buildManager = new BuildManager($logger);
+
+        // Get doctrine
         $doctrine = $this->getContainer()
             ->get('doctrine');
 
-        $projectRepository = $doctrine
-            ->getRepository('Birgit:Project');
-
-        $projects = $projectRepository->findAll();
+        // Get projects        
+        $projects = $doctrine
+            ->getRepository('Birgit:Project')
+            ->findAll();
 
         foreach ($projects as $project) {
+
+            // Don't handle inactive projects
+            if (!$project->isActive()) {
+                continue;
+            }
+
+            $output->writeln(sprintf('Handle <comment>%s</comment> project', $project->getName()));
             
+            // Get repository
             $repository = $project->getrepository();
 
-            $output->writeln(
-                sprintf(
-                    'Handle <comment>%s</comment> repository',
-                    $repository->getPath()
-                )
-            );
+            $output->writeln(sprintf('On <comment>%s</comment> repository', $repository->getPath()));
 
+            // Create git client
             $gitClient = new GitClient($logger);
             $gitClient->setRepository($repository->getPath());
 
             foreach ($gitClient->getBranches() as $gitBranch) {
                 
-                $output->writeln(
-                    sprintf(
-                        ' - Branch <comment>%s</comment> @ <comment>%s</comment>',
-                        $gitBranch->getName(),
-                        $gitBranch->getHash()
-                    )
-                );
-
-                foreach ($repository->getProjects() as $project) {
+                $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $gitBranch->getName(), $gitBranch->getHash()));
                     
-                    // Search project branch
-                    $projectBranchFound = false;
-                    foreach ($project->getBranches() as $projectBranch) {
-                        if ($projectBranch->getName() == $gitBranch->getName()) {
-                            $projectBranchFound = true;
-                            break;
-                        }
-                    }                    
-
-                    if (!$projectBranchFound) {
-                        $output->writeln(' -> Create project branch');
-
-                        $projectBranch = new Project\Branch();
-                        $projectBranch->setName($gitBranch->getName());
-
-                        $project->addBranch($projectBranch);
-
-                        $host = $project->getHostProvider()
-                            ->createHost($projectBranch);
-                        
-                        $doctrine->getManager()
-                            ->persist($host);
-
-
-                        $gitClient->checkout(
-                            'data/projects' .
-                            '/' .
-                            $project->getName() .
-                            '/' .
-                            $projectBranch->getName()
-                        );
+                // Search project reference
+                $projectReferenceFound = false;
+                foreach ($project->getReferences() as $projectReference) {
+                    if ($projectReference->getName() == $gitBranch->getName()) {
+                        $projectReferenceFound = true;
+                        break;
                     }
-                
-                    if ($projectBranch->getRevision() != $gitBranch->getHash()) {
-                        $output->writeln(' -> Update project branch revision');
-                        $projectBranch->setRevision($gitBranch->getHash());
+                }
+
+                if (!$projectReferenceFound) {
+                    $output->writeln(' -> Create project reference');
+
+                    $projectReference = new Project\Reference();
+                    $projectReference->setName($gitBranch->getName());
+
+                    $project->addReference($projectReference);
+                }
+            
+                // Search build
+                $buildFound = false;
+                foreach ($projectReference->getBuilds() as $build) {
+                    if ($build->getHash() == $gitBranch->getHash()) {
+                        $buildFound = true;
+                        break;
                     }
+                }
+
+                if (!$buildFound) {
+                    $output->writeln(' -> Create build');
+
+
+                    $host = $project->getHostProvider()
+                        ->createHost($projectReference);
+
+                    $buildManager->build($projectReference, $gitBranch->getHash(), $host);
                 }
             }
 

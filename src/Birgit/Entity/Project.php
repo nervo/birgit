@@ -42,7 +42,8 @@ class Project
      * @ORM\Column(
      *     name="name",
      *     type="string",
-     *     length=255
+     *     length=255,
+     *     unique=true
      * )
      */
     private $name;
@@ -80,25 +81,37 @@ class Project
     private $hostProvider;
 
     /**
-     * Branches
+     * References
      *
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Project\Branch",
+     *     targetEntity="Birgit\Entity\Project\Reference",
      *     mappedBy="project",
      *     cascade={"persist"}
      * )
      */
-    private $branches;
+    private $references;
+
+    /**
+     * Active
+     *
+     * @var bool
+     *
+     * @ORM\Column(
+     *     name="active",
+     *     type="boolean"
+     * )
+     */
+    private $active = true;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        // Branches
-        $this->branches = new ArrayCollection();
+        // References
+        $this->references = new ArrayCollection();
     }
 
     /**
@@ -184,43 +197,77 @@ class Project
     }
 
     /**
-     * Add branch
+     * Add reference
      *
-     * @param Project\Branch $branch
+     * @param Project\Reference $reference
      *
      * @return Project
      */
-    public function addBranch(Project\Branch $branch)
+    public function addReference(Project\Reference $reference)
     {
-        if (!$this->branches->contains($branch)) {
-            $this->branches->add($branch);
-            $branch->setProject($this);
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+            $reference->setProject($this);
         }
 
         return $this;
     }
 
     /**
-     * Remove branch
+     * Remove reference
      *
-     * @param Project\Branch $branch
+     * @param Project\Reference $reference
      *
      * @return Project
      */
-    public function removeBranch(Project\Branch $branch)
+    public function removeReference(Project\Reference $reference)
     {
-        $this->branches->removeElement($branch);
+        $this->references->removeElement($reference);
 
         return $this;
     }
 
     /**
-     * Get branches
+     * Get references
      *
      * @return Collection
      */
-    public function getBranches()
+    public function getReferences()
     {
-        return $this->branches;
+        return $this->references;
+    }
+
+    /**
+     * Set active
+     *
+     * @param bool $active
+     *
+     * @return Project
+     */
+    public function setActive($active)
+    {
+        $this->active = (bool) $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return bool
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Is active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 }

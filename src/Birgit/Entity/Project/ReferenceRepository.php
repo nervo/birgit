@@ -5,9 +5,9 @@ namespace Birgit\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Repository branch Repository
+ * Repository reference Repository
  *
  */
-class BranchRepository extends EntityRepository
+class ReferenceRepository extends EntityRepository
 {
 }

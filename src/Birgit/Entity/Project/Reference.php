@@ -8,18 +8,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Entity\Project;
 use Birgit\Entity\Host;
+use Birgit\Entity\Build;
 
 /**
- * Project branch
+ * Project reference
  *
  * @ORM\Table(
- *     name="project_branch"
+ *     name="project_reference"
  * )
  * @ORM\Entity(
- *     repositoryClass="Birgit\Entity\Project\BranchRepository"
+ *     repositoryClass="Birgit\Entity\Project\ReferenceRepository"
  * )
  */
-class Branch
+class Reference
 {
     /**
      * Id
@@ -51,26 +52,13 @@ class Branch
     private $name;
 
     /**
-     * Revision
-     *
-     * @var string
-     *
-     * @ORM\Column(
-     *     name="revision",
-     *     type="string",
-     *     length=255
-     * )
-     */
-    private $revision;
-
-    /**
      * Project
      *
      * @var Project
      *
      * @ORM\ManyToOne(
      *     targetEntity="Birgit\Entity\Project",
-     *     inversedBy="branches"
+     *     inversedBy="references"
      * )
      * @ORM\JoinColumn(
      *     name="project_id",
@@ -80,23 +68,41 @@ class Branch
     private $project;
 
     /**
+     * Hosts
+     *
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
      *     targetEntity="Birgit\Entity\Host",
-     *     mappedBy="projectBranch",
+     *     mappedBy="projectReference",
      *     cascade={"persist"}
      * )
      */
     private $hosts;
 
     /**
+     * Builds
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Build",
+     *     mappedBy="projectReference",
+     *     cascade={"persist"}
+     * )
+     */
+    private $builds;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        // Revisions
-        $this->revisions = new ArrayCollection();
+        // Hosts
+        $this->hosts = new ArrayCollection();
+
+        // Builds
+        $this->builds = new ArrayCollection();
     }
 
     /**
@@ -114,7 +120,7 @@ class Branch
      *
      * @param string $name
      *
-     * @return Branch
+     * @return Reference
      */
     public function setName($name)
     {
@@ -134,35 +140,11 @@ class Branch
     }
 
     /**
-     * Set revision
-     *
-     * @param string $revision
-     *
-     * @return Branch
-     */
-    public function setRevision($revision)
-    {
-        $this->revision = $revision;
-
-        return $this;
-    }
-
-    /**
-     * Get revision
-     *
-     * @return string
-     */
-    public function getRevision()
-    {
-        return $this->revision;
-    }
-
-    /**
      * Set project
      *
      * @param Project $project
      *
-     * @return Branch
+     * @return Reference
      */
     public function setProject(Project $project)
     {
@@ -186,13 +168,13 @@ class Branch
      *
      * @param Host $host
      *
-     * @return Branch
+     * @return Reference
      */
     public function addHost(Host $host)
     {
         if (!$this->hosts->contains($host)) {
             $this->hosts->add($host);
-            $host->setProjectBranch($this);
+            $host->setProjectReference($this);
         }
 
         return $this;
@@ -203,7 +185,7 @@ class Branch
      *
      * @param Host $host
      *
-     * @return Branch
+     * @return Reference
      */
     public function removeHost(Host $host)
     {
@@ -220,5 +202,46 @@ class Branch
     public function getHosts()
     {
         return $this->hosts;
+    }
+
+    /**
+     * Add build
+     *
+     * @param Build $build
+     *
+     * @return Reference
+     */
+    public function addBuild(Build $build)
+    {
+        if (!$this->builds->contains($build)) {
+            $this->builds->add($build);
+            $build->setProjectReference($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove build
+     *
+     * @param Build $build
+     *
+     * @return Reference
+     */
+    public function removeBuild(Build $build)
+    {
+        $this->builds->removeElement($build);
+
+        return $this;
+    }
+
+    /**
+     * Get builds
+     *
+     * @return Collection
+     */
+    public function getBuilds()
+    {
+        return $this->builds;
     }
 }

@@ -26,11 +26,13 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $projectsDefinitions = array(
             'test'  => array(
                 'repository'    => 'test',
-                'host_provider' => 'local'
+                'host_provider' => 'local',
+                'active'        => true
             ),
             'adele' => array(
                 'repository'    => 'adele',
-                'host_provider' => 'local'
+                'host_provider' => 'local',
+                'active'        => false
             )
         );
 
@@ -40,7 +42,8 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
             $projects[$projectName] = (new Project())
                 ->setName($projectName)
                 ->setRepository($this->getReference('repository.' . $projectParameters['repository']))
-                ->setHostProvider($this->getReference('host_provider.' . $projectParameters['host_provider']));
+                ->setHostProvider($this->getReference('host_provider.' . $projectParameters['host_provider']))
+                ->setActive($projectParameters['active']);
 
             $manager->persist($projects[$projectName]);
 
