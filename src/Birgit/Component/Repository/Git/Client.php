@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Git;
+namespace Birgit\Component\Repository\Git;
 
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 use Psr\Log\LoggerInterface;
 
 /**
- * Git client
+ * Repository git client
  */
 class Client
 {

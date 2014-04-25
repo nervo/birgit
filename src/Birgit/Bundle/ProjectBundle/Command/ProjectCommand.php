@@ -7,8 +7,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Component\Git\Client as GitClient;
 use Birgit\Component\Build\Manager as BuildManager;
+use Birgit\Component\Host\Manager as HostManager;
+use Birgit\Component\Repository\Manager as RepositoryManager;
 
 use Birgit\Entity\Repository;
 use Birgit\Entity\Project;
@@ -43,11 +44,17 @@ EOF
         // Get build manager
         $buildManager = new BuildManager($logger);
 
+        // Get host manager
+        $hostManager = new HostManager($logger);
+
+        // Get repository manager
+        $repositoryManager = new RepositoryManager($logger);
+
         // Get doctrine
         $doctrine = $this->getContainer()
             ->get('doctrine');
 
-        // Get projects        
+        // Get projects
         $projects = $doctrine
             ->getRepository('Birgit:Project')
             ->findAll();
@@ -66,12 +73,11 @@ EOF
 
             $output->writeln(sprintf('On <comment>%s</comment> repository', $repository->getPath()));
 
-            // Create git client
-            $gitClient = new GitClient($logger);
-            $gitClient->setRepository($repository->getPath());
+            // Create repository client
+            $repositoryClient = $repositoryManager->createClient($repository);
 
             // Get git branches
-            $gitBranches = $gitClient->getBranches();
+            $gitBranches = $repositoryClient->getBranches();
 
             foreach ($project->getEnvironments() as $projectEnvironment) {
                 // Don't handle inactive project environments
@@ -82,7 +88,7 @@ EOF
                 $output->writeln(sprintf('For <comment>%s</comment> project environment', $projectEnvironment->getName()));
 
                 foreach ($gitBranches as $gitBranch) {
-                
+
                     $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $gitBranch->getName(), $gitBranch->getHash()));
 
                     // Search project environment repository reference
@@ -94,28 +100,53 @@ EOF
                         }
                     }
 
+                    // Create new project environment repository reference
                     if (!$projectEnvironmentRepositoryReferenceFound) {
                         $output->writeln(' -> Create project environment repository reference');
 
-                        $projectEnvironmentRepositoryReference = new Project\Environment\RepositoryReference();
-                        $projectEnvironmentRepositoryReference->setName($gitBranch->getName());
-                        $projectEnvironmentRepositoryReference->setProjectEnvironment($projectEnvironment);
+                        $projectEnvironmentRepositoryReference = (new Project\Environment\RepositoryReference())
+                            ->setName($gitBranch->getName())
+                            ->setProjectEnvironment($projectEnvironment);
+
+                        // Host
+                        $host = $hostManager->createHost($projectEnvironment->getHostProvider());
+
+                        $projectEnvironmentRepositoryReference
+                            ->setHost($host);
 
                         $doctrine->getManager()
                             ->persist($projectEnvironmentRepositoryReference);
+                    }
 
-                        // Host...
+                    // Search build
+                    $buildFound = false;
+                    foreach ($projectEnvironmentRepositoryReference->getBuilds() as $build) {
+                        if ($build->getHash() == $gitBranch->getHash()) {
+                            $buildFound = true;
+                            break;
+                        }
+                    }
+
+                    // Create build
+                    if (!$buildFound) {
+                        $output->writeln(' -> Create build');
+
+
+                        //$host = $project->getHostProvider()
+                        //    ->createHost($projectReference);
+
+                        //$buildManager->build($projectReference, $gitBranch->getHash(), $host);
                     }
                 }
             }
-            
+
             /*
 
             // Create git client
-            $gitClient = new GitClient($logger);
-            $gitClient->setRepository($repository->getPath());
+            $repOsitoryClient = new GitClient($logger);
+            $repOsitoryClient->setRepository($repository->getPath());
 
-            foreach ($gitClient->getBranches() as $gitBranch) {
+            foreach ($repOsitoryClient->getBranches() as $gitBranch) {
                 
                 $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $gitBranch->getName(), $gitBranch->getHash()));
                     

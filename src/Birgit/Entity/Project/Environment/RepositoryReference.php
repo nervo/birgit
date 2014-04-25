@@ -74,7 +74,8 @@ class RepositoryReference
      *
      * @ORM\ManyToOne(
      *     targetEntity="Birgit\Entity\Host",
-     *     inversedBy="projectEnvironmentRepositoryReferences"
+     *     inversedBy="projectEnvironmentRepositoryReferences",
+     *     cascade={"persist"}
      * )
      * @ORM\JoinColumn(
      *     name="host_id",

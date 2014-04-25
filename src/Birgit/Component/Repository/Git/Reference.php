@@ -1,9 +1,9 @@
 <?php
 
-namespace Birgit\Component\Git;
+namespace Birgit\Component\Repository\Git;
 
 /**
- * Git reference
+ * Repository git reference
  */
 class Reference
 {
