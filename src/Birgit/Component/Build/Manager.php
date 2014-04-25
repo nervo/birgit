@@ -4,7 +4,7 @@ namespace Birgit\Component\Build;
 
 use Psr\Log\LoggerInterface;
 
-use Birgit\Component\Git\Client as GitClient;
+use Birgit\Component\Repository\Manager as RepositoryManager;
 
 use Birgit\Entity\Build;
 use Birgit\Entity\Project;
@@ -16,6 +16,13 @@ use Birgit\Entity\Host;
 class Manager
 {
     /**
+     * Repository manager
+     *
+     * @var repositoryManager
+     */
+    protected $repositoryManager;
+
+    /**
      * Logger
      *
      * @var LoggerInterface
@@ -25,43 +32,64 @@ class Manager
     /**
      * Constructor
      *
-     * @param LoggerInterface $logger
+     * @param RepositoryManager $repositoryManager
+     * @param LoggerInterface   $logger
      */
-	public function __construct(LoggerInterface $logger)
+	public function __construct(repositoryManager $repositoryManager, LoggerInterface $logger)
 	{
+        // Repository manager
+        $this->repositoryManager = $repositoryManager;
+
     	// Logger
     	$this->logger = $logger;
 	}
 
     /**
-     * Build
+     * Create build
      *
-     * @param Project\Reference $projectReference
-     * @param string            $hash
+     * @param PProject\Environment\RepositoryReference $projectEnvironmentRepositoryReference
+     * @param string                                   $revision
      *
      * @return Build
      */
-	public function build(Project\Reference $projectReference, $hash, Host $host)
+    public function createBuild(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference, $revision)
+    {
+        $build = (new Build())
+            ->setProjectEnvironmentRepositoryReference($projectEnvironmentRepositoryReference)
+            ->setRevision($revision);
+
+        return $build;
+    }
+
+
+    /**
+     * Build
+     *
+     * @param Build $build
+     */
+	public function build(Build $build)
 	{
-		// Get project
-		$project = $projectReference->getProject();
+        // Get project environment repository reference
+        $projectEnvironmentRepositoryReference = $build->getProjectEnvironmentRepositoryReference();
+        
+        // Get project environment
+        $projectEnvironment = $projectEnvironmentRepositoryReference->getProjectEnvironment();
 
-		// Create build
-        $build = new Build();
-        $build->setHash($hash);
-        $projectReference->addBuild($build);
+        // Get project
+        $project = $projectEnvironment->getProject();
 
-        // Create git client
-        $gitClient = new GitClient($this->logger);
-        $gitClient->setRepository($project->getRepository()->getPath());
+        // Create repository client
+        $repositoryClient = $this->repositoryManager->createClient($project->getRepository());
 
-        $gitClient->checkout(
-            'data/projects' .
+        $workspace = 'data/workspace' .
             '/' .
             $project->getName() .
             '/' .
-            $projectReference->getName()
-        );
+            $projectEnvironment->getName() .
+            '/' .
+            $projectEnvironmentRepositoryReference->getName();
+
+        $repositoryClient->checkout($workspace);
 
         return $build;
 	}

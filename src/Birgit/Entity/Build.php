@@ -51,17 +51,17 @@ class Build
     private $projectEnvironmentRepositoryReference;
 
     /**
-     * Hash
+     * Revision
      *
      * @var string
      *
      * @ORM\Column(
-     *     name="hash",
+     *     name="revision",
      *     type="string",
      *     length=255
      * )
      */
-    private $hash;
+    private $revision;
 
     /**
      * Get id
@@ -98,26 +98,26 @@ class Build
     }
 
     /**
-     * Set hash
+     * Set revision
      *
-     * @param string $hash
+     * @param string $revision
      *
      * @return Build
      */
-    public function setHash($hash)
+    public function setRevision($revision)
     {
-        $this->hash = $hash;
+        $this->revision = $revision;
 
         return $this;
     }
 
     /**
-     * Get hash
+     * Get revision
      *
      * @return string
      */
-    public function getHash()
+    public function getRevision()
     {
-        return $this->hash;
+        return $this->revision;
     }
 }

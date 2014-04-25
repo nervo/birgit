@@ -15,25 +15,25 @@ class Reference
     protected $name;
 
     /**
-     * Hash
+     * Revision
      *
      * @var string
      */
-    protected $hash;
+    protected $revision;
 
     /**
      * Constructor
      *
      * @param string $name
-     * @param string $hash
+     * @param string $revision
      */
-    public function __construct($name, $hash)
+    public function __construct($name, $revision)
     {
     	// Name
         $this->name = $name;
 
-        // Hash
-        $this->hash = $hash;
+        // Revision
+        $this->revision = $revision;
     }
 
     /**
@@ -47,12 +47,12 @@ class Reference
     }
 
     /**
-     * Get hash
+     * Get revision
      *
      * @return string
      */
-    public function getHash()
+    public function getRevision()
     {
-        return $this->hash;
+        return $this->revision;
     }
 }

@@ -94,9 +94,9 @@ class Client
 
         $branches = array();
         foreach ($lines as $line) {
-            list($hash, $reference) = explode("\t", $line);
+            list($revision, $reference) = explode("\t", $line);
 
-            $branches[] = new Reference(str_replace('refs/heads/', '', $reference), $hash);
+            $branches[] = new Reference(str_replace('refs/heads/', '', $reference), $revision);
         }
 
 

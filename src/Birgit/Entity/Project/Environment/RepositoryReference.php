@@ -14,7 +14,8 @@ use Birgit\Entity\Build;
  * Project environment repository reference
  *
  * @ORM\Table(
- *     name="project_environment_repository_reference"
+ *     name="project_environment_repository_reference",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="project_environment_id_name",columns={"project_environment_id", "name"})}
  * )
  * @ORM\Entity(
  *     repositoryClass="Birgit\Entity\Project\Environment\RepositoryReferenceRepository"

@@ -41,14 +41,14 @@ EOF
         // Get logger
         $logger = $this->getContainer()->get('logger');
 
-        // Get build manager
-        $buildManager = new BuildManager($logger);
-
         // Get host manager
         $hostManager = new HostManager($logger);
 
         // Get repository manager
         $repositoryManager = new RepositoryManager($logger);
+
+        // Get build manager
+        $buildManager = new BuildManager($repositoryManager, $logger);
 
         // Get doctrine
         $doctrine = $this->getContainer()
@@ -76,8 +76,8 @@ EOF
             // Create repository client
             $repositoryClient = $repositoryManager->createClient($repository);
 
-            // Get git branches
-            $gitBranches = $repositoryClient->getBranches();
+            // Get repository client branches
+            $repositoryclientBranches = $repositoryClient->getBranches();
 
             foreach ($project->getEnvironments() as $projectEnvironment) {
                 // Don't handle inactive project environments
@@ -87,14 +87,14 @@ EOF
 
                 $output->writeln(sprintf('For <comment>%s</comment> project environment', $projectEnvironment->getName()));
 
-                foreach ($gitBranches as $gitBranch) {
+                foreach ($repositoryclientBranches as $repositoryClientBranch) {
 
-                    $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $gitBranch->getName(), $gitBranch->getHash()));
+                    $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $repositoryClientBranch->getName(), $repositoryClientBranch->getRevision()));
 
                     // Search project environment repository reference
                     $projectEnvironmentRepositoryReferenceFound = false;
                     foreach ($projectEnvironment->getRepositoryReferences() as $projectEnvironmentRepositoryReference) {
-                        if ($projectEnvironmentRepositoryReference->getName() == $gitBranch->getName()) {
+                        if ($projectEnvironmentRepositoryReference->getName() == $repositoryClientBranch->getName()) {
                             $projectEnvironmentRepositoryReferenceFound = true;
                             break;
                         }
@@ -105,7 +105,7 @@ EOF
                         $output->writeln(' -> Create project environment repository reference');
 
                         $projectEnvironmentRepositoryReference = (new Project\Environment\RepositoryReference())
-                            ->setName($gitBranch->getName())
+                            ->setName($repositoryClientBranch->getName())
                             ->setProjectEnvironment($projectEnvironment);
 
                         // Host
@@ -121,7 +121,7 @@ EOF
                     // Search build
                     $buildFound = false;
                     foreach ($projectEnvironmentRepositoryReference->getBuilds() as $build) {
-                        if ($build->getHash() == $gitBranch->getHash()) {
+                        if ($build->getRevision() == $repositoryClientBranch->getRevision()) {
                             $buildFound = true;
                             break;
                         }
@@ -131,67 +131,18 @@ EOF
                     if (!$buildFound) {
                         $output->writeln(' -> Create build');
 
+                        $build = $buildManager->createBuild($projectEnvironmentRepositoryReference, $repositoryClientBranch->getRevision());
 
-                        //$host = $project->getHostProvider()
-                        //    ->createHost($projectReference);
+                        $doctrine->getManager()
+                            ->persist($build);
 
-                        //$buildManager->build($projectReference, $gitBranch->getHash(), $host);
+                        $output->writeln(' -> Build');
+
+                        // Build
+                        $buildManager->build($build);
                     }
                 }
             }
-
-            /*
-
-            // Create git client
-            $repOsitoryClient = new GitClient($logger);
-            $repOsitoryClient->setRepository($repository->getPath());
-
-            foreach ($repOsitoryClient->getBranches() as $gitBranch) {
-                
-                $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $gitBranch->getName(), $gitBranch->getHash()));
-                    
-                // Search project reference
-                $projectReferenceFound = false;
-                foreach ($project->getReferences() as $projectReference) {
-                    if ($projectReference->getName() == $gitBranch->getName()) {
-                        $projectReferenceFound = true;
-                        break;
-                    }
-                }
-
-                if (!$projectReferenceFound) {
-                    $output->writeln(' -> Create project reference');
-
-                    $projectReference = new Project\Reference();
-                    $projectReference->setName($gitBranch->getName());
-
-                    $project->addReference($projectReference);
-                }
-            
-                // Search build
-                $buildFound = false;
-                foreach ($projectReference->getBuilds() as $build) {
-                    if ($build->getHash() == $gitBranch->getHash()) {
-                        $buildFound = true;
-                        break;
-                    }
-                }
-
-                if (!$buildFound) {
-                    $output->writeln(' -> Create build');
-
-
-                    $host = $project->getHostProvider()
-                        ->createHost($projectReference);
-
-                    $buildManager->build($projectReference, $gitBranch->getHash(), $host);
-                }
-            }
-
-            $doctrine->getManager()
-                ->persist($repository);
-
-            */
         }
 
         $doctrine->getManager()
