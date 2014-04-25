@@ -1,16 +1,13 @@
 <?php
 
-namespace Birgit\Component\Host;
+namespace Birgit\Component\Task;
 
 use Psr\Log\LoggerInterface;
 
-use Birgit\Entity\HostProvider;
-use Birgit\Entity\Host;
-
 /**
- * Host manager
+ * Task manager
  */
-class Manager
+class TaskManager
 {
     /**
      * Logger
@@ -31,16 +28,11 @@ class Manager
 	}
 
     /**
-     * Create host
+     * Execute task
      *
-     * @param HostProvider $hostProvider
-     *
-     * @return Host
+     * @param Task $task
      */
-	public function createHost(HostProvider $hostProvider)
-	{
-		$host = new Host();
-
-		return $host;
-	}
+    public function executeTask(Task $task)
+    {
+    }
 }

@@ -11,7 +11,7 @@ use Birgit\Entity\Repository;
 /**
  * Repository manager
  */
-class Manager
+class RepositoryManager
 {
     /**
      * Logger

@@ -7,9 +7,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Component\Build\Manager as BuildManager;
-use Birgit\Component\Host\Manager as HostManager;
-use Birgit\Component\Repository\Manager as RepositoryManager;
+use Birgit\Component\Build\BuildManager;
+use Birgit\Component\Host\HostManager;
+use Birgit\Component\Repository\RepositoryManager;
+use Birgit\Component\Task\TaskManager;
 
 use Birgit\Entity\Repository;
 use Birgit\Entity\Project;
@@ -47,8 +48,11 @@ EOF
         // Get repository manager
         $repositoryManager = new RepositoryManager($logger);
 
+        // Get task manager
+        $taskManager = new TaskManager($logger);
+
         // Get build manager
-        $buildManager = new BuildManager($repositoryManager, $logger);
+        $buildManager = new BuildManager($repositoryManager, $taskManager, $logger);
 
         // Get doctrine
         $doctrine = $this->getContainer()

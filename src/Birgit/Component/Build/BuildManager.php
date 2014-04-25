@@ -4,8 +4,10 @@ namespace Birgit\Component\Build;
 
 use Psr\Log\LoggerInterface;
 
-use Birgit\Component\Repository\Manager as RepositoryManager;
+use Birgit\Component\Repository\RepositoryManager;
+use Birgit\Component\Task\TaskManager;
 
+use Birgit\Task;
 use Birgit\Entity\Build;
 use Birgit\Entity\Project;
 use Birgit\Entity\Host;
@@ -13,7 +15,7 @@ use Birgit\Entity\Host;
 /**
  * Build manager
  */
-class Manager
+class BuildManager
 {
     /**
      * Repository manager
@@ -21,6 +23,13 @@ class Manager
      * @var repositoryManager
      */
     protected $repositoryManager;
+
+    /**
+     * Task manager
+     *
+     * @var taskManager
+     */
+    protected $taskManager;
 
     /**
      * Logger
@@ -33,12 +42,16 @@ class Manager
      * Constructor
      *
      * @param RepositoryManager $repositoryManager
+     * @param TaskManager       $taskManager
      * @param LoggerInterface   $logger
      */
-	public function __construct(repositoryManager $repositoryManager, LoggerInterface $logger)
+	public function __construct(RepositoryManager $repositoryManager, TaskManager $taskManager, LoggerInterface $logger)
 	{
         // Repository manager
         $this->repositoryManager = $repositoryManager;
+
+        // Task manager
+        $this->taskManager = $taskManager;
 
     	// Logger
     	$this->logger = $logger;
@@ -47,8 +60,8 @@ class Manager
     /**
      * Create build
      *
-     * @param PProject\Environment\RepositoryReference $projectEnvironmentRepositoryReference
-     * @param string                                   $revision
+     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
+     * @param string                                  $revision
      *
      * @return Build
      */
@@ -69,6 +82,13 @@ class Manager
      */
 	public function build(Build $build)
 	{
+        $taskParameters = new Task\GitCheckoutTaskParameters();
+        
+        $task = new Task\GitCheckoutTask($taskParameters);
+        var_dump('yeah');
+        die;
+
+
         // Get project environment repository reference
         $projectEnvironmentRepositoryReference = $build->getProjectEnvironmentRepositoryReference();
         
