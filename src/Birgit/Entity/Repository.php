@@ -47,6 +47,19 @@ class Repository
     private $path;
 
     /**
+     * References
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Repository\Reference",
+     *     mappedBy="repository",
+     *     cascade={"persist"}
+     * )
+     */
+    private $references;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
@@ -62,6 +75,9 @@ class Repository
      */
     public function __construct()
     {
+        // References
+        $this->references = new ArrayCollection();
+
         // Projects
         $this->projects = new ArrayCollection();
     }
@@ -98,6 +114,47 @@ class Repository
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * Add reference
+     *
+     * @param Repository\Reference $reference
+     *
+     * @return Repository
+     */
+    public function addReference(Repository\Reference $reference)
+    {
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+            $reference->setRepository($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove reference
+     *
+     * @param Repository\Reference $reference
+     *
+     * @return Repository
+     */
+    public function removeReference(Repository\Reference $reference)
+    {
+        $this->references->removeElement($reference);
+
+        return $this;
+    }
+
+    /**
+     * Get references
+     *
+     * @return Collection
+     */
+    public function getReferences()
+    {
+        return $this->references;
     }
 
     /**

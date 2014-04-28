@@ -68,6 +68,19 @@ class Environment
     private $project;
 
     /**
+     * Repository reference pattern
+     *
+     * @var string
+     *
+     * @ORM\Column(
+     *     name="repository_reference_pattern",
+     *     type="string",
+     *     length=255
+     * )
+     */
+    private $repositoryReferencePattern;
+
+    /**
      * Repository references
      *
      * @var ArrayCollection
@@ -173,6 +186,30 @@ class Environment
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Set repository reference pattern
+     *
+     * @param string $pattern
+     *
+     * @return Environment
+     */
+    public function setRepositoryReferencePattern($pattern)
+    {
+        $this->repositoryReferencePattern = (string) $pattern;
+
+        return $this;
+    }
+
+    /**
+     * Get repository reference pattern
+     *
+     * @return string
+     */
+    public function getRepositoryReferencePattern()
+    {
+        return $this->repositoryReferencePattern;
     }
 
     /**

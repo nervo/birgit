@@ -11,6 +11,7 @@ use Birgit\Component\Build\BuildManager;
 use Birgit\Component\Host\HostManager;
 use Birgit\Component\Repository\RepositoryManager;
 use Birgit\Component\Task\TaskManager;
+use Birgit\Component\Project\ProjectManager;
 
 use Birgit\Entity\Repository;
 use Birgit\Entity\Project;
@@ -54,9 +55,76 @@ EOF
         // Get build manager
         $buildManager = new BuildManager($repositoryManager, $taskManager, $logger);
 
+        // Get project manager
+        $projectManager = new ProjectManager($logger);
+
         // Get doctrine
         $doctrine = $this->getContainer()
             ->get('doctrine');
+
+        // Get repositories
+        $repositories = $doctrine
+            ->getRepository('Birgit:Repository')
+            ->findAll();
+
+        foreach ($repositories as $repository) {
+
+            $output->writeln(sprintf('Repository <comment>%s</comment>', $repository->getPath()));
+
+            // Get scanned repository references
+            $scannedRepositoryReferences = $repositoryManager->getRepositoryReferences($repository);
+
+            foreach ($repository->getProjects() as $project) {
+
+                $output->writeln(sprintf('Project <comment>%s</comment>', $project->getName()));
+
+                // Don't handle inactive projects
+                if (!$project->isActive()) {
+
+                    $output->writeln(sprintf('Project is not active', $project->getName()));
+
+                    continue;
+                }
+
+                foreach ($project->getEnvironments() as $projectEnvironment) {
+
+                    $output->writeln(sprintf('Environment <comment>%s</comment>', $projectEnvironment->getName()));
+
+                    // Don't handle inactive project environments
+                    if (!$projectEnvironment->isActive()) {
+                        continue;
+                    }
+
+                    foreach ($scannedRepositoryReferences as $scannedRepositoryReferenceName => $scannedRepositoryReferenceHash) {
+                        // Does project environment feels concerned by a scanned repository reference ?
+                        if ($projectManager->projectEnviromnentMatchRepositoryReferenceName($projectEnvironment, $scannedRepositoryReferenceName)) {
+
+                            // Search repository reference
+                            $repositoryReferenceFound = false;
+
+                            foreach ($repository->getReferences() as $repositoryReference) {
+                                if ($repositoryReference->getName() == $scannedRepositoryReferenceName) {
+                                    $repositoryReferenceFound = true;
+                                    break;
+                                }
+                            }
+                            
+                            // Create build
+                            if (!$repositoryReferenceFound) {
+                                $output->writeln(' -> Create repository reference');
+
+                                $repositoryReference = (new Repository\Reference())
+                                    ->setName($scannedRepositoryReferenceName);
+
+                                $repository->addReference($repositoryReference);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        die;
 
         // Get projects
         $projects = $doctrine
@@ -77,11 +145,8 @@ EOF
 
             $output->writeln(sprintf('On <comment>%s</comment> repository', $repository->getPath()));
 
-            // Create repository client
-            $repositoryClient = $repositoryManager->createClient($repository);
-
-            // Get repository client branches
-            $repositoryclientBranches = $repositoryClient->getBranches();
+            // Get repository references
+            $repositoryReferences = $repositoryManager->getRepositoryReferences($repository);
 
             foreach ($project->getEnvironments() as $projectEnvironment) {
                 // Don't handle inactive project environments
@@ -91,14 +156,14 @@ EOF
 
                 $output->writeln(sprintf('For <comment>%s</comment> project environment', $projectEnvironment->getName()));
 
-                foreach ($repositoryclientBranches as $repositoryClientBranch) {
+                foreach ($repositoryReferences as $repositoryReferenceName => $repositoryReferenceHash) {
 
-                    $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $repositoryClientBranch->getName(), $repositoryClientBranch->getRevision()));
+                    $output->writeln(sprintf(' - Branch <comment>%s</comment>@<comment>%s</comment>', $repositoryReferenceName, $repositoryReferenceHash));
 
                     // Search project environment repository reference
                     $projectEnvironmentRepositoryReferenceFound = false;
                     foreach ($projectEnvironment->getRepositoryReferences() as $projectEnvironmentRepositoryReference) {
-                        if ($projectEnvironmentRepositoryReference->getName() == $repositoryClientBranch->getName()) {
+                        if ($projectEnvironmentRepositoryReference->getName() == $repositoryReferenceName) {
                             $projectEnvironmentRepositoryReferenceFound = true;
                             break;
                         }
@@ -109,7 +174,7 @@ EOF
                         $output->writeln(' -> Create project environment repository reference');
 
                         $projectEnvironmentRepositoryReference = (new Project\Environment\RepositoryReference())
-                            ->setName($repositoryClientBranch->getName())
+                            ->setName($repositoryReferenceName)
                             ->setProjectEnvironment($projectEnvironment);
 
                         // Host
@@ -125,7 +190,7 @@ EOF
                     // Search build
                     $buildFound = false;
                     foreach ($projectEnvironmentRepositoryReference->getBuilds() as $build) {
-                        if ($build->getRevision() == $repositoryClientBranch->getRevision()) {
+                        if ($build->getRevision() == $repositoryReferenceHash) {
                             $buildFound = true;
                             break;
                         }
@@ -135,7 +200,7 @@ EOF
                     if (!$buildFound) {
                         $output->writeln(' -> Create build');
 
-                        $build = $buildManager->createBuild($projectEnvironmentRepositoryReference, $repositoryClientBranch->getRevision());
+                        $build = $buildManager->createBuild($projectEnvironmentRepositoryReference, $repositoryReferenceHash);
 
                         $doctrine->getManager()
                             ->persist($build);

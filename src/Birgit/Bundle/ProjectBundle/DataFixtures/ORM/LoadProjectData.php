@@ -28,12 +28,14 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
                 'repository'   => 'test',
                 'environments' => array(
                     'test'    => array(
-                        'host_provider' => 'local',
-                        'active'        => true
+                        'repository_reference_pattern' => '*',
+                        'host_provider'                => 'local',
+                        'active'                       => true
                     ),
                     'quality' => array(
-                        'host_provider' => 'local',
-                        'active'        => true
+                        'repository_reference_pattern' => '*',
+                        'host_provider'                => 'local',
+                        'active'                       => true
                     )
                 ),
                 'active'       => true
@@ -42,16 +44,19 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
                 'repository'   => 'adele',
                 'environments' => array(
                     'test'    => array(
-                        'host_provider' => 'local',
-                        'active'        => true
+                        'repository_reference_pattern' => '*',
+                        'host_provider'                => 'local',
+                        'active'                       => true
                     ),
                     'quality' => array(
-                        'host_provider' => 'local',
-                        'active'        => true
+                        'repository_reference_pattern' => '*',
+                        'host_provider'                => 'local',
+                        'active'                       => true
                     ),
                     'demo'    => array(
-                        'host_provider' => 'local',
-                        'active'        => true
+                        'repository_reference_pattern' => '*',
+                        'host_provider'                => 'local',
+                        'active'                       => true
                     )
                 ),
                 'active'       => false
@@ -70,6 +75,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
             foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
                 $projectEnvironments[$projectEnvironmentName] = (new Project\Environment())
                     ->setName($projectEnvironmentName)
+                    ->setRepositoryReferencePattern($projectEnvironmentParameters['repository_reference_pattern'])
                     ->setHostProvider($this->getReference('host_provider.' . $projectEnvironmentParameters['host_provider']))
                     ->setActive($projectEnvironmentParameters['active']);
 
