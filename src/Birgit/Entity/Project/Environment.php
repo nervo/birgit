@@ -81,19 +81,6 @@ class Environment
     private $repositoryReferencePattern;
 
     /**
-     * Repository references
-     *
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Project\Environment\RepositoryReference",
-     *     mappedBy="projectEnvironment",
-     *     cascade={"persist"}
-     * )
-     */
-    private $repositoryReferences;
-
-    /**
      * Host provider
      *
      * @var HostProvider
@@ -108,7 +95,7 @@ class Environment
      * )
      */
     private $hostProvider;
-
+    
     /**
      * Active
      *
@@ -122,12 +109,25 @@ class Environment
     private $active = true;
 
     /**
+     * Hosts
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Host",
+     *     mappedBy="projectEnvironment",
+     *     cascade={"persist"}
+     * )
+     */
+    private $hosts;
+    
+    /**
      * Constructor
      */
     public function __construct()
     {
-        // Repository references
-        $this->repositoryReferences = new ArrayCollection();
+        // Hosts
+        $this->hosts = new ArrayCollection();
     }
 
     /**
@@ -213,47 +213,6 @@ class Environment
     }
 
     /**
-     * Add repository reference
-     *
-     * @param Project\Environment\RepositoryReference $repositoryReference
-     *
-     * @return Environment
-     */
-    public function addRepositoryReference(Project\Environment\RepositoryReference $repositoryReference)
-    {
-        if (!$this->repositoryReferences->contains($repositoryReference)) {
-            $this->repositoryReferences->add($repositoryReference);
-            $repositoryReference->setEnvironment($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove repository reference
-     *
-     * @param Project\Environment\RepositoryReference $repositoryReference
-     *
-     * @return Environment
-     */
-    public function removeRepositoryReference(Project\Environment\RepositoryReference $repositoryReference)
-    {
-        $this->repositoryReferences->removeElement($repositoryReference);
-
-        return $this;
-    }
-
-    /**
-     * Get repository references
-     *
-     * @return Collection
-     */
-    public function getRepositoryReferences()
-    {
-        return $this->repositoryReferences;
-    }
-
-    /**
      * Set host provider
      *
      * @param HostProvider $hostProvider
@@ -309,5 +268,46 @@ class Environment
     public function isActive()
     {
         return $this->active;
+    }
+    
+    /**
+     * Add host
+     *
+     * @param Host $host
+     *
+     * @return Environment
+     */
+    public function addHost(Host $host)
+    {
+        if (!$this->hosts->contains($host)) {
+            $this->hosts->add($host);
+            $host->setProjectEnvironment($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove host
+     *
+     * @param Host $host
+     *
+     * @return Environment
+     */
+    public function removeHost(Host $host)
+    {
+        $this->hosts->removeElement($host);
+
+        return $this;
+    }
+
+    /**
+     * Get hosts
+     *
+     * @return Collection
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
     }
 }

@@ -70,6 +70,28 @@ class Reference
     private $repository;
 
     /**
+     * Hosts
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Host",
+     *     mappedBy="repositoryReference",
+     *     cascade={"persist"}
+     * )
+     */
+    private $hosts;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        // Hosts
+        $this->hosts = new ArrayCollection();
+    }
+    
+    /**
      * Get id
      *
      * @return int
@@ -125,5 +147,46 @@ class Reference
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    /**
+     * Add host
+     *
+     * @param Host $host
+     *
+     * @return Reference
+     */
+    public function addHost(Host $host)
+    {
+        if (!$this->hosts->contains($host)) {
+            $this->hosts->add($host);
+            $host->setRepositoryReference($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove host
+     *
+     * @param Host $host
+     *
+     * @return Reference
+     */
+    public function removeHost(Host $host)
+    {
+        $this->hosts->removeElement($host);
+
+        return $this;
+    }
+
+    /**
+     * Get hosts
+     *
+     * @return Collection
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
     }
 }

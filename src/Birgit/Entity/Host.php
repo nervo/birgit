@@ -37,27 +37,59 @@ class Host
     private $id;
 
     /**
-     * Project environment repository references
+     * Project environment
+     *
+     * @var Project\Environment
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Birgit\Entity\Project\Environment",
+     *     inversedBy="hosts"
+     * )
+     * @ORM\JoinColumn(
+     *     name="project_environment_id",
+     *     nullable=false
+     * )
+     */
+    private $projectEnvironment;
+
+    /**
+     * Repository reference
+     *
+     * @var Repository\Reference
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Birgit\Entity\Repository\Reference",
+     *     inversedBy="hosts"
+     * )
+     * @ORM\JoinColumn(
+     *     name="repository_reference_id",
+     *     nullable=false
+     * )
+     */
+    private $projectEnvironment;
+    
+    /**
+     * Builds
      *
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Project\Environment\RepositoryReference",
+     *     targetEntity="Birgit\Entity\Build",
      *     mappedBy="host",
      *     cascade={"persist"}
      * )
      */
-    private $projectEnvironmentRepositoryReferences;
+    private $builds;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        // Project environment repository references
-        $this->projectEnvironmentRepositoryReferences = new ArrayCollection();
+        // Builds
+        $this->builds = new ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
@@ -69,43 +101,91 @@ class Host
     }
 
     /**
-     * Add project environment repository reference
+     * Set project environment
      *
-     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
+     * @param Project\Environment $projectEnvironment
      *
      * @return Host
      */
-    public function addProjectEnvironmentRepositoryReference(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference)
+    public function setProjectEnvironment(Project\Environment $projectEnvironment)
     {
-        if (!$this->projectEnvironmentRepositoryReferences->contains($projectEnvironmentRepositoryReference)) {
-            $this->projectEnvironmentRepositoryReferences->add($projectEnvironmentRepositoryReference);
-            $projectEnvironmentRepositoryReference->setHost($this);
+        $this->projectEnvironment = $projectEnvironment;
+
+        return $this;
+    }
+
+    /**
+     * Get project environment
+     *
+     * @return Project\Environment
+     */
+    public function getProjectEnvironment()
+    {
+        return $this->projectEnvironment;
+    }
+    
+    /**
+     * Set repository reference
+     *
+     * @param Repository\Reference $projectEnvironment
+     *
+     * @return Host
+     */
+    public function setRepositoryReference(Repository\Reference $repositoryReference)
+    {
+        $this->repositoryReference = $repositoryReference;
+
+        return $this;
+    }
+
+    /**
+     * Get repository reference
+     *
+     * @return Repository\Reference
+     */
+    public function getRepositoryReference()
+    {
+        return $this->repositoryReference;
+    }
+    
+    /**
+     * Add build
+     *
+     * @param Build $build
+     *
+     * @return Host
+     */
+    public function addBuild(Build $build)
+    {
+        if (!$this->builds->contains($build)) {
+            $this->builds->add($build);
+            $build->setHost($this);
         }
 
         return $this;
     }
 
     /**
-     * Remove project environment repository reference
+     * Remove build
      *
-     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
+     * @param Build $build
      *
      * @return Host
      */
-    public function removeProjectEnvironmentRepositoryReference(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference)
+    public function removeBuild(Build $build)
     {
-        $this->projectEnvironmentRepositoryReferences->removeElement($projectEnvironmentRepositoryReference);
+        $this->builds->removeElement($build);
 
         return $this;
     }
 
     /**
-     * Get project environment repository references
+     * Get builds
      *
      * @return Collection
      */
-    public function getProjectEnvironmentRepositoryReferences()
+    public function getBuilds()
     {
-        return $this->projectEnvironmentRepositoryReferences;
+        return $this->builds;
     }
 }

@@ -17,5 +17,9 @@
 # Composer
 /composer.phar
 
+# Netbeans
+/nbproject/
+
 # Birgit
 /data/
+/nbproject/private/
