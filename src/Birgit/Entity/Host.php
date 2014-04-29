@@ -27,7 +27,6 @@ class Host
      *
      * @ORM\Id
      * @ORM\Column(
-     *     name="id",
      *     type="integer"
      * )
      * @ORM\GeneratedValue(
@@ -46,7 +45,6 @@ class Host
      *     inversedBy="hosts"
      * )
      * @ORM\JoinColumn(
-     *     name="project_environment_id",
      *     nullable=false
      * )
      */
@@ -62,7 +60,6 @@ class Host
      *     inversedBy="hosts"
      * )
      * @ORM\JoinColumn(
-     *     name="repository_reference_id",
      *     nullable=false
      * )
      */

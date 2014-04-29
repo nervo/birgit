@@ -25,7 +25,6 @@ class Build
      *
      * @ORM\Id
      * @ORM\Column(
-     *     name="id",
      *     type="integer"
      * )
      * @ORM\GeneratedValue(
@@ -44,7 +43,6 @@ class Build
      *     inversedBy="builds"
      * )
      * @ORM\JoinColumn(
-     *     name="host_id",
      *     nullable=false
      * )
      */
@@ -56,7 +54,6 @@ class Build
      * @var string
      *
      * @ORM\Column(
-     *     name="revision",
      *     type="string",
      *     length=255
      * )

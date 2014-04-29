@@ -31,7 +31,6 @@ class Reference
      *
      * @ORM\Id
      * @ORM\Column(
-     *     name="id",
      *     type="integer"
      * )
      * @ORM\GeneratedValue(
@@ -46,7 +45,6 @@ class Reference
      * @var string
      *
      * @ORM\Column(
-     *     name="name",
      *     type="string",
      *     length=255
      * )
@@ -63,7 +61,6 @@ class Reference
      *     inversedBy="references"
      * )
      * @ORM\JoinColumn(
-     *     name="repository_id",
      *     nullable=false
      * )
      */

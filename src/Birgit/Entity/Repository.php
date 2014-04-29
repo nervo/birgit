@@ -25,7 +25,6 @@ class Repository
      *
      * @ORM\Id
      * @ORM\Column(
-     *     name="id",
      *     type="integer"
      * )
      * @ORM\GeneratedValue(
@@ -40,7 +39,6 @@ class Repository
      * @var string
      *
      * @ORM\Column(
-     *     name="path",
      *     type="string", length=255
      * )
      */

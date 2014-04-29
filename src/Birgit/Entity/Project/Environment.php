@@ -29,7 +29,6 @@ class Environment
      *
      * @ORM\Id
      * @ORM\Column(
-     *     name="id",
      *     type="integer"
      * )
      * @ORM\GeneratedValue(
@@ -44,7 +43,6 @@ class Environment
      * @var string
      *
      * @ORM\Column(
-     *     name="name",
      *     type="string",
      *     length=255
      * )
@@ -61,7 +59,6 @@ class Environment
      *     inversedBy="environments"
      * )
      * @ORM\JoinColumn(
-     *     name="project_id",
      *     nullable=false
      * )
      */
@@ -73,7 +70,6 @@ class Environment
      * @var string
      *
      * @ORM\Column(
-     *     name="repository_reference_pattern",
      *     type="string",
      *     length=255
      * )
@@ -90,7 +86,6 @@ class Environment
      *     inversedBy="projects"
      * )
      * @ORM\JoinColumn(
-     *     name="host_provider_id",
      *     nullable=false
      * )
      */
@@ -102,7 +97,6 @@ class Environment
      * @var bool
      *
      * @ORM\Column(
-     *     name="active",
      *     type="boolean"
      * )
      */

@@ -25,7 +25,6 @@ class Project
      *
      * @ORM\Id
      * @ORM\Column(
-     *     name="id",
      *     type="integer"
      * )
      * @ORM\GeneratedValue(
@@ -40,7 +39,6 @@ class Project
      * @var string
      *
      * @ORM\Column(
-     *     name="name",
      *     type="string",
      *     length=255,
      *     unique=true
@@ -58,7 +56,6 @@ class Project
      *     inversedBy="projects"
      * )
      * @ORM\JoinColumn(
-     *     name="repository_id",
      *     nullable=false
      * )
      */
@@ -83,7 +80,6 @@ class Project
      * @var bool
      *
      * @ORM\Column(
-     *     name="active",
      *     type="boolean"
      * )
      */
