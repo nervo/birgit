@@ -15,6 +15,7 @@ use Birgit\Component\Project\ProjectManager;
 
 use Birgit\Entity\Repository;
 use Birgit\Entity\Project;
+use Birgit\Entity\Host;
 
 class ProjectCommand extends ContainerAwareCommand
 {
@@ -103,13 +104,13 @@ EOF
                             $repositoryReferenceFound = false;
 
                             foreach ($repository->getReferences() as $repositoryReference) {
-                                if ($repositoryReference->getName() == $scannedRepositoryReferenceName) {
+                                if ($repositoryReference->getName() === $scannedRepositoryReferenceName) {
                                     $repositoryReferenceFound = true;
                                     break;
                                 }
                             }
                             
-                            // Create build
+                            // Create repository reference
                             if (!$repositoryReferenceFound) {
                                 $output->writeln(' -> Create repository reference');
 
@@ -117,6 +118,36 @@ EOF
                                     ->setName($scannedRepositoryReferenceName);
 
                                 $repository->addReference($repositoryReference);
+
+                                $doctrine->getManager()
+                                    ->persist($repositoryReference);
+                                $doctrine->getManager()
+                                    ->flush();
+                            }
+
+                            // Search host
+                            $hostFound = false;
+
+                            foreach ($projectEnvironment->getHosts() as $host) {
+                                if ($host->getRepositoryReference() === $repositoryReference) {
+                                    $hostFound = true;
+                                    break;
+                                }
+                            }
+
+                            // Create host
+                            if (!$hostFound) {
+                                $output->writeln(' -> Create host');
+
+                                $host = new Host();
+
+                                $projectEnvironment->addHost($host);
+                                $repositoryReference->addHost($host);
+
+                                $doctrine->getManager()
+                                    ->persist($host);
+                                $doctrine->getManager()
+                                    ->flush();
                             }
                         }
                     }

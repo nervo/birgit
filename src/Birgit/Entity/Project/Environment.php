@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Entity\Project;
+use Birgit\Entity\Host;
 use Birgit\Entity\HostProvider;
 
 /**
