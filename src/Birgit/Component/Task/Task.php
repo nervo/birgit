@@ -2,7 +2,7 @@
 
 namespace Birgit\Component\Task;
 
-use Birgit\Component\Task\TaskManager;
+use Birgit\Component\Task\TaskContext;
 use Birgit\Component\Command\Command;
 
 use Birgit\Entity\Build;
@@ -15,8 +15,7 @@ abstract class Task
     /**
      * Execute
      *
-     * @param TaskManager $taskManager
-     * @param Build       $build
+     * @param TaskContext $context
      */
-	abstract public function execute(TaskManager $taskManager, Build $build);
+	abstract public function execute(TaskContext $context);
 }

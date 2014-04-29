@@ -3,7 +3,7 @@
 namespace Birgit\Task;
 
 use Birgit\Component\Task\Task;
-use Birgit\Component\Task\TaskManager;
+use Birgit\Component\Task\TaskContext;
 use Birgit\Component\Command\Command;
 
 use Birgit\Entity\Build;
@@ -16,15 +16,12 @@ class PHPUnitTask extends Task
     /**
      * {@inheritdoc}
      */
-	public function execute(TaskManager $taskManager, Build $build)
+	public function execute(TaskContext $context)
 	{
-		// Get host
-		$host = $build->getHost();
-
-		// Clone command
+		// Command
 		$command = (new Command())
 			->setCommand('phpunit');
 
-		$taskManager->runHostCommand($host, $command);
+		$context->runCommand($command);
 	}
 }

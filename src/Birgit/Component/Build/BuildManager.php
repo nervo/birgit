@@ -100,11 +100,17 @@ class BuildManager
 	public function build(Build $build)
 	{
         // Git checkout task
-        $task = new Task\GitCheckoutTask();
-        $task->execute($this->taskManager, $build);
+        $this->taskManager
+            ->executeBuildTask(
+                $build,
+                new Task\GitCheckoutTask()
+            );
 
         // PHPUnit task
-        $task = new Task\PHPUnitTask();
-        $task->execute($this->taskManager, $build);
+        $this->taskManager
+            ->executeBuildTask(
+                $build,
+                new Task\PHPUnitTask()
+            );
 	}
 }

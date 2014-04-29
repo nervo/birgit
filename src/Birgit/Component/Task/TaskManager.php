@@ -4,12 +4,10 @@ namespace Birgit\Component\Task;
 
 use Psr\Log\LoggerInterface;
 
-use Symfony\Component\Process\ProcessBuilder;
-use Symfony\Component\Process\Process;
-
 use Birgit\Component\Command\Command;
 
 use Birgit\Entity\Host;
+use Birgit\Entity\Build;
 
 /**
  * Task manager
@@ -46,34 +44,16 @@ class TaskManager
 	}
 
     /**
-     * Run host command
+     * Execute build task
      *
-     * @param Host    $host
-     * @param Command $command
+     * @param Build $build
+     * @param Task  $task
      *
      * @return string
      */
-    public function runHostCommand(Host $host, Command $command)
+    public function executeBuildTask(Build $build, Task $task)
     {
-        $builder = new ProcessBuilder();
-        $process = $builder
-            ->setWorkingDirectory($this->rootDir . '/' . $host->getWorkspace())
-            ->setPrefix($command->getCommand())
-            ->setArguments($command->getArguments())
-            ->getProcess();
-
-        // Log command input
-        $this->logger->notice($process->getCommandLine());
-
-        $process->run();
-
-        $lines = explode("\n", rtrim($process->getOutput()));
-
-        // Log command output
-        foreach ($lines as $line) {
-            $this->logger->info($line);
-        }
-
-        return $process->getOutput();
+        $taskContext = new TaskContext($build, $this->rootDir, $this->logger);
+        $task->execute($taskContext);
     }
 }

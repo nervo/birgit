@@ -3,7 +3,7 @@
 namespace Birgit\Task;
 
 use Birgit\Component\Task\Task;
-use Birgit\Component\Task\TaskManager;
+use Birgit\Component\Task\TaskContext;
 use Birgit\Component\Command\Command;
 
 use Birgit\Entity\Build;
@@ -16,36 +16,53 @@ class GitCheckoutTask extends Task
     /**
      * {@inheritdoc}
      */
-	public function execute(TaskManager $taskManager, Build $build)
+	public function execute(TaskContext $context)
 	{
-		// Get host
-		$host = $build->getHost();
+		$repositoryPath = $context
+			->getBuild()
+			->getRepositoryReferenceRevision()
+			->getReference()
+			->getRepository()
+			->getPath();
 
-		// Clone command
+		// Ensure workspace is a clone of repository
 		$command = (new Command())
 			->setCommand('git')
-			->addArgument('clone')
-			->addArgument(
-				$build
-					->getRepositoryReferenceRevision()
-					->getReference()
-					->getRepository()
-					->getPath()
-			)
-			->addArgument('.');
+			->addArgument('config')
+			->addArgument('--get')
+			->addArgument('remote.origin.url');
 
-		$taskManager->runHostCommand($host, $command);
+		$worskpaceRepositoryPath = trim($context->runCommand($command));
 
-		// Checkout command
-		$command = (new Command())
-			->setCommand('git')
-			->addArgument('checkout')
-			->addArgument(
-				$build
-					->getRepositoryReferenceRevision()
-					->getHash()
-			);
+		if ($worskpaceRepositoryPath !== $repositoryPath) {
+			// Clone command
+			$command = (new Command())
+				->setCommand('git')
+				->addArgument('clone')
+				->addArgument($repositoryPath)
+				->addArgument('.');
 
-		$taskManager->runHostCommand($host, $command);
+			$context->runCommand($command);
+		} else {
+			// Fetch command
+			$command = (new Command())
+				->setCommand('git')
+				->addArgument('fetch');
+
+			$context->runCommand($command);
+
+			// Checkout command
+			$command = (new Command())
+				->setCommand('git')
+				->addArgument('checkout')
+				->addArgument(
+					$context
+						->getBuild()
+						->getRepositoryReferenceRevision()
+						->getHash()
+				);
+
+			$context->runCommand($command);
+		}
 	}
 }
