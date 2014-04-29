@@ -66,7 +66,7 @@ class Host
      *     nullable=false
      * )
      */
-    private $projectEnvironment;
+    private $repositoryReference;
     
     /**
      * Builds

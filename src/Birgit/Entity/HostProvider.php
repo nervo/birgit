@@ -48,26 +48,17 @@ class HostProvider
     private $path;
 
     /**
+     * Project environments
+     *
      * @var ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Host",
+     *     targetEntity="Birgit\Entity\Project\Environment",
      *     mappedBy="hostProvider",
      *     cascade={"persist"}
      * )
      */
-    private $hosts;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Birgit\Entity\Project",
-     *     mappedBy="hostProvider",
-     *     cascade={"persist"}
-     * )
-     */
-    private $projects;
+    private $projectEnvironments;
 
     /**
      * Constructor
@@ -113,84 +104,43 @@ class HostProvider
     }
 
     /**
-     * Add host
+     * Add project environment
      *
-     * @param Host $host
+     * @param Project\Environment $projectEnvironment
      *
      * @return HostProvider
      */
-    public function addHost(Host $host)
+    public function addProjectEnvironment(Project\Environment $projectEnvironment)
     {
-        if (!$this->hosts->contains($host)) {
-            $this->hosts->add($host);
-            $host->setHostProvider($this);
+        if (!$this->projectEnvironments->contains($projectEnvironment)) {
+            $this->projectEnvironments->add($projectEnvironment);
+            $projectEnvironment->setHostProvider($this);
         }
 
         return $this;
     }
 
     /**
-     * Remove host
+     * Remove project environment
      *
-     * @param Host $host
+     * @param Project\Environment $projectEnvironment
      *
      * @return HostProvider
      */
-    public function removeHost(Host $host)
+    public function removeProjectEnvironment(Project\Environment $projectEnvironment)
     {
-        $this->hosts->removeElement($host);
+        $this->projectEnvironments->removeElement($projectEnvironment);
 
         return $this;
     }
 
     /**
-     * Get hosts
+     * Get project environments
      *
      * @return Collection
      */
-    public function getHosts()
+    public function getProjectEnvironments()
     {
-        return $this->hosts;
-    }
-
-    /**
-     * Add project
-     *
-     * @param Project $project
-     *
-     * @return HostProvider
-     */
-    public function addProject(Project $project)
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
-            $project->setHostProvider($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove project
-     *
-     * @param Project $project
-     *
-     * @return HostProvider
-     */
-    public function removeProject(Project $project)
-    {
-        $this->projects->removeElement($project);
-
-        return $this;
-    }
-
-    /**
-     * Get projects
-     *
-     * @return Collection
-     */
-    public function getProjects()
-    {
-        return $this->projects;
+        return $this->projectEnvironments;
     }
 }

@@ -16,7 +16,7 @@ use Birgit\Entity\Repository;
  *
  * @ORM\Table(
  *     name="repository_reference",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="repository_id_type_name",columns={"repository_id", "type", "name"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="repository_id_name",columns={"repository_id", "name"})}
  * )
  * @ORM\Entity(
  *     repositoryClass="Birgit\Entity\Repository\ReferenceRepository"

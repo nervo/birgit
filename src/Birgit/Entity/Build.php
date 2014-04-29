@@ -35,20 +35,20 @@ class Build
     private $id;
 
     /**
-     * Project environment repository reference
+     * Host
      *
-     * @var Project\Environment\RepositoryReference
+     * @var Host
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Birgit\Entity\Project\Environment\RepositoryReference",
+     *     targetEntity="Birgit\Entity\Host",
      *     inversedBy="builds"
      * )
      * @ORM\JoinColumn(
-     *     name="project_environment_repository_reference_id",
+     *     name="host_id",
      *     nullable=false
      * )
      */
-    private $projectEnvironmentRepositoryReference;
+    private $host;
 
     /**
      * Revision
@@ -74,27 +74,27 @@ class Build
     }
 
     /**
-     * Set project environment repository reference
+     * Set host
      *
-     * @param Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference
+     * @param Host $host
      *
      * @return Build
      */
-    public function setProjectEnvironmentRepositoryReference(Project\Environment\RepositoryReference $projectEnvironmentRepositoryReference)
+    public function setHost(Host $host)
     {
-        $this->projectEnvironmentRepositoryReference = $projectEnvironmentRepositoryReference;
+        $this->host = $host;
 
         return $this;
     }
 
     /**
-     * Get project environment repository reference
+     * Get host
      *
-     * @return Project\Environment\RepositoryReference
+     * @return Host
      */
-    public function getProjectEnvironmentRepositoryReference()
+    public function getHost()
     {
-        return $this->projectEnvironmentRepositoryReference;
+        return $this->host;
     }
 
     /**
