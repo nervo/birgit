@@ -67,6 +67,19 @@ class Reference
     private $repository;
 
     /**
+     * Revisions
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Birgit\Entity\Repository\Reference\Revision",
+     *     mappedBy="reference",
+     *     cascade={"persist"}
+     * )
+     */
+    private $revisions;
+
+    /**
      * Hosts
      *
      * @var ArrayCollection
@@ -84,6 +97,9 @@ class Reference
      */
     public function __construct()
     {
+        // Revisions
+        $this->revisions = new ArrayCollection();
+
         // Hosts
         $this->hosts = new ArrayCollection();
     }
@@ -144,6 +160,47 @@ class Reference
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    /**
+     * Add revision
+     *
+     * @param Reference\Revision $revision
+     *
+     * @return Reference
+     */
+    public function addRevision(Reference\Revision $revision)
+    {
+        if (!$this->revisions->contains($revision)) {
+            $this->revisions->add($revision);
+            $revision->setReference($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove revision
+     *
+     * @param Reference\Revision $revision
+     *
+     * @return Reference
+     */
+    public function removeRevision(Reference\Revision $revision)
+    {
+        $this->revisions->removeElement($revision);
+
+        return $this;
+    }
+
+    /**
+     * Get revisions
+     *
+     * @return Collection
+     */
+    public function getRevisions()
+    {
+        return $this->revisions;
     }
 
     /**

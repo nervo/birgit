@@ -49,16 +49,19 @@ class Build
     private $host;
 
     /**
-     * Revision
+     * Repository reference revision
      *
-     * @var string
+     * @var Repository\Reference\Revision
      *
-     * @ORM\Column(
-     *     type="string",
-     *     length=255
+     * @ORM\ManyToOne(
+     *     targetEntity="Birgit\Entity\Repository\Reference\Revision",
+     *     inversedBy="builds"
+     * )
+     * @ORM\JoinColumn(
+     *     nullable=false
      * )
      */
-    private $revision;
+    private $repositoryReferenceRevision;
 
     /**
      * Get id
@@ -95,26 +98,26 @@ class Build
     }
 
     /**
-     * Set revision
+     * Set repository reference revision
      *
-     * @param string $revision
+     * @param Repository\Reference\Revision $repositoryReferenceRevision
      *
      * @return Build
      */
-    public function setRevision($revision)
+    public function setRepositoryReferenceRevision(Repository\Reference\Revision $repositoryReferenceRevision)
     {
-        $this->revision = $revision;
+        $this->repositoryReferenceRevision = $repositoryReferenceRevision;
 
         return $this;
     }
 
     /**
-     * Get revision
+     * Get repository reference revision
      *
-     * @return string
+     * @return Repository\Reference\Revision
      */
-    public function getRevision()
+    public function getRepositoryReferenceRevision()
     {
-        return $this->revision;
+        return $this->repositoryReferenceRevision;
     }
 }

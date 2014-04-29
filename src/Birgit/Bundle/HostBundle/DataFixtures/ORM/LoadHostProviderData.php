@@ -25,7 +25,7 @@ class LoadHostProviderData extends AbstractFixture implements OrderedFixtureInte
     {
         $hostProvidersDefinitions = array(
             'local' => array(
-                'path' => 'data/projects'
+                'path' => 'data/workspace'
             )
         );
 

@@ -33,21 +33,6 @@ class RepositoryManager
 	}
 
     /**
-     * Create client
-     *
-     * @param Repository $repository
-     *
-     * @return Git\Client
-     */
-	public function createclient(Repository $repository)
-	{
-		$client = (new Git\Client())
-			->setRepository($repository->getPath());
-
-		return $client;
-	}
-
-    /**
      * Get repository references
      *
      * @param Repository $repository

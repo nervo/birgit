@@ -4,19 +4,36 @@ namespace Birgit\Component\Host;
 
 use Psr\Log\LoggerInterface;
 
-use Symfony\Component\Process\ProcessBuilder;
-use Symfony\Component\Process\Process;
+use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Component\Filesystem\Filesystem;
 
 use Birgit\Component\Command\Command;
 
 use Birgit\Entity\HostProvider;
 use Birgit\Entity\Host;
+use Birgit\Entity\Project;
+use Birgit\Entity\Repository;
 
 /**
  * Host manager
  */
 class HostManager
 {
+    /**
+     * Object manager
+     *
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * Root dir
+     *
+     * @var string
+     */
+    protected $rootDir;
+
     /**
      * Logger
      *
@@ -27,10 +44,18 @@ class HostManager
     /**
      * Constructor
      *
+     * @param ObjectManager   $objectManager
+     * @param string          $rootDir
      * @param LoggerInterface $logger
      */
-	public function __construct(LoggerInterface $logger)
+	public function __construct(ObjectManager $objectManager, $rootDir, LoggerInterface $logger)
 	{
+        // Object manager
+        $this->objectManager = $objectManager;
+
+        // Root dir
+        $this->rootDir = $rootDir;
+
     	// Logger
     	$this->logger = $logger;
 	}
@@ -38,31 +63,27 @@ class HostManager
     /**
      * Create host
      *
-     * @param HostProvider $hostProvider
+     * @param Project\Environment  $projectEnvironment
+     * @param Repository\Reference $repositoryReference
      *
      * @return Host
      */
-	public function createHost(HostProvider $hostProvider)
+	public function createHost(Project\Environment $projectEnvironment, Repository\Reference $repositoryReference)
 	{
-		$host = new Host();
+        $host = new Host();
+
+        $projectEnvironment->addHost($host);
+        $repositoryReference->addHost($host);
+
+        $this->objectManager->persist($host);
+        $this->objectManager->flush();
+
+        // Create workspace
+        $fileSystem = new Filesystem();
+        $fileSystem->mkdir(
+            $this->rootDir . '/' . $host->getWorkspace()
+        );
 
 		return $host;
 	}
-
-    /**
-     * Run host command
-     *
-     * @param Host    $host
-     * @param Command $command
-     *
-     * @return Host
-     */
-    public function runHostCommand(Host $host, Command $command)
-    {
-        $builder = new ProcessBuilder();
-        $process = $builder
-            ->setPrefix($this->executable)
-            ->setArguments($command->getArguments())
-            ->getProcess();
-    }
 }

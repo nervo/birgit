@@ -185,4 +185,21 @@ class Host
     {
         return $this->builds;
     }
+
+    /**
+     * Get workspace
+     *
+     * @return Collection
+     */
+    public function getWorkspace()
+    {
+        return
+            $this->getProjectEnvironment()->getHostProvider()->getPath() .
+            '/' .
+            $this->getProjectEnvironment()->getProject()->getName() .
+            '/' .
+            $this->getProjectEnvironment()->getName() .
+            '/' .
+            $this->getRepositoryReference()->getName();
+    }
 }

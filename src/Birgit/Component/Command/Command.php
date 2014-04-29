@@ -36,6 +36,16 @@ class Command
     }
 
     /**
+     * Get command
+     *
+     * @return string
+     */
+    public function getCommand()
+    {
+        return $this->command;
+    }
+
+    /**
      * Add argument
      *
      * @param string $argument
