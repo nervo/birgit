@@ -4,17 +4,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
-        <parameter key="birgit_core.example.class">Birgit\Bundle\CoreBundle\Example</parameter>
+        <parameter key="birgit.host_provider_manager.class">Birgit\Component\Host\Provider\HostProviderManager</parameter>
+        <parameter key="birgit.host_provider.local.class">Birgit\Component\Host\Provider\LocalHostProvider</parameter>
     </parameters>
 
     <services>
-        <service id="birgit_core.example" class="%birgit_core.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="birgit.host_provider_manager" class="%birgit.host_provider_manager.class%" />
+        <service id="birgit.host_provider.local" class="%birgit.host_provider.local.class%">
+            <argument>%kernel.root_dir%</argument>
+            <tag name="birgit.host_provider" type="local" />
         </service>
     </services>
-    -->
+
 </container>

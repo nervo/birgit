@@ -25,7 +25,8 @@ class LoadHostProviderData extends AbstractFixture implements OrderedFixtureInte
     {
         $hostProvidersDefinitions = array(
             'local' => array(
-                'path' => 'data/workspace'
+                'type'       => 'local',
+                'parameters' => array('workspace' => 'workspace')
             )
         );
 
@@ -33,7 +34,8 @@ class LoadHostProviderData extends AbstractFixture implements OrderedFixtureInte
 
         foreach ($hostProvidersDefinitions as $hostProviderName => $hostProviderParameters) {
             $hostProviders[$hostProviderName] = (new HostProvider())
-                ->setPath($hostProviderParameters['path']);
+                ->setType($hostProviderParameters['type'])
+                ->setParameters($hostProviderParameters['parameters']);
 
             $manager->persist($hostProviders[$hostProviderName]);
 

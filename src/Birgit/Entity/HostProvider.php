@@ -34,7 +34,7 @@ class HostProvider
     private $id;
 
     /**
-     * Path
+     * Type
      *
      * @var string
      *
@@ -43,7 +43,18 @@ class HostProvider
      *     length=255
      * )
      */
-    private $path;
+    private $type;
+
+    /**
+     * Parameters
+     *
+     * @var array
+     *
+     * @ORM\Column(
+     *     type="json_array"
+     * )
+     */
+    private $parameters;
 
     /**
      * Project environments
@@ -78,27 +89,51 @@ class HostProvider
     }
 
     /**
-     * Set path
+     * Set type
      *
-     * @param string $path
+     * @param string $type
      *
-     * @return Project
+     * @return HostProvider
      */
-    public function setPath($path)
+    public function setType($type)
     {
-        $this->path = $path;
+        $this->type = (string) $type;
 
         return $this;
     }
 
     /**
-     * Get path
+     * Get type
      *
      * @return string
      */
-    public function getPath()
+    public function getType()
     {
-        return $this->path;
+        return $this->type;
+    }
+
+    /**
+     * Set parameters
+     *
+     * @param array $parameters
+     *
+     * @return HostProvider
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 
     /**
