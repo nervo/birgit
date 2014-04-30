@@ -18,9 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             // Birgit
-            new Birgit\Bundle\ProjectBundle\BirgitProjectBundle(),
-            new Birgit\Bundle\RepositoryBundle\BirgitRepositoryBundle(),
-            new Birgit\Bundle\HostBundle\BirgitHostBundle(),
+            new Birgit\Bundle\CoreBundle\BirgitCoreBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
