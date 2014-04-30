@@ -29,4 +29,14 @@ abstract class HostProviderParameters implements HostProviderParametersInterface
 	{
 		return array_key_exists((string) $parameter, $this->parameters);
 	}
+
+	public function merge(array $parameters)
+	{
+		$this->parameters = array_merge(
+			$this->parameters,
+			$parameters
+		);
+
+		return $this;
+	}
 }

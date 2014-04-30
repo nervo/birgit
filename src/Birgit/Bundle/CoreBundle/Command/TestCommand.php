@@ -42,6 +42,10 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Get host provider manager
+        $hostProviderManager = $this->getContainer()
+            ->get('birgit.host_provider_manager');
+
         // Get doctrine
         $doctrine = $this->getContainer()
             ->get('doctrine');
@@ -158,10 +162,17 @@ EOF
                             if (!$hostFound) {
                                 $output->writeln(' -> Create host');
 
+                                $host = $hostProviderManager->createHost(
+                                    $projectEnvironment,
+                                    $repositoryReference
+                                );
+
+                                /*
                                 $host = $hostManager->createHost(
                                     $projectEnvironment,
                                     $repositoryReference
                                 );
+                                */
                             }
 
                             // Find or create repository reference revision

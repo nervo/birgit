@@ -25,7 +25,7 @@ class HostProviderCompilerPass implements CompilerPassInterface
 		foreach ($typeServices as $typeServiceId => $typeServiceTagAttributes) {
             foreach ($typeServiceTagAttributes as $typeServiceAttributes) {
                 $managerDefinition->addMethodCall(
-                    'addHostProviderType',
+                    'addHostProvider',
                     array($typeServiceAttributes['type'], new Reference($typeServiceId))
                 );
             }

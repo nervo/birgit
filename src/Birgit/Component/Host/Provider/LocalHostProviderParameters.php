@@ -7,13 +7,17 @@ namespace Birgit\Component\Host\Provider;
  */
 class LocalHostProviderParameters extends HostProviderParameters
 {
+	protected $parameters = array(
+		'workspace' => 'workspace'
+	);
+
 	public function getWorkspace()
 	{
-		return $this->get('workspace', 'workspace');
+		return $this->get('workspace');
 	}
 
 	public function setWorkspace($workspace)
 	{
-		return $this->set('workspace', $workspace);
+		return $this->set('workspace', (string) $workspace);
 	}
 }
