@@ -11,8 +11,9 @@
 
         <!-- Repository -->
         <parameter key="birgit.repository_manager.class">Birgit\Component\Repository\RepositoryManager</parameter>
-        <parameter key="birgit.task.repository_reference_check.class">Birgit\Component\Repository\Reference\Task\RepositoryReferenceCheckTask</parameter>
         <parameter key="birgit.repository.git.class">Birgit\Component\Repository\GitRepository</parameter>
+        <parameter key="birgit.task.repository_reference_check.class">Birgit\Component\Repository\Reference\Task\RepositoryReferenceCheckTask</parameter>
+        <parameter key="birgit.task.repository_reference_create.class">Birgit\Component\Repository\Reference\Task\RepositoryReferenceCreateTask</parameter>
 
         <!-- Host provider -->
         <parameter key="birgit.host_provider_manager.class">Birgit\Component\Host\Provider\HostProviderManager</parameter>
@@ -26,15 +27,23 @@
         <service id="birgit.task_manager" class="%birgit.task_manager.class%" />
 
         <!-- Repository -->
-        <service id="birgit.repository_manager" class="%birgit.repository_manager.class%" />
+        <service id="birgit.repository_manager" class="%birgit.repository_manager.class%">
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+        <service id="birgit.repository.git" class="%birgit.repository.git.class%">
+            <tag name="birgit.repository" type="git" />
+        </service>
         <service id="birgit.task.repository_reference_check" class="%birgit.task.repository_reference_check.class%">
             <argument type="service" id="birgit.repository_manager" />
             <argument type="service" id="doctrine" />
             <argument type="service" id="event_dispatcher" />
             <tag name="birgit.task" type="repository_reference_check" />
         </service>
-        <service id="birgit.repository.git" class="%birgit.repository.git.class%">
-            <tag name="birgit.repository" type="git" />
+        <service id="birgit.task.repository_reference_create" class="%birgit.task.repository_reference_create.class%">
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="birgit.task" type="repository_reference_create" />
         </service>
 
         <!-- Host provider -->

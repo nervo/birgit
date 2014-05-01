@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Birgit\Component\Task\Task;
 use Birgit\Component\Task\TaskContext;
+use Birgit\Component\Task\TaskParameters;
 use Birgit\Component\Repository\RepositoryManager;
 use Birgit\Component\Repository\RepositoryContext;
 use Birgit\Component\Repository\Reference\RepositoryReferenceEvents;
@@ -34,10 +35,10 @@ class RepositoryReferenceCheckTask extends Task
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function execute(TaskContext $context)
+    public function execute(TaskContext $context, TaskParameters $parameters = null)
     {
         // Log
-        $context->getLogger()->notice('Task: Repository Check');
+        $context->getLogger()->notice('Task: Repository Reference Check');
 
         // Get repository entities
         $repositoryEntities = $this->doctrineManagerRegistry

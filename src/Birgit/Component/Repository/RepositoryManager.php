@@ -2,6 +2,10 @@
 
 namespace Birgit\Component\Repository;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+use Birgit\Component\Task\TaskManager;
+
 //use Psr\Log\LoggerInterface;
 
 //use Symfony\Component\Process\ExecutableFinder;
@@ -12,7 +16,7 @@ namespace Birgit\Component\Repository;
 /**
  * Repository manager
  */
-class RepositoryManager
+class RepositoryManager implements EventSubscriberInterface
 {
     /**
      * Repository types
@@ -20,6 +24,13 @@ class RepositoryManager
      * @var array
      */
     protected $repositoryTypes = array();
+
+    protected $taskManager;
+
+    public function __construct(TaskManager $taskManager)
+    {
+        $this->taskManager = $taskManager;
+    }
 
     public function addRepositoryType($type, RepositoryInterface $repository)
     {
@@ -31,6 +42,33 @@ class RepositoryManager
         return $this->repositoryTypes[(string) $type];
     }
 
+    public function onReferenceCreation(Reference\Event\RepositoryReferenceCreationEvent $event)
+    {
+        var_dump('yeah');
+
+        // Create task context
+        /*
+        $taskContext = new TaskContext(
+            $this->getContainer()->get('logger')
+        );
+        */
+
+        // Get task
+        $task = $this->taskManager->getTaskType('repository_reference_create');
+
+        //var_dump($taskManager);
+        var_dump($task);
+
+        //$task->execute($taskContext);
+        die;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            Reference\RepositoryReferenceEvents::CREATION => 'onReferenceCreation'
+        );
+    }
     /**
      * Logger
      *

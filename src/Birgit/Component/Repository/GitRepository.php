@@ -24,7 +24,7 @@ class GitRepository extends Repository
     	}
 
     	// Log
-    	$context->getLogger()->notice('Git Repository: Get References');
+    	$context->getLogger()->notice(sprintf('Git Repository: Get "%s" references', $parameters->getPath()));
 
         // Find git executable
         $executableFinder = new ExecutableFinder();

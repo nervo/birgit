@@ -7,5 +7,5 @@ namespace Birgit\Component\Task;
  */
 interface TaskInterface
 {
-	public function execute(TaskContext $context);
+	public function execute(TaskContext $context, TaskParameters $parameters = null);
 }
