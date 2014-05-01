@@ -5,16 +5,45 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+
+        <!-- Task -->
+        <parameter key="birgit.task_manager.class">Birgit\Component\Task\TaskManager</parameter>
+
+        <!-- Repository -->
+        <parameter key="birgit.repository_manager.class">Birgit\Component\Repository\RepositoryManager</parameter>
+        <parameter key="birgit.task.repository_reference_check.class">Birgit\Component\Repository\Reference\Task\RepositoryReferenceCheckTask</parameter>
+        <parameter key="birgit.repository.git.class">Birgit\Component\Repository\GitRepository</parameter>
+
+        <!-- Host provider -->
         <parameter key="birgit.host_provider_manager.class">Birgit\Component\Host\Provider\HostProviderManager</parameter>
         <parameter key="birgit.host_provider.local.class">Birgit\Component\Host\Provider\LocalHostProvider</parameter>
+
     </parameters>
 
     <services>
+
+        <!-- Task -->
+        <service id="birgit.task_manager" class="%birgit.task_manager.class%" />
+
+        <!-- Repository -->
+        <service id="birgit.repository_manager" class="%birgit.repository_manager.class%" />
+        <service id="birgit.task.repository_reference_check" class="%birgit.task.repository_reference_check.class%">
+            <argument type="service" id="birgit.repository_manager" />
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="birgit.task" type="repository_reference_check" />
+        </service>
+        <service id="birgit.repository.git" class="%birgit.repository.git.class%">
+            <tag name="birgit.repository" type="git" />
+        </service>
+
+        <!-- Host provider -->
         <service id="birgit.host_provider_manager" class="%birgit.host_provider_manager.class%" />
         <service id="birgit.host_provider.local" class="%birgit.host_provider.local.class%">
             <argument>%kernel.root_dir%</argument>
             <tag name="birgit.host_provider" type="local" />
         </service>
+
     </services>
 
 </container>

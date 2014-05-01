@@ -13,12 +13,14 @@ use Birgit\Component\Repository\RepositoryManager;
 use Birgit\Component\Task\TaskManager;
 use Birgit\Component\Project\ProjectManager;
 
+use Birgit\Component\Task\TaskContext;
+
 use Birgit\Entity\Repository;
 use Birgit\Entity\Project;
 use Birgit\Entity\Host;
 use Birgit\Entity\Build;
 
-class TestCommand extends ContainerAwareCommand
+class RepositoryReferenceCheckCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -26,8 +28,8 @@ class TestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('birgit:test')
-            ->setDescription('Birgit test')
+            ->setName('birgit:repository:reference:check')
+            ->setDescription('Birgit repository reference check')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command does things:
 
@@ -42,6 +44,25 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Get task manager
+        $taskManager = $this->getContainer()
+            ->get('birgit.task_manager');
+
+        // Create task context
+        $taskContext = new TaskContext(
+            $this->getContainer()->get('logger')
+        );
+
+        // Get task
+        $task = $taskManager->getTaskType('repository_reference_check');
+
+        //var_dump($taskManager);
+        //var_dump($task);
+
+        $task->execute($taskContext);
+
+        die;
+
         // Get host provider manager
         $hostProviderManager = $this->getContainer()
             ->get('birgit.host_provider_manager');

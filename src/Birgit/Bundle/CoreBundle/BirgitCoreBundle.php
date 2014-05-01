@@ -14,6 +14,8 @@ class BirgitCoreBundle extends Bundle
         parent::build($container);
 
         $container
-        	->addCompilerPass(new Compiler\HostProviderCompilerPass());
+            ->addCompilerPass(new Compiler\TaskCompilerPass())
+            ->addCompilerPass(new Compiler\RepositoryCompilerPass())
+            ->addCompilerPass(new Compiler\HostProviderCompilerPass());
     }
 }

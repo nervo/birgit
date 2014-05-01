@@ -25,10 +25,18 @@ class LoadRepositoryData extends AbstractFixture implements OrderedFixtureInterf
     {
         $repositoriesDefinitions = array(
             'test'  => array(
-                'path' => 'git@github.com:nervo/birgit-test.git'
+                'type'       => 'git',
+                'parameters' => array(
+                    //'path' => 'git@github.com:nervo/birgit-test.git'
+                    'path' => '~/workspace/birgit-test'
+                )
             ),
             'adele' => array(
-                'path' => 'git@github.com:Elao/adele.git'
+                'type'       => 'git',
+                'parameters' => array(
+                    //'path' => 'git@github.com:Elao/adele.git'
+                    'path' => '~/workspace/elao/adele'
+                )
             )
         );
 
@@ -36,7 +44,8 @@ class LoadRepositoryData extends AbstractFixture implements OrderedFixtureInterf
 
         foreach ($repositoriesDefinitions as $repositoryName => $repositoryParameters) {
             $repositories[$repositoryName] = (new Repository())
-                ->setPath($repositoryParameters['path']);
+                ->setType($repositoryParameters['type'])
+                ->setParameters($repositoryParameters['parameters']);
 
             $manager->persist($repositories[$repositoryName]);
 

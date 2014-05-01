@@ -28,12 +28,12 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
                 'repository'   => 'test',
                 'environments' => array(
                     'test'    => array(
-                        'repository_reference_pattern' => '*',
+                        'repository_reference_pattern' => 'heads/*',
                         'host_provider'                => 'local',
                         'active'                       => true
                     ),
                     'quality' => array(
-                        'repository_reference_pattern' => '*',
+                        'repository_reference_pattern' => 'heads/*',
                         'host_provider'                => 'local',
                         'active'                       => true
                     )
@@ -44,22 +44,22 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
                 'repository'   => 'adele',
                 'environments' => array(
                     'test'    => array(
-                        'repository_reference_pattern' => '*',
+                        'repository_reference_pattern' => 'heads/*',
                         'host_provider'                => 'local',
                         'active'                       => true
                     ),
                     'quality' => array(
-                        'repository_reference_pattern' => '*',
+                        'repository_reference_pattern' => 'heads/*',
                         'host_provider'                => 'local',
                         'active'                       => true
                     ),
                     'demo'    => array(
-                        'repository_reference_pattern' => '*',
+                        'repository_reference_pattern' => 'heads/*',
                         'host_provider'                => 'local',
                         'active'                       => true
                     )
                 ),
-                'active'       => false
+                'active'       => true
             )
         );
 

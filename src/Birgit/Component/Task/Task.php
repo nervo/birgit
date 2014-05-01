@@ -10,12 +10,12 @@ use Birgit\Entity\Build;
 /**
  * Task
  */
-abstract class Task
+abstract class Task implements TaskInterface
 {
     /**
      * Execute
      *
      * @param TaskContext $context
      */
-	abstract public function execute(TaskContext $context);
+	//abstract public function execute(TaskContext $context);
 }

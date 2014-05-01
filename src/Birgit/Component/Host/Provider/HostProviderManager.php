@@ -10,21 +10,21 @@ use Birgit\Entity;
 class HostProviderManager
 {
     /**
-     * Host providers
+     * Host provider types
      *
      * @var array
      */
-	protected $hostProviders = array();
+    protected $hostProviderTypes = array();
 
-	public function addHostProvider($type, HostProviderInterface $hostProvider)
-	{
-		$this->hostProviders[(string) $type] = $hostProvider;
-	}
+    public function addHostProviderType($type, HostProviderInterface $hostProvider)
+    {
+        $this->hostProviderTypes[(string) $type] = $hostProvider;
+    }
 
-	public function getHostProvider($type)
-	{
-		return $this->hostProviders[(string) $type];
-	}
+    public function getHostProviderType($type)
+    {
+        return $this->hostProviderTypes[(string) $type];
+    }
 
     /**
      * Create host
@@ -34,26 +34,26 @@ class HostProviderManager
      *
      * @return Host
      */
-	public function createHost(Entity\Project\Environment $projectEnvironmentEntity, Entity\Repository\Reference $repositoryReferenceEntity)
-	{
-		// Get host provider entity
-		$hostProviderEntity = $projectEnvironmentEntity->getHostProvider();
+    public function createHost(Entity\Project\Environment $projectEnvironmentEntity, Entity\Repository\Reference $repositoryReferenceEntity)
+    {
+        // Get host provider entity
+        $hostProviderEntity = $projectEnvironmentEntity->getHostProvider();
 
-		// Get host provider
-		$hostProvider = $this->getHostProvider(
-			$hostProviderEntity->getType()
-		);
+        // Get host provider
+        $hostProvider = $this->getHostProvider(
+            $hostProviderEntity->getType()
+        );
 
-		// Get host provider parameters
-		$hostProviderParameters = (new LocalHostProviderParameters())
-			->merge(
-				$hostProviderEntity->getParameters()
-			);
+        // Get host provider parameters
+        $hostProviderParameters = (new LocalHostProviderParameters())
+            ->merge(
+                $hostProviderEntity->getParameters()
+            );
 
-		var_dump($hostProviderParameters);
+        var_dump($hostProviderParameters);
 
-		var_dump($hostProvider);
+        var_dump($hostProvider);
 
-		die;
-	}
+        die;
+    }
 }

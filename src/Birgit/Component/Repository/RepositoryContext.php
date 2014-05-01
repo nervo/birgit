@@ -1,13 +1,13 @@
 <?php
 
-namespace Birgit\Component\Task;
+namespace Birgit\Component\Repository;
 
 use Psr\Log\LoggerInterface;
 
 /**
- * Task Context
+ * Repository Context
  */
-class TaskContext
+class RepositoryContext
 {
     /**
      * Logger

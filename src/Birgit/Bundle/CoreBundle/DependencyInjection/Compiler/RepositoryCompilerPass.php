@@ -7,9 +7,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Host provider compiler pass
+ * Repository compiler pass
  */
-class HostProviderCompilerPass implements CompilerPassInterface
+class RepositoryCompilerPass implements CompilerPassInterface
 {
     /**
      * Process
@@ -18,14 +18,14 @@ class HostProviderCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $managerDefinition = $container->getDefinition('birgit.host_provider_manager');
+        $managerDefinition = $container->getDefinition('birgit.repository_manager');
 
-        $typeServices = $container->findTaggedServiceIds('birgit.host_provider');
+        $typeServices = $container->findTaggedServiceIds('birgit.repository');
 
 	foreach ($typeServices as $typeServiceId => $typeServiceTagAttributes) {
             foreach ($typeServiceTagAttributes as $typeServiceAttributes) {
                 $managerDefinition->addMethodCall(
-                    'addHostProviderType',
+                    'addRepositoryType',
                     array($typeServiceAttributes['type'], new Reference($typeServiceId))
                 );
             }

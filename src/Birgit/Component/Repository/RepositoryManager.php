@@ -2,12 +2,12 @@
 
 namespace Birgit\Component\Repository;
 
-use Psr\Log\LoggerInterface;
+//use Psr\Log\LoggerInterface;
 
-use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\ProcessBuilder;
+//use Symfony\Component\Process\ExecutableFinder;
+//use Symfony\Component\Process\ProcessBuilder;
 
-use Birgit\Entity\Repository;
+//use Birgit\Entity\Repository;
 
 /**
  * Repository manager
@@ -15,22 +15,41 @@ use Birgit\Entity\Repository;
 class RepositoryManager
 {
     /**
+     * Repository types
+     *
+     * @var array
+     */
+    protected $repositoryTypes = array();
+
+    public function addRepositoryType($type, RepositoryInterface $repository)
+    {
+        $this->repositoryTypes[(string) $type] = $repository;
+    }
+
+    public function getRepositoryType($type)
+    {
+        return $this->repositoryTypes[(string) $type];
+    }
+
+    /**
      * Logger
      *
      * @var LoggerInterface
      */
-    protected $logger;
+    //protected $logger;
 
     /**
      * Constructor
      *
      * @param LoggerInterface $logger
      */
-	public function __construct(LoggerInterface $logger)
-	{
-    	// Logger
-    	$this->logger = $logger;
-	}
+    /*
+    public function __construct(LoggerInterface $logger)
+    {
+        // Logger
+        $this->logger = $logger;
+    }
+    */
 
     /**
      * Get repository references
@@ -39,6 +58,7 @@ class RepositoryManager
      *
      * @return array
      */
+    /*
     public function getRepositoryReferences(Repository $repository)
     {
         // Find git executable
@@ -74,4 +94,5 @@ class RepositoryManager
 
         return $references;
     }
+    */
 }

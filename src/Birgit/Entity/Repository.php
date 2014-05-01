@@ -34,15 +34,27 @@ class Repository
     private $id;
 
     /**
-     * Path
+     * Type
      *
      * @var string
      *
      * @ORM\Column(
-     *     type="string", length=255
+     *     type="string",
+     *     length=255
      * )
      */
-    private $path;
+    private $type;
+
+    /**
+     * Parameters
+     *
+     * @var array
+     *
+     * @ORM\Column(
+     *     type="json_array"
+     * )
+     */
+    private $parameters;
 
     /**
      * References
@@ -91,27 +103,51 @@ class Repository
     }
 
     /**
-     * Set path
+     * Set type
      *
-     * @param string $path
+     * @param string $type
      *
      * @return Repository
      */
-    public function setPath($path)
+    public function setType($type)
     {
-        $this->path = $path;
+        $this->type = (string) $type;
 
         return $this;
     }
 
     /**
-     * Get path
+     * Get type
      *
      * @return string
      */
-    public function getPath()
+    public function getType()
     {
-        return $this->path;
+        return $this->type;
+    }
+
+    /**
+     * Set parameters
+     *
+     * @param array $parameters
+     *
+     * @return Repository
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 
     /**
