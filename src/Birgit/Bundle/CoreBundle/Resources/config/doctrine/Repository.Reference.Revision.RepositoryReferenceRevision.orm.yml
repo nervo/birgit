@@ -2,6 +2,9 @@ Birgit\Bundle\CoreBundle\Entity\Repository\Reference\Revision\RepositoryReferenc
     type:            entity
     table:           birgit_repository_reference_revision
     repositoryClass: Birgit\Bundle\CoreBundle\Entity\Repository\Reference\Revision\RepositoryReferenceRevisionRepository
+    uniqueConstraints:
+        reference_id_name:
+            columns: ['reference_id', 'name']
     id:
         id:
             type:      integer
