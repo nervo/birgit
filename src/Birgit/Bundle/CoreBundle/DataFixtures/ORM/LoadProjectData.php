@@ -66,18 +66,20 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $projects = array();
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
-            $projects[$projectName] = (new Project())
-                ->setName($projectName)
-                ->setRepository($this->getReference('repository.' . $projectParameters['repository']));
+            $projects[$projectName] = $manager->getRepository('Birgit:Project\Project')
+                ->create()
+                    ->setName($projectName)
+                    ->setRepository($this->getReference('repository.' . $projectParameters['repository']));
 
             $projectEnvironments = array();
 
             foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
-                $projectEnvironments[$projectEnvironmentName] = (new Project\Environment())
-                    ->setName($projectEnvironmentName)
-                    ->setRepositoryReferencePattern($projectEnvironmentParameters['repository_reference_pattern'])
-                    ->setHostProvider($this->getReference('host_provider.' . $projectEnvironmentParameters['host_provider']))
-                    ->setActive($projectEnvironmentParameters['active']);
+                $projectEnvironments[$projectEnvironmentName] = $manager->getRepository('Birgit:Project\Environment\ProjectEnvironment')
+                    ->create()
+                        ->setName($projectEnvironmentName)
+                        ->setRepositoryReferencePattern($projectEnvironmentParameters['repository_reference_pattern'])
+                        ->setHostProvider($this->getReference('host_provider.' . $projectEnvironmentParameters['host_provider']))
+                        ->setActive($projectEnvironmentParameters['active']);
 
                 $projects[$projectName]
                     ->addEnvironment($projectEnvironments[$projectEnvironmentName]);

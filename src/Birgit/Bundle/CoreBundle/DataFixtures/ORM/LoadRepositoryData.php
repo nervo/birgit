@@ -43,9 +43,10 @@ class LoadRepositoryData extends AbstractFixture implements OrderedFixtureInterf
         $repositories = array();
 
         foreach ($repositoriesDefinitions as $repositoryName => $repositoryParameters) {
-            $repositories[$repositoryName] = (new Repository())
-                ->setType($repositoryParameters['type'])
-                ->setParameters($repositoryParameters['parameters']);
+            $repositories[$repositoryName] = $manager->getRepository('Birgit:Repository\Repository')
+                ->create()
+                    ->setType($repositoryParameters['type'])
+                    ->setParameters($repositoryParameters['parameters']);
 
             $manager->persist($repositories[$repositoryName]);
 

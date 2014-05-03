@@ -1,0 +1,19 @@
+Birgit\Bundle\CoreBundle\Entity\Host\Provider\HostProvider:
+    type:            entity
+    table:           birgit_host_provider
+    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Host\Provider\HostProviderRepository
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        type:
+            type:   string
+            length: 255
+        parameters:
+            type:   json_array
+    oneToMany:
+        projectEnvironments:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment
+            mappedBy:     hostProvider
+            cascade:      ['persist']

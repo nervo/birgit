@@ -1,0 +1,23 @@
+Birgit\Bundle\CoreBundle\Entity\Repository\Reference\Revision\RepositoryReferenceRevision:
+    type:            entity
+    table:           birgit_repository_reference_revision
+    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Repository\Reference\Revision\RepositoryReferenceRevisionRepository
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type:   string
+            length: 255
+    manyToOne:
+        reference:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Repository\Reference\RepositoryReference
+            inversedBy:   revisions
+            joinColumn:
+                nullable: false
+    oneToMany:
+        builds:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Build\Build
+            mappedBy:     repositoryReferenceRevision
+            cascade:      ['persist']

@@ -1,0 +1,14 @@
+Birgit\Bundle\CoreBundle\Entity\Task\Task:
+    type:  entity
+    table: birgit_task
+    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Task\TaskRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        type:
+            type:   string
+            length: 255
+        parameters:
+            type:   json_array

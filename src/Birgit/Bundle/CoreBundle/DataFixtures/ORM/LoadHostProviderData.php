@@ -35,9 +35,10 @@ class LoadHostProviderData extends AbstractFixture implements OrderedFixtureInte
         $hostProviders = array();
 
         foreach ($hostProvidersDefinitions as $hostProviderName => $hostProviderParameters) {
-            $hostProviders[$hostProviderName] = (new HostProvider())
-                ->setType($hostProviderParameters['type'])
-                ->setParameters($hostProviderParameters['parameters']);
+            $hostProviders[$hostProviderName] = $manager->getRepository('Birgit:Host\Provider\HostProvider')
+                ->create()
+                    ->setType($hostProviderParameters['type'])
+                    ->setParameters($hostProviderParameters['parameters']);
 
             $manager->persist($hostProviders[$hostProviderName]);
 

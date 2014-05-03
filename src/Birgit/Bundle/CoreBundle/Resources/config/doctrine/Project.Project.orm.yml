@@ -1,0 +1,26 @@
+Birgit\Bundle\CoreBundle\Entity\Project\Project:
+    type:            entity
+    table:           birgit_project
+    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Project\ProjectRepository
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type:   string
+            length: 255
+            unique: true
+        active:
+            type:   boolean
+    manyToOne:
+        repository:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Repository\Repository
+            inversedBy:   projects
+            joinColumn:
+                nullable: false
+    oneToMany:
+        environments:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment
+            mappedBy:     project
+            cascade:      ['persist']

@@ -1,0 +1,23 @@
+Birgit\Bundle\CoreBundle\Entity\Repository\Repository:
+    type:            entity
+    table:           birgit_repository
+    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Repository\RepositoryRepository
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        type:
+            type:   string
+            length: 255
+        parameters:
+            type:   json_array
+    oneToMany:
+        references:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Repository\Reference\RepositoryReference
+            mappedBy:     repository
+            cascade:      ['persist']
+        projects:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Project
+            mappedBy:     repository
+            cascade:      ['persist']
