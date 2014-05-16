@@ -7,9 +7,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Task compiler pass
+ * Project compiler pass
  */
-class TaskCompilerPass implements CompilerPassInterface
+class ProjectCompilerPass implements CompilerPassInterface
 {
     /**
      * Process
@@ -19,24 +19,24 @@ class TaskCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         // Get manager defintion
-        $managerDefinition = $container->getDefinition('birgit.task_manager');
+        $managerDefinition = $container->getDefinition('birgit.project_manager');
 
-        // Task handlers
-        $handlerServiceIds = $container->findTaggedServiceIds('birgit.task_handler');
+        // Project handlers
+        $handlerServiceIds = $container->findTaggedServiceIds('birgit.project_handler');
 
         foreach ($handlerServiceIds as $handlerServiceId => $handlerServiceAttributes) {
             $managerDefinition->addMethodCall(
-                'addTaskHandler',
+                'addProjectHandler',
                 array(new Reference($handlerServiceId))
             );
         }
         
-        // Task queue handlers
-        $handlerServiceIds = $container->findTaggedServiceIds('birgit.task_queue_handler');
+        // Project environment handlers
+        $handlerServiceIds = $container->findTaggedServiceIds('birgit.project_environment_handler');
 
         foreach ($handlerServiceIds as $handlerServiceId => $handlerServiceAttributes) {
             $managerDefinition->addMethodCall(
-                'addTaskQueueHandler',
+                'addProjectEnvironmentHandler',
                 array(new Reference($handlerServiceId))
             );
         }

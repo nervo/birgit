@@ -12,8 +12,8 @@ Birgit\Bundle\CoreBundle\Entity\Host\Host:
             inversedBy:   hosts
             joinColumn:
                 nullable: false
-        repositoryReference:
-            targetEntity: Birgit\Bundle\CoreBundle\Entity\Repository\Reference\RepositoryReference
+        projectReference:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Reference\ProjectReference
             inversedBy:   hosts
             joinColumn:
                 nullable: false

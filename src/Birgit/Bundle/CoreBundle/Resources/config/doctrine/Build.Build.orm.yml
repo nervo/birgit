@@ -12,8 +12,8 @@ Birgit\Bundle\CoreBundle\Entity\Build\Build:
             inversedBy:   builds
             joinColumn:
                 nullable: false
-        repositoryReferenceRevision:
-            targetEntity: Birgit\Bundle\CoreBundle\Entity\Repository\Reference\Revision\RepositoryReferenceRevision
+        projectReferenceRevision:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision
             inversedBy:   builds
             joinColumn:
                 nullable: false

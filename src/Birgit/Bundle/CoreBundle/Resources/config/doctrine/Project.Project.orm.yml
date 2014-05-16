@@ -2,24 +2,31 @@ Birgit\Bundle\CoreBundle\Entity\Project\Project:
     type:            entity
     table:           birgit_project
     repositoryClass: Birgit\Bundle\CoreBundle\Entity\Project\ProjectRepository
+    uniqueConstraints:
+        name:
+            columns: ['name']
     id:
         id:
             type:      integer
             generator: { strategy: AUTO }
     fields:
         name:
-            type:   string
-            length: 255
-            unique: true
+            type:     string
+            length:   255
+        status:
+            type:     integer
+        type:
+            type:     string
+            length:   255
+        parameters:
+            type:     parameters
         active:
-            type:   boolean
-    manyToOne:
-        repository:
-            targetEntity: Birgit\Bundle\CoreBundle\Entity\Repository\Repository
-            inversedBy:   projects
-            joinColumn:
-                nullable: false
+            type:     boolean
     oneToMany:
+        references:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Reference\ProjectReference
+            mappedBy:     project
+            cascade:      ['persist']
         environments:
             targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment
             mappedBy:     project

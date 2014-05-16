@@ -1,7 +1,7 @@
-Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment:
+Birgit\Bundle\CoreBundle\Entity\Project\Reference\ProjectReference:
     type:            entity
-    table:           birgit_project_environment
-    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironmentRepository
+    table:           birgit_project_reference
+    repositoryClass: Birgit\Bundle\CoreBundle\Entity\Project\Reference\ProjectReferenceRepository
     uniqueConstraints:
         project_id_name:
             columns: ['project_id', 'name']
@@ -13,24 +13,18 @@ Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment:
         name:
             type:     string
             length:   255
-        type:
-            type:     string
-            length:   255
-        parameters:
-            type:     parameters
-        referencePattern:
-            type:     string
-            length:   255
-        active:
-            type:     boolean
     manyToOne:
         project:
             targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Project
-            inversedBy:   environments
+            inversedBy:   references
             joinColumn:
                 nullable: false
     oneToMany:
+        revisions:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision
+            mappedBy:     reference
+            cascade:      ['persist']
         hosts:
             targetEntity: Birgit\Bundle\CoreBundle\Entity\Host\Host
-            mappedBy:     projectEnvironment
+            mappedBy:     projectReference
             cascade:      ['persist']

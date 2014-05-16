@@ -1,15 +1,15 @@
 <?php
 
-namespace Birgit\Bundle\CoreBundle\Entity\Repository;
+namespace Birgit\Bundle\CoreBundle\Entity\Project\Reference;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
 
 /**
- * Repository
+ * Project reference
  */
-class Repository extends Model\Repository\Repository
+class ProjectReference extends Model\Project\Reference\ProjectReference
 {
     /**
      * Id
@@ -23,11 +23,11 @@ class Repository extends Model\Repository\Repository
      */
     public function __construct()
     {
-        // References
-        $this->references = new ArrayCollection();
+        // Revisions
+        $this->revisions = new ArrayCollection();
 
-        // Projects
-        $this->projects = new ArrayCollection();
+        // Hosts
+        $this->hosts = new ArrayCollection();
     }
 
     /**

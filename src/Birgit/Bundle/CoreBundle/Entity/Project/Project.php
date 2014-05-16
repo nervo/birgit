@@ -23,6 +23,9 @@ class Project extends Model\Project\Project
      */
     public function __construct()
     {
+        // References
+        $this->references = new ArrayCollection();
+
         // Environments
         $this->environments = new ArrayCollection();
     }

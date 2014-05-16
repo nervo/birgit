@@ -6,51 +6,82 @@
 
     <parameters>
 
-        <!-- Task -->
-        <parameter key="birgit.task_manager.class">Birgit\Component\Task\TaskManager</parameter>
+        <!-- Task - Manager -->
+        <parameter key="birgit.task_manager.class">Birgit\Domain\Task\TaskManager</parameter>
+        
+        <!-- Task - Queue Handlers -->
+        <parameter key="birgit.task_queue_handler.cron.class">Birgit\Domain\Task\Queue\Handler\CronTaskQueueHandler</parameter>
 
-        <!-- Repository -->
-        <parameter key="birgit.repository_manager.class">Birgit\Component\Repository\RepositoryManager</parameter>
-        <parameter key="birgit.repository.git.class">Birgit\Component\Repository\GitRepository</parameter>
-        <parameter key="birgit.task.repository_reference_check.class">Birgit\Component\Repository\Reference\Task\RepositoryReferenceCheckTask</parameter>
-        <parameter key="birgit.task.repository_reference_create.class">Birgit\Component\Repository\Reference\Task\RepositoryReferenceCreateTask</parameter>
+        <!-- Project - Manager -->
+        <parameter key="birgit.project_manager.class">Birgit\Domain\Project\ProjectManager</parameter>
+        <!-- Project - Event Listener -->
+        <parameter key="birgit.project_event_listener.class">Birgit\Domain\Project\ProjectEventListener</parameter>
+        <!-- Project - Handlers -->
+        <parameter key="birgit.project_handler.git.class">Birgit\Domain\Project\Handler\GitProjectHandler</parameter>
+        <!-- Project - Task Handlers -->
+        <parameter key="birgit.task_handler.project_check.class">Birgit\Domain\Project\Task\Handler\ProjectCheckTaskHandler</parameter>
+        <!-- Project - Task Queue Handlers -->
+        <parameter key="birgit.task_queue_handler.project_reference_create.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceCreateTaskQueueHandler</parameter>
+        <parameter key="birgit.task_queue_handler.project_reference_delete.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceDeleteTaskQueueHandler</parameter>
 
-        <!-- Host provider -->
-        <parameter key="birgit.host_provider_manager.class">Birgit\Component\Host\Provider\HostProviderManager</parameter>
-        <parameter key="birgit.host_provider.local.class">Birgit\Component\Host\Provider\LocalHostProvider</parameter>
+        <!-- Project - Environment Handlers -->
+        <parameter key="birgit.project_environment_handler.local.class">Birgit\Domain\Project\Environment\Handler\LocalProjectEnvironmentHandler</parameter>
 
     </parameters>
 
     <services>
 
-        <!-- Task -->
-        <service id="birgit.task_manager" class="%birgit.task_manager.class%" />
+        <!-- Task - Manager -->
+        <service id="birgit.task_manager" class="%birgit.task_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
 
-        <!-- Repository -->
-        <service id="birgit.repository_manager" class="%birgit.repository_manager.class%">
+        <!-- Task - Queue Handlers -->
+        <service id="birgit.task_queue_handler.cron" class="%birgit.task_queue_handler.cron.class%">
             <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="logger" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+
+        <!-- Project - Manager -->
+        <service id="birgit.project_manager" class="%birgit.project_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+        <!-- Project - Event Listener -->
+        <service id="birgit.project_event_listener" class="%birgit.project_event_listener.class%">
+            <argument type="service" id="birgit.project_manager" />
             <tag name="kernel.event_subscriber" />
         </service>
-        <service id="birgit.repository.git" class="%birgit.repository.git.class%">
-            <tag name="birgit.repository" type="git" />
+        <!-- Project - Handlers -->
+        <service id="birgit.project_handler.git" class="%birgit.project_handler.git.class%">
+            <tag name="birgit.project_handler" />
         </service>
-        <service id="birgit.task.repository_reference_check" class="%birgit.task.repository_reference_check.class%">
-            <argument type="service" id="birgit.repository_manager" />
-            <argument type="service" id="doctrine" />
+        <!-- Project - Task Handlers -->
+        <service id="birgit.task_handler.project_check" class="%birgit.task_handler.project_check.class%">
             <argument type="service" id="event_dispatcher" />
-            <tag name="birgit.task" type="repository_reference_check" />
-        </service>
-        <service id="birgit.task.repository_reference_create" class="%birgit.task.repository_reference_create.class%">
-            <argument type="service" id="doctrine" />
-            <argument type="service" id="event_dispatcher" />
-            <tag name="birgit.task" type="repository_reference_create" />
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_handler" />
         </service>
 
-        <!-- Host provider -->
-        <service id="birgit.host_provider_manager" class="%birgit.host_provider_manager.class%" />
-        <service id="birgit.host_provider.local" class="%birgit.host_provider.local.class%">
+        <!-- Project - Task Queue Handlers -->
+        <service id="birgit.task_queue_handler.project_reference_create" class="%birgit.task_queue_handler.project_reference_create.class%">
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="logger" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+        <service id="birgit.task_queue_handler.project_reference_delete" class="%birgit.task_queue_handler.project_reference_delete.class%">
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="logger" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+
+        <!-- Project - Environment Handlers -->
+        <service id="birgit.project_environment_handler.local" class="%birgit.project_environment_handler.local.class%">
             <argument>%kernel.root_dir%</argument>
-            <tag name="birgit.host_provider" type="local" />
+            <tag name="birgit.project_environment_handler" />
         </service>
 
     </services>

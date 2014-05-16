@@ -1,15 +1,12 @@
 <?php
 
-namespace Birgit\Bundle\CoreBundle\Entity\Host\Provider;
+namespace Birgit\Bundle\CoreBundle\Entity\Task\Queue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
 
-/**
- * Host provider
- */
-class HostProvider extends Model\Host\Provider\HostProvider
+class TaskQueue extends Model\Task\Queue\TaskQueue
 {
     /**
      * Id
@@ -23,10 +20,12 @@ class HostProvider extends Model\Host\Provider\HostProvider
      */
     public function __construct()
     {
-        // Projects
-        $this->projects = new ArrayCollection();
-    }
+        parent::__construct();
 
+        // Tasks
+        $this->tasks = new ArrayCollection();
+    }
+    
     /**
      * Get id
      *

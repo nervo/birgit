@@ -8,7 +8,13 @@ Birgit\Bundle\CoreBundle\Entity\Task\Task:
             generator: { strategy: AUTO }
     fields:
         type:
-            type:   string
-            length: 255
+            type:     string
+            length:   255
         parameters:
-            type:   json_array
+            type:     parameters
+    manyToOne:
+        queue:
+            targetEntity: Birgit\Bundle\CoreBundle\Entity\Task\Queue\TaskQueue
+            inversedBy:   tasks
+            joinColumn:
+                nullable: false
