@@ -5,7 +5,7 @@ namespace Birgit\Model\Host;
 use Doctrine\Common\Collections\Collection;
 
 use Birgit\Model\Project\Environment\ProjectEnvironment;
-use Birgit\Model\Repository\Reference\RepositoryReference;
+use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Build\Build;
 
 /**
@@ -14,6 +14,13 @@ use Birgit\Model\Build\Build;
 abstract class Host
 {
     /**
+     * Project reference
+     *
+     * @var ProjectReference
+     */
+    protected $projectReference;
+
+    /**
      * Project environment
      *
      * @var ProjectEnvironment
@@ -21,18 +28,35 @@ abstract class Host
     protected $projectEnvironment;
 
     /**
-     * Repository reference
-     *
-     * @var RepositoryReference
-     */
-    protected $repositoryReference;
-
-    /**
      * Builds
      *
      * @var Collection
      */
     protected $builds;
+
+    /**
+     * Set project reference
+     *
+     * @param ProjectReference $projectReference
+     *
+     * @return Host
+     */
+    public function setProjectReference(ProjectReference $projectReference)
+    {
+        $this->projectReference = $projectReference;
+
+        return $this;
+    }
+
+    /**
+     * Get project reference
+     *
+     * @return ProjectReference
+     */
+    public function getProjectReference()
+    {
+        return $this->projectReference;
+    }
 
     /**
      * Set project environment
@@ -56,30 +80,6 @@ abstract class Host
     public function getProjectEnvironment()
     {
         return $this->projectEnvironment;
-    }
-
-    /**
-     * Set repository reference
-     *
-     * @param RepositoryReference $repositoryReference
-     *
-     * @return Host
-     */
-    public function setRepositoryReference(RepositoryReference $repositoryReference)
-    {
-        $this->repositoryReference = $repositoryReference;
-
-        return $this;
-    }
-
-    /**
-     * Get repository reference
-     *
-     * @return RepositoryReference
-     */
-    public function getRepositoryReference()
-    {
-        return $this->repositoryReference;
     }
 
     /**

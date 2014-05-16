@@ -1,16 +1,16 @@
 <?php
 
-namespace Birgit\Model\Repository\Reference\Revision;
+namespace Birgit\Model\Project\Reference\Revision;
 
 use Doctrine\Common\Collections\Collection;
 
-use Birgit\Model\Repository\Reference\RepositoryReference;
+use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Build\Build;
 
 /**
- * Repository reference revision
+ * Project reference revision
  */
-abstract class RepositoryReferenceRevision
+abstract class ProjectReferenceRevision
 {
     /**
      * Name
@@ -22,7 +22,7 @@ abstract class RepositoryReferenceRevision
     /**
      * Reference
      *
-     * @var RepositoryReference
+     * @var ProjectReference
      */
     protected $reference;
 
@@ -38,7 +38,7 @@ abstract class RepositoryReferenceRevision
      *
      * @param string $name
      *
-     * @return RepositoryReferenceRevision
+     * @return ProjectReferenceRevision
      */
     public function setName($name)
     {
@@ -60,11 +60,11 @@ abstract class RepositoryReferenceRevision
     /**
      * Set reference
      *
-     * @param RepositoryReference $reference
+     * @param ProjectReference $reference
      *
-     * @return RepositoryReferenceRevision
+     * @return ProjectReferenceRevision
      */
-    public function setReference(RepositoryReference $reference)
+    public function setReference(ProjectReference $reference)
     {
         $this->reference = $reference;
 
@@ -74,7 +74,7 @@ abstract class RepositoryReferenceRevision
     /**
      * Get reference
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
     public function getReference()
     {
@@ -86,13 +86,13 @@ abstract class RepositoryReferenceRevision
      *
      * @param Build $build
      *
-     * @return RepositoryReferenceRevision
+     * @return ProjectReferenceRevision
      */
     public function addBuild(Build $build)
     {
         if (!$this->builds->contains($build)) {
             $this->builds->add($build);
-            $build->setRepositoryReferenceRevision($this);
+            $build->setProjectReferenceRevision($this);
         }
 
         return $this;
@@ -103,7 +103,7 @@ abstract class RepositoryReferenceRevision
      *
      * @param Build $build
      *
-     * @return RepositoryReferenceRevision
+     * @return ProjectReferenceRevision
      */
     public function removeBuild(Build $build)
     {

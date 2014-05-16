@@ -1,17 +1,17 @@
 <?php
 
-namespace Birgit\Model\Repository\Reference;
+namespace Birgit\Model\Project\Reference;
 
 use Doctrine\Common\Collections\Collection;
 
-use Birgit\Model\Repository\Repository;
-use Birgit\Model\Repository\Reference\Revision\RepositoryReferenceRevision;
+use Birgit\Model\Project\Project;
+use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 use Birgit\Model\Host\Host;
 
 /**
- * Repository reference
+ * Project reference
  */
-abstract class RepositoryReference
+abstract class ProjectReference
 {
     /**
      * Name
@@ -21,11 +21,11 @@ abstract class RepositoryReference
     protected $name;
 
     /**
-     * Repository
+     * Project
      *
-     * @var Repository
+     * @var Project
      */
-    protected $repository;
+    protected $project;
 
     /**
      * Revisions
@@ -46,7 +46,7 @@ abstract class RepositoryReference
      *
      * @param string $name
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
     public function setName($name)
     {
@@ -66,37 +66,37 @@ abstract class RepositoryReference
     }
 
     /**
-     * Set repository
+     * Set project
      *
-     * @param Repository $repository
+     * @param Project $project
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
-    public function setRepository(Repository $repository)
+    public function setProject(Project $project)
     {
-        $this->repository = $repository;
+        $this->project = $project;
 
         return $this;
     }
 
     /**
-     * Get repository
+     * Get project
      *
-     * @return Repository
+     * @return Project
      */
-    public function getRepository()
+    public function getProject()
     {
-        return $this->repository;
+        return $this->project;
     }
 
     /**
      * Add revision
      *
-     * @param RepositoryReferenceRevision $revision
+     * @param ProjectReferenceRevision $revision
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
-    public function addRevision(RepositoryReferenceRevision $revision)
+    public function addRevision(ProjectReferenceRevision $revision)
     {
         if (!$this->revisions->contains($revision)) {
             $this->revisions->add($revision);
@@ -109,11 +109,11 @@ abstract class RepositoryReference
     /**
      * Remove revision
      *
-     * @param RepositoryReferenceRevision $revision
+     * @param ProjectReferenceRevision $revision
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
-    public function removeRevision(RepositoryReferenceRevision $revision)
+    public function removeRevision(ProjectReferenceRevision $revision)
     {
         $this->revisions->removeElement($revision);
 
@@ -135,13 +135,13 @@ abstract class RepositoryReference
      *
      * @param Host $host
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
     public function addHost(Host $host)
     {
         if (!$this->hosts->contains($host)) {
             $this->hosts->add($host);
-            $host->setRepositoryReference($this);
+            $host->setProjectReference($this);
         }
 
         return $this;
@@ -152,7 +152,7 @@ abstract class RepositoryReference
      *
      * @param Host $host
      *
-     * @return RepositoryReference
+     * @return ProjectReference
      */
     public function removeHost(Host $host)
     {

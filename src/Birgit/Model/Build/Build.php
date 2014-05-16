@@ -3,7 +3,7 @@
 namespace Birgit\Model\Build;
 
 use Birgit\Model\Host\Host;
-use Birgit\Model\Repository\Reference\Revision\RepositoryReferenceRevision;
+use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 
 /**
  * Build
@@ -18,11 +18,11 @@ abstract class Build
     protected $host;
 
     /**
-     * Repository reference revision
+     * Project reference revision
      *
-     * @var RepositoryReferenceRevision
+     * @var ProjectReferenceRevision
      */
-    protected $repositoryReferenceRevision;
+    protected $projectReferenceRevision;
 
     /**
      * Set host
@@ -49,26 +49,26 @@ abstract class Build
     }
 
     /**
-     * Set repository reference revision
+     * Set project reference revision
      *
-     * @param RepositoryReferenceRevisionn $repositoryReferenceRevision
+     * @param ProjectReferenceRevisionn $projectReferenceRevision
      *
      * @return Build
      */
-    public function setRepositoryReferenceRevision(RepositoryReferenceRevision $repositoryReferenceRevision)
+    public function setProjectReferenceRevision(ProjectReferenceRevision $projectReferenceRevision)
     {
-        $this->repositoryReferenceRevision = $repositoryReferenceRevision;
+        $this->projectReferenceRevision = $projectReferenceRevision;
 
         return $this;
     }
 
     /**
-     * Get repository reference revision
+     * Get project reference revision
      *
-     * @return RepositoryReferenceRevision
+     * @return ProjectReferenceRevision
      */
-    public function getRepositoryReferenceRevision()
+    public function getProjectReferenceRevision()
     {
-        return $this->repositoryReferenceRevision;
+        return $this->projectReferenceRevision;
     }
 }

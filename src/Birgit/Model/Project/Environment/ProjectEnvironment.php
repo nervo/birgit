@@ -4,14 +4,15 @@ namespace Birgit\Model\Project\Environment;
 
 use Doctrine\Common\Collections\Collection;
 
+use Birgit\Component\Type\TypeModel;
 use Birgit\Model\Project\Project;
-use Birgit\Model\Host\Provider\HostProvider;
+use Birgit\Model\Host\Adapter\HostAdapter;
 use Birgit\Model\Host\Host;
 
 /**
  * Project environment
  */
-abstract class ProjectEnvironment
+abstract class ProjectEnvironment extends TypeModel
 {
     /**
      * Name
@@ -21,11 +22,11 @@ abstract class ProjectEnvironment
     protected $name;
 
     /**
-     * Repository reference pattern
+     * Reference pattern
      *
      * @var string
      */
-    protected $repositoryReferencePattern;
+    protected $referencePattern;
 
     /**
      * Active
@@ -42,11 +43,11 @@ abstract class ProjectEnvironment
     protected $project;
 
     /**
-     * Host provider
+     * Host adapter
      *
-     * @var HostProvider
+     * @var HostAdapter
      */
-    protected $hostProvider;
+    protected $hostAdapter;
 
     /**
      * Hosts
@@ -80,27 +81,27 @@ abstract class ProjectEnvironment
     }
 
     /**
-     * Set repository reference pattern
+     * Set reference pattern
      *
      * @param string $pattern
      *
      * @return ProjectEnvironment
      */
-    public function setRepositoryReferencePattern($pattern)
+    public function setReferencePattern($pattern)
     {
-        $this->repositoryReferencePattern = (string) $pattern;
+        $this->referencePattern = (string) $pattern;
 
         return $this;
     }
 
     /**
-     * Get repository reference pattern
+     * Get reference pattern
      *
      * @return string
      */
-    public function getRepositoryReferencePattern()
+    public function getReferencePattern()
     {
-        return $this->repositoryReferencePattern;
+        return $this->referencePattern;
     }
 
     /**
@@ -162,27 +163,27 @@ abstract class ProjectEnvironment
     }
 
     /**
-     * Set host provider
+     * Set host adapter
      *
-     * @param HostProvider $hostProvider
+     * @param HostAdapter $hostAdapter
      *
      * @return ProjectEnvironment
      */
-    public function setHostProvider(HostProvider $hostProvider)
+    public function setHostAdapter(HostAdapter $hostAdapter)
     {
-        $this->hostProvider = $hostProvider;
+        $this->hostAdapter = $hostAdapter;
 
         return $this;
     }
 
     /**
-     * Get host provider
+     * Get host adapter
      *
-     * @return HostProvider
+     * @return HostAdapter
      */
-    public function getHostProvider()
+    public function getHostAdapter()
     {
-        return $this->hostProvider;
+        return $this->hostAdapter;
     }
 
     /**

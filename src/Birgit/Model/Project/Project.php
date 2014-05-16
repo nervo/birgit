@@ -4,13 +4,14 @@ namespace Birgit\Model\Project;
 
 use Doctrine\Common\Collections\Collection;
 
-use Birgit\Model\Repository\Repository;
+use Birgit\Component\Type\TypeModel;
+use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Project\Environment\ProjectEnvironment;
 
 /**
  * Project
  */
-abstract class Project
+abstract class Project extends TypeModel
 {
     /**
      * Name
@@ -20,18 +21,25 @@ abstract class Project
     protected $name;
 
     /**
+     * Status
+     *
+     * @var int
+     */
+    protected $status = ProjectStatus::UNKNOWN;
+    
+    /**
+     * References
+     *
+     * @var Collection
+     */
+    protected $references;
+    
+    /**
      * Active
      *
      * @var bool
      */
     protected $active = true;
-
-    /**
-     * Repository
-     *
-     * @var Repository
-     */
-    protected $repository;
 
     /**
      * Environments
@@ -65,6 +73,71 @@ abstract class Project
     }
 
     /**
+     * Set status
+     *
+     * @param int $status
+     *
+     * @return Project
+     */
+    public function setStatus($status)
+    {
+        $this->status = (int) $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return bool
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Add reference
+     *
+     * @param ProjectReference $reference
+     *
+     * @return Project
+     */
+    public function addReference(ProjectReference $reference)
+    {
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+            $reference->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove reference
+     *
+     * @param ProjectReference $reference
+     *
+     * @return Project
+     */
+    public function removeReference(ProjectReference $reference)
+    {
+        $this->references->removeElement($reference);
+
+        return $this;
+    }
+
+    /**
+     * Get references
+     *
+     * @return Collection
+     */
+    public function getReferences()
+    {
+        return $this->references;
+    }
+    
+    /**
      * Set active
      *
      * @param bool $active
@@ -96,30 +169,6 @@ abstract class Project
     public function isActive()
     {
         return $this->active;
-    }
-
-    /**
-     * Set repository
-     *
-     * @param Repository $repository
-     *
-     * @return Project
-     */
-    public function setRepository(Repository $repository)
-    {
-        $this->repository = $repository;
-
-        return $this;
-    }
-
-    /**
-     * Get repository
-     *
-     * @return Repository
-     */
-    public function getRepository()
-    {
-        return $this->repository;
     }
 
     /**
