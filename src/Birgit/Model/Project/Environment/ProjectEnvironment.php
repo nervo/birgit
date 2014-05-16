@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\Collection;
 
 use Birgit\Component\Type\TypeModel;
 use Birgit\Model\Project\Project;
-use Birgit\Model\Host\Adapter\HostAdapter;
 use Birgit\Model\Host\Host;
 
 /**
@@ -41,13 +40,6 @@ abstract class ProjectEnvironment extends TypeModel
      * @var Project
      */
     protected $project;
-
-    /**
-     * Host adapter
-     *
-     * @var HostAdapter
-     */
-    protected $hostAdapter;
 
     /**
      * Hosts
@@ -160,30 +152,6 @@ abstract class ProjectEnvironment extends TypeModel
     public function getProject()
     {
         return $this->project;
-    }
-
-    /**
-     * Set host adapter
-     *
-     * @param HostAdapter $hostAdapter
-     *
-     * @return ProjectEnvironment
-     */
-    public function setHostAdapter(HostAdapter $hostAdapter)
-    {
-        $this->hostAdapter = $hostAdapter;
-
-        return $this;
-    }
-
-    /**
-     * Get host adapter
-     *
-     * @return HostAdapter
-     */
-    public function getHostAdapter()
-    {
-        return $this->hostAdapter;
     }
 
     /**
