@@ -7,7 +7,7 @@ namespace Birgit\Model\Project;
  */
 class ProjectStatus
 {
-	const DOWN    = -1;
-	const UNKNOWN = 0;
-	const UP      = 1;
+    const DOWN    = -1;
+    const UNKNOWN = 0;
+    const UP      = 1;
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Birgit\Domain\Project\Task\Queue\Handler;
 
 use Psr\Log\LoggerInterface;
@@ -20,20 +19,20 @@ class ProjectReferenceCreateTaskQueueHandler extends TaskQueueHandler
     public function __construct(ProjectManager $projectManager, TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
     {
         $this->projectManager = $projectManager;
-        
+
         parent::__construct($taskManager, $eventDispatcher, $logger);
     }
-    
+
     public function getType()
     {
         return 'project_reference_create';
     }
-    
+
     protected function preRun(TaskQueue $taskQueue)
     {
         // Get project name
         $projectName = $taskQueue->getParameters()->get('project_name');
-        
+
         // Get project
         $project = $this->projectManager
             ->findProject($projectName);
@@ -43,7 +42,7 @@ class ProjectReferenceCreateTaskQueueHandler extends TaskQueueHandler
                 $project,
                 $taskQueue->getParameters()->get('project_reference_name')
             );
-        
+
         $this->projectManager
             ->saveProjectReference($projectReference);
 

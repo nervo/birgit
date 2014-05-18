@@ -27,7 +27,7 @@ abstract class TypeModel implements TypeModelInterface
     {
         $this->parameters = new Parameters();
     }
-    
+
     /**
      * Set type
      *

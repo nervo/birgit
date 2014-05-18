@@ -36,21 +36,21 @@ class TaskManager
     {
         $this->doctrineManagerRegistry = $doctrineManagerRegistry;
     }
-    
+
     public function addTaskHandler(TaskHandlerInterface $handler)
     {
         $this->taskHandlers[] = $handler;
-        
+
         return $this;
     }
 
     public function addTaskQueueHandler(TaskQueueHandlerInterface $handler)
     {
         $this->taskQueueHandlers[] = $handler;
-        
+
         return $this;
     }
-    
+
     public function getTaskHandler(Task $task)
     {
         $type = $task->getType();
@@ -76,32 +76,32 @@ class TaskManager
 
         throw new Exception(sprintf('Task queue handler type "%s" not found', $type));
     }
-    
+
     public function createTask($type, Parameters $parameters = null)
     {
         $task = $this->doctrineManagerRegistry
             ->getRepository('Birgit:Task\Task')
             ->create()
                 ->setType((string) $type);
-        
+
         if ($parameters) {
             $task->setParameters($parameters);
         }
-        
+
         return $task;
     }
-    
+
     public function createTaskQueue($type, Parameters $parameters = null)
     {
         $taskQueue = $this->doctrineManagerRegistry
             ->getRepository('Birgit:Task\Queue\TaskQueue')
             ->create()
                 ->setType((string) $type);
-        
+
         if ($parameters) {
             $taskQueue->setParameters($parameters);
         }
-        
+
         return $taskQueue;
     }
 }

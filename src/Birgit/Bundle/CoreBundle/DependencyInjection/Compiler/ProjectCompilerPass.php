@@ -30,7 +30,7 @@ class ProjectCompilerPass implements CompilerPassInterface
                 array(new Reference($handlerServiceId))
             );
         }
-        
+
         // Project environment handlers
         $handlerServiceIds = $container->findTaggedServiceIds('birgit.project_environment_handler');
 

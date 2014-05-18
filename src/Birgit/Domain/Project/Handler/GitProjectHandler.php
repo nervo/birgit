@@ -30,10 +30,10 @@ class GitProjectHandler extends ProjectHandler
         // Get path
         $path = $project->getParameters()
             ->get('path');
-        
-    	// Log
-    	$context->getLogger()->notice(sprintf('Git Project: Get "%s" references', $path));
-        
+
+        // Log
+        $context->getLogger()->notice(sprintf('Git Project: Get "%s" references', $path));
+
         // Find git executable
         $executableFinder = new ExecutableFinder();
         $gitExecutable = $executableFinder->find('git', '/usr/bin/git');

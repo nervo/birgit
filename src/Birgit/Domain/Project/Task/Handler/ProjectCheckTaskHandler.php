@@ -39,10 +39,10 @@ class ProjectCheckTaskHandler extends TaskHandler
     {
         // Get project name
         $projectName = $task->getParameters()->get('project_name');
-        
+
         // Log
         $context->getLogger()->notice(sprintf('Task Handler: Project Check "%s"', $projectName));
-        
+
         // Get project
         $project = $this->projectManager
             ->findProject($projectName);
@@ -71,7 +71,7 @@ class ProjectCheckTaskHandler extends TaskHandler
                     ProjectEvents::PROJECT_STATUS,
                     new ProjectStatusEvent($project->getName(), $status)
                 );
-        }        
+        }
 
         if (!$isUp) {
             return;
@@ -119,7 +119,7 @@ class ProjectCheckTaskHandler extends TaskHandler
                     break;
                 }
             }
-            
+
             if (!$projectReferenceFound) {
                 // Log
                 $context->getLogger()->info(sprintf('Old Project "%s" reference "%s" revision "%s"', $project->getName(), $projectHandlerReferenceName, $projectHandlerReferenceRevisionName));

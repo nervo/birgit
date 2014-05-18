@@ -15,7 +15,7 @@ abstract class TaskQueue extends TypeModel
      * @var Collection
      */
     protected $tasks;
-    
+
     /**
      * Add task
      *

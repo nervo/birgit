@@ -8,7 +8,7 @@
 
         <!-- Task - Manager -->
         <parameter key="birgit.task_manager.class">Birgit\Domain\Task\TaskManager</parameter>
-        
+
         <!-- Task - Queue Handlers -->
         <parameter key="birgit.task_queue_handler.cron.class">Birgit\Domain\Task\Queue\Handler\CronTaskQueueHandler</parameter>
 

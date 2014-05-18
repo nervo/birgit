@@ -22,14 +22,14 @@ abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerI
     protected $taskManager;
     protected $eventDispatcher;
     protected $logger;
-    
+
     public function __construct(TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
     {
         $this->taskManager = $taskManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
     }
-    
+
     protected function preRun(TaskQueue $taskQueue)
     {
         return new TaskQueueContext(
@@ -37,7 +37,7 @@ abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerI
             $this->logger
         );
     }
-    
+
     public function run(TaskQueue $taskQueue)
     {
         // Pre run
@@ -52,24 +52,24 @@ abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerI
                 TaskEvents::TASK_QUEUE . '.' . $this->getType(),
                 new TaskQueueEvent($taskQueue)
             );
-        
+
         $tasks = $taskQueue->getTasks()->toArray();
-        
+
         while ($tasks) {
             $task = array_pop($tasks);
-    
+
             // Log
             $context->getLogger()->notice(sprintf('Task queue Handler: Run task type "%s"', $task->getType()), $task->getParameters()->all());
-            
+
             $this->taskManager
                 ->getTaskHandler($task)
                     ->run($task, $context);
         }
-        
+
         // Post run
         $this->postRun($context);
     }
-    
+
     protected function postRun(TaskQueueContextInterface $context)
     {
     }

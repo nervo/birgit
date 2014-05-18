@@ -25,7 +25,7 @@ class ProjectManager
      * @var array
      */
     protected $projectHandlers = array();
-    
+
     /**
      * Project environment handlers
      *
@@ -37,14 +37,14 @@ class ProjectManager
     {
         $this->doctrineManagerRegistry = $doctrineManagerRegistry;
     }
-    
+
     public function addProjectHandler(ProjectHandlerInterface $handler)
     {
         $this->projectHandlers[] = $handler;
-        
+
         return $this;
     }
-    
+
     public function getProjectHandler(Project $project)
     {
         $type = $project->getType();
@@ -71,7 +71,7 @@ class ProjectManager
             ->getRepository('Birgit:Project\Project')
             ->findOneByName($name);
     }
-    
+
     public function createProject($name, $type, Parameters $parameters = null)
     {
         $project = $this->doctrineManagerRegistry
@@ -79,19 +79,19 @@ class ProjectManager
             ->create()
                 ->setName((string) $name)
                 ->setType((string) $type);
-        
+
         if ($parameters) {
             $project->setParameters($parameters);
         }
-        
-        return $project;        
+
+        return $project;
     }
-    
+
     public function saveProject(Project $project)
     {
         $doctrineManager = $this->doctrineManagerRegistry
             ->getManager();
-        
+
         $doctrineManager->persist($project);
         $doctrineManager->flush();
     }
@@ -102,28 +102,28 @@ class ProjectManager
             ->getRepository('Birgit:Project\Reference\ProjectReference')
             ->create()
                 ->setName((string) $name);
-        
+
         $project->addReference($projectReference);
-        
-        return $projectReference;        
+
+        return $projectReference;
     }
-    
+
     public function saveProjectReference(ProjectReference $projectReference)
     {
         $doctrineManager = $this->doctrineManagerRegistry
             ->getManager();
-        
+
         $doctrineManager->persist($projectReference);
         $doctrineManager->flush();
     }
-    
+
     public function addProjectEnvironmentHandler(ProjectEnvironmentHandlerInterface $handler)
     {
         $this->projectEnvironmentHandlers[] = $handler;
-        
+
         return $this;
     }
-    
+
     public function getProjectEnvironmentHandler(ProjectEnvironment $projectEnvironment)
     {
         $type = $projectEnvironment->getType();
@@ -136,7 +136,7 @@ class ProjectManager
 
         throw new Exception(sprintf('Project environment handler type "%s" not found', $type));
     }
-    
+
     public function createProjectEnvironment(Project $project, $name, $type, Parameters $parameters = null)
     {
         $projectEnvironment = $this->doctrineManagerRegistry
@@ -144,21 +144,21 @@ class ProjectManager
             ->create()
                 ->setName((string) $name)
                 ->setType((string) $type);
-        
+
         if ($parameters) {
             $projectEnvironment->setParameters($parameters);
         }
-        
+
         $project->addEnvironment($projectEnvironment);
-        
-        return $projectEnvironment;        
+
+        return $projectEnvironment;
     }
 
     public function saveProjectEnvironment(ProjectEnvironment $projectEnvironment)
     {
         $doctrineManager = $this->doctrineManagerRegistry
             ->getManager();
-        
+
         $doctrineManager->persist($projectEnvironment);
         $doctrineManager->flush();
     }

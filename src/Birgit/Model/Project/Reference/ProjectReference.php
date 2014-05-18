@@ -62,7 +62,7 @@ abstract class ProjectReference
      */
     public function getName()
     {
-    	return $this->name;
+        return $this->name;
     }
 
     /**

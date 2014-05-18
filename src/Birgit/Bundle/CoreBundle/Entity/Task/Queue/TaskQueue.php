@@ -25,7 +25,7 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
         // Tasks
         $this->tasks = new ArrayCollection();
     }
-    
+
     /**
      * Get id
      *

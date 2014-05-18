@@ -26,14 +26,14 @@ abstract class Project extends TypeModel
      * @var int
      */
     protected $status = ProjectStatus::UNKNOWN;
-    
+
     /**
      * References
      *
      * @var Collection
      */
     protected $references;
-    
+
     /**
      * Active
      *
@@ -136,7 +136,7 @@ abstract class Project extends TypeModel
     {
         return $this->references;
     }
-    
+
     /**
      * Set active
      *

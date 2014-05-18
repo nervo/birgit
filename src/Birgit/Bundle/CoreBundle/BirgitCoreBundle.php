@@ -19,13 +19,13 @@ class BirgitCoreBundle extends Bundle
             ->addCompilerPass(new Compiler\TaskCompilerPass())
             ->addCompilerPass(new Compiler\ProjectCompilerPass());
     }
-    
+
     public function boot()
     {
         $entityManager = $this->container
             ->get('doctrine')
             ->getEntityManager();
-        
+
         if (!Type::hasType('parameters')) {
             Type::addType(
                 'parameters',

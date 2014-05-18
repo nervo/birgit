@@ -6,7 +6,7 @@ interface TypeHandlerInterface
 {
     /**
      * Get type
-     * 
+     *
      * @return string
      */
     public function getType();

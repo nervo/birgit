@@ -11,7 +11,6 @@ interface TypeModelInterface
      */
     public function getType();
 
-
     /**
      * Get parameters
      *

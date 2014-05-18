@@ -12,10 +12,10 @@ class Parameters
             $this->parameters,
             $parameters
         );
-                
+
         return $this;
     }
-    
+
     public function all()
     {
         return $this->parameters;

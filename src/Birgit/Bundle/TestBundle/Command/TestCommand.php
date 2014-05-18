@@ -31,11 +31,11 @@ EOF
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
-    { 
-        // Get task manager
+    {
+        // Get task manager
         $taskManager = $this->getContainer()
             ->get('birgit.task_manager');
-        
+
         $taskQueue = $taskManager
             ->createTaskQueue('cron')
                 ->addTask(
@@ -46,7 +46,7 @@ EOF
                         ))
                     )
                 );
-        
+
         $taskManager
             ->getTaskQueueHandler($taskQueue)
                 ->run($taskQueue);

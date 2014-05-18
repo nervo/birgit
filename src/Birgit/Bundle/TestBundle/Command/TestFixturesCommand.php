@@ -94,11 +94,11 @@ EOF
                 )
             )
         );
-        
+
         // Get project manager
         $projectManager = $this->getContainer()
             ->get('birgit.project_manager');
-        
+
         $projects = array();
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
@@ -111,7 +111,7 @@ EOF
                     ->setActive($projectParameters['active']);
 
             $projectManager->saveProject($projects[$projectName]);
-            
+
             $projectEnvironments = array();
 
             foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
@@ -124,7 +124,7 @@ EOF
                     )
                         ->setReferencePattern($projectEnvironmentParameters['reference_pattern'])
                         ->setActive($projectEnvironmentParameters['active']);
-                
+
                 $projectManager->saveProjectEnvironment($projectEnvironments[$projectEnvironmentName]);
             }
         }

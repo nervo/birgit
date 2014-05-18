@@ -12,7 +12,7 @@ abstract class Task extends TypeModel
      * @var Queue\TaskQueue
      */
     protected $queue;
-    
+
     /**
      * Set queue
      *
