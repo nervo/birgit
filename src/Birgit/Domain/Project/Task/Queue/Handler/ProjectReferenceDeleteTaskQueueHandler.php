@@ -5,6 +5,8 @@ namespace Birgit\Domain\Project\Task\Queue\Handler;
 
 use Psr\Log\LoggerInterface;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Birgit\Domain\Project\ProjectManager;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
@@ -16,11 +18,11 @@ class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
 {
     protected $projectManager;
 
-    public function __construct(ProjectManager $projectManager, TaskManager $taskManager, LoggerInterface $logger)
+    public function __construct(ProjectManager $projectManager, TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
     {
         $this->projectManager = $projectManager;
         
-        parent::__construct($taskManager, $logger);
+        parent::__construct($taskManager, $eventDispatcher, $logger);
     }
     
     public function getType()

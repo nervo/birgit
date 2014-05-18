@@ -4,5 +4,5 @@ namespace Birgit\Domain\Project;
 
 final class ProjectEvents
 {
-	const STATUS = 'birgit.project.status';
+    const PROJECT_STATUS = 'birgit.project.status';
 }

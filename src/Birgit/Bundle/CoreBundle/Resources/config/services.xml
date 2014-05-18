@@ -39,6 +39,7 @@
         <!-- Task - Queue Handlers -->
         <service id="birgit.task_queue_handler.cron" class="%birgit.task_queue_handler.cron.class%">
             <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />
             <tag name="birgit.task_queue_handler" />
         </service>
@@ -68,12 +69,14 @@
         <service id="birgit.task_queue_handler.project_reference_create" class="%birgit.task_queue_handler.project_reference_create.class%">
             <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />
             <tag name="birgit.task_queue_handler" />
         </service>
         <service id="birgit.task_queue_handler.project_reference_delete" class="%birgit.task_queue_handler.project_reference_delete.class%">
             <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />
             <tag name="birgit.task_queue_handler" />
         </service>

@@ -68,9 +68,9 @@ class ProjectCheckTaskHandler extends TaskHandler
             // Dispatch event
             $this->eventDispatcher
                 ->dispatch(
-                    ProjectEvents::STATUS,
+                    ProjectEvents::PROJECT_STATUS,
                     new ProjectStatusEvent($project->getName(), $status)
-                );                
+                );
         }        
 
         if (!$isUp) {

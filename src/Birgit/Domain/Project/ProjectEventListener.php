@@ -19,7 +19,7 @@ class ProjectEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            ProjectEvents::STATUS => 'onProjectStatus'
+            ProjectEvents::PROJECT_STATUS => 'onProjectStatus'
         );
     }
 
