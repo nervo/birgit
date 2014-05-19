@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Birgit\Domain\Project\Handler\ProjectHandlerInterface;
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
+use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 use Birgit\Domain\Project\Environment\Handler\ProjectEnvironmentHandlerInterface;
 use Birgit\Model\Project\Environment\ProjectEnvironment;
 use Birgit\Component\Exception\Exception;
@@ -96,6 +97,13 @@ class ProjectManager
         $doctrineManager->flush();
     }
 
+    public function findProjectReference(Project $project, $name)
+    {
+        return $this->doctrineManagerRegistry
+            ->getRepository('Birgit:Project\Reference\ProjectReference')
+            ->findOneByProjectAndName($project, $name);
+    }
+    
     public function createProjectReference(Project $project, $name)
     {
         $projectReference = $this->doctrineManagerRegistry
@@ -117,6 +125,27 @@ class ProjectManager
         $doctrineManager->flush();
     }
 
+    public function createProjectReferenceRevision(ProjectReference $projectReference, $name)
+    {
+        $projectReferenceRevision = $this->doctrineManagerRegistry
+            ->getRepository('Birgit:Project\Reference\Revision\ProjectReferenceRevision')
+            ->create()
+                ->setName((string) $name);
+
+        $projectReference->addRevision($projectReferenceRevision);
+
+        return $projectReferenceRevision;
+    }
+
+    public function saveProjectReferenceRevision(ProjectReferenceRevision $projectReferenceRevision)
+    {
+        $doctrineManager = $this->doctrineManagerRegistry
+            ->getManager();
+
+        $doctrineManager->persist($projectReferenceRevision);
+        $doctrineManager->flush();
+    }
+    
     public function addProjectEnvironmentHandler(ProjectEnvironmentHandlerInterface $handler)
     {
         $this->projectEnvironmentHandlers[] = $handler;

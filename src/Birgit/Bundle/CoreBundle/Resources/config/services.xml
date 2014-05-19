@@ -24,6 +24,7 @@
         <!-- Project - Task Queue Handlers -->
         <parameter key="birgit.task_queue_handler.project_reference_create.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceCreateTaskQueueHandler</parameter>
         <parameter key="birgit.task_queue_handler.project_reference_delete.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceDeleteTaskQueueHandler</parameter>
+        <parameter key="birgit.task_queue_handler.project_reference_revision_create.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceRevisionCreateTaskQueueHandler</parameter>
 
         <!-- Project - Environment Handlers -->
         <parameter key="birgit.project_environment_handler.local.class">Birgit\Domain\Project\Environment\Handler\LocalProjectEnvironmentHandler</parameter>
@@ -72,7 +73,6 @@
             <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_handler" />
         </service>
-
         <!-- Project - Task Queue Handlers -->
         <service id="birgit.task_queue_handler.project_reference_create" class="%birgit.task_queue_handler.project_reference_create.class%">
             <argument type="service" id="birgit.project_manager" />
@@ -82,6 +82,13 @@
             <tag name="birgit.task_queue_handler" />
         </service>
         <service id="birgit.task_queue_handler.project_reference_delete" class="%birgit.task_queue_handler.project_reference_delete.class%">
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="logger" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+        <service id="birgit.task_queue_handler.project_reference_revision_create" class="%birgit.task_queue_handler.project_reference_revision_create.class%">
             <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
             <argument type="service" id="event_dispatcher" />

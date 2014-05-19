@@ -78,7 +78,7 @@ class ProjectReferenceCheckTaskHandler extends TaskHandler
                     'project_reference_revision_create',
                     new Parameters(array(
                         'project_name'                    => $projectReference->getProject()->getName(),
-                        'project_reference_name'          => $projectReference-getName(),
+                        'project_reference_name'          => $projectReference->getName(),
                         'project_reference_revision_name' => $projectHandlerReferenceRevisionName
                     ))
                 );
