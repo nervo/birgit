@@ -30,7 +30,7 @@ class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
     {
         return 'project_cron';
     }
-    
+
     protected function preRun(TaskQueue $taskQueue)
     {
         // Get project name

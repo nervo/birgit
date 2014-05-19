@@ -39,11 +39,11 @@ class ProjectReferenceRevisionCreateTaskQueueHandler extends TaskQueueHandler
 
         // Get project reference name
         $projectReferenceName = $taskQueue->getParameters()->get('project_reference_name');
-        
+
         // Get project reference
         $projectReference = $this->projectManager
             ->findProjectReference($project, $projectReferenceName);
-        
+
         $projectReferenceRevision = $this->projectManager
             ->createProjectReferenceRevision(
                 $projectReference,

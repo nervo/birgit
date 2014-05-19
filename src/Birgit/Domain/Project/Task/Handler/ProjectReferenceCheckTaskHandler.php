@@ -38,13 +38,13 @@ class ProjectReferenceCheckTaskHandler extends TaskHandler
         if (!$context instanceof ProjectReferenceTaskQueueContextInterface) {
             return;
         }
-        
+
         // Get project reference
         $projectReference = $context->getProjectReference();
 
         // Log
         $context->getLogger()->notice(sprintf('Task Handler: Project Reference Check "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
-        
+
         // Get project handler
         $projectHandler = $this->projectManager
             ->getProjectHandler(

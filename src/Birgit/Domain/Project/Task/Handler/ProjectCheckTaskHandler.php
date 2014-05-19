@@ -47,7 +47,7 @@ class ProjectCheckTaskHandler extends TaskHandler
 
         // Log
         $context->getLogger()->notice(sprintf('Task Handler: Project Check "%s"', $project->getName()));
-        
+
         // Get project handler
         $projectHandler = $this->projectManager
             ->getProjectHandler($project);

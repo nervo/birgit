@@ -31,12 +31,12 @@ class ProjectReferenceRevisionTaskQueueContext extends TaskQueueContext implemen
     {
         return $this->projectReferenceRevision;
     }
-    
+
     public function getProjectReference()
     {
         return $this->getProjectReferenceRevision()->getReference();
     }
-    
+
     public function getProject()
     {
         return $this->getProjectReference()->getProject();

@@ -31,7 +31,7 @@ class ProjectReferenceTaskQueueContext extends TaskQueueContext implements Proje
     {
         return $this->projectReference;
     }
-    
+
     public function getProject()
     {
         return $this->getProjectReference()->getProject();

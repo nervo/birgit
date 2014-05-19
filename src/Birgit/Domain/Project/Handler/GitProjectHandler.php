@@ -69,17 +69,17 @@ class GitProjectHandler extends ProjectHandler
 
         return $references;
     }
-    
+
     public function getReferenceRevision(ProjectReference $projectReference, ContextInterface $context)
     {
         $references = $this->getReferences($projectReference->getProject(), $context);
-        
+
         foreach ($references as $referenceName => $referenceRevision) {
             if ($projectReference->getName() === $referenceName) {
                 return $referenceRevision;
             }
         }
-        
+
         throw new Exception(sprintf('No revision found for Project Reference "%s"', $projectReference->getName()));
     }
 }

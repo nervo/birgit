@@ -103,7 +103,7 @@ class ProjectManager
             ->getRepository('Birgit:Project\Reference\ProjectReference')
             ->findOneByProjectAndName($project, $name);
     }
-    
+
     public function createProjectReference(Project $project, $name)
     {
         $projectReference = $this->doctrineManagerRegistry
@@ -145,7 +145,7 @@ class ProjectManager
         $doctrineManager->persist($projectReferenceRevision);
         $doctrineManager->flush();
     }
-    
+
     public function addProjectEnvironmentHandler(ProjectEnvironmentHandlerInterface $handler)
     {
         $this->projectEnvironmentHandlers[] = $handler;

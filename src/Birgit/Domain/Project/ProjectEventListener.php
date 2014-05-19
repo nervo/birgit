@@ -33,7 +33,7 @@ class ProjectEventListener implements EventSubscriberInterface
     {
         // Get task queue
         $taskQueue = $event->getTaskQueue();
-        
+
         $taskQueue
             ->addTask(
                 $this->taskManager->createTask(
