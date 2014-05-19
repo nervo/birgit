@@ -20,6 +20,7 @@
         <parameter key="birgit.project_handler.git.class">Birgit\Domain\Project\Handler\GitProjectHandler</parameter>
         <!-- Project - Task Handlers -->
         <parameter key="birgit.task_handler.project_check.class">Birgit\Domain\Project\Task\Handler\ProjectCheckTaskHandler</parameter>
+        <parameter key="birgit.task_handler.project_reference_check.class">Birgit\Domain\Project\Task\Handler\ProjectReferenceCheckTaskHandler</parameter>
         <!-- Project - Task Queue Handlers -->
         <parameter key="birgit.task_queue_handler.project_reference_create.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceCreateTaskQueueHandler</parameter>
         <parameter key="birgit.task_queue_handler.project_reference_delete.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceDeleteTaskQueueHandler</parameter>
@@ -51,6 +52,7 @@
         <!-- Project - Event Listener -->
         <service id="birgit.project_event_listener" class="%birgit.project_event_listener.class%">
             <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.task_manager" />
             <tag name="kernel.event_subscriber" />
         </service>
         <!-- Project - Handlers -->
@@ -59,6 +61,12 @@
         </service>
         <!-- Project - Task Handlers -->
         <service id="birgit.task_handler.project_check" class="%birgit.task_handler.project_check.class%">
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_handler" />
+        </service>
+        <service id="birgit.task_handler.project_reference_check" class="%birgit.task_handler.project_reference_check.class%">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />

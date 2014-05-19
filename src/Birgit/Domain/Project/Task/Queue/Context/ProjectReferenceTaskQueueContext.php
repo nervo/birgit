@@ -11,7 +11,7 @@ use Birgit\Model\Project\Reference\ProjectReference;
 /**
  * Project reference Task queue Context
  */
-class ProjectReferenceTaskQueueContext extends TaskQueueContext
+class ProjectReferenceTaskQueueContext extends TaskQueueContext implements ProjectReferenceTaskQueueContextInterface
 {
     protected $projectReference;
 

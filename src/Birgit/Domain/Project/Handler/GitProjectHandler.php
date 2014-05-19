@@ -6,7 +6,9 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 use Birgit\Model\Project\Project;
+use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Component\Context\ContextInterface;
+use Birgit\Component\Exception\Exception;
 
 /**
  * Git Project handler
@@ -66,5 +68,18 @@ class GitProjectHandler extends ProjectHandler
         }
 
         return $references;
+    }
+    
+    public function getReferenceRevision(ProjectReference $projectReference, ContextInterface $context)
+    {
+        $references = $this->getReferences($projectReference->getProject(), $context);
+        
+        foreach ($references as $referenceName => $referenceRevision) {
+            if ($projectReference->getName() === $referenceName) {
+                return $referenceRevision;
+            }
+        }
+        
+        throw new Exception(sprintf('No revision found for Project Reference "%s"', $projectReference->getName()));
     }
 }
