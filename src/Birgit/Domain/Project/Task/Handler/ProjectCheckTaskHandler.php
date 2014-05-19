@@ -13,6 +13,7 @@ use Birgit\Model\Task\Task;
 use Birgit\Model\Project\ProjectStatus;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
 
 /**
  * Project Check Task handler
@@ -37,16 +38,16 @@ class ProjectCheckTaskHandler extends TaskHandler
 
     public function run(Task $task, TaskQueueContext $context)
     {
-        // Get project name
-        $projectName = $task->getParameters()->get('project_name');
-
-        // Log
-        $context->getLogger()->notice(sprintf('Task Handler: Project Check "%s"', $projectName));
+        if (!$context instanceof ProjectTaskQueueContextInterface) {
+            return;
+        }
 
         // Get project
-        $project = $this->projectManager
-            ->findProject($projectName);
+        $project = $context->getProject();
 
+        // Log
+        $context->getLogger()->notice(sprintf('Task Handler: Project Check "%s"', $project->getName()));
+        
         // Get project handler
         $projectHandler = $this->projectManager
             ->getProjectHandler($project);

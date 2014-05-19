@@ -37,14 +37,14 @@ EOF
             ->get('birgit.task_manager');
 
         $taskQueue = $taskManager
-            ->createTaskQueue('cron')
+            ->createTaskQueue(
+                'project_cron',
+                new Parameters(array(
+                    'project_name' => 'test'
+                ))
+            )
                 ->addTask(
-                    $taskManager->createTask(
-                        'project_check',
-                        new Parameters(array(
-                            'project_name' => 'test'
-                        ))
-                    )
+                    $taskManager->createTask('project_check')
                 );
 
         $taskManager
