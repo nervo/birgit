@@ -6,16 +6,16 @@ use Psr\Log\LoggerInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler;
+use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Domain\Project\ProjectManager;
 use Birgit\Domain\Task\TaskManager;
 
 /**
- * Project Cron Task queue Handler
+ * Project Task queue Handler
  */
-class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
+class ProjectTaskQueueHandler extends TaskQueueHandler
 {
     protected $projectManager;
 
@@ -28,7 +28,7 @@ class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
 
     public function getType()
     {
-        return 'project_cron';
+        return 'project';
     }
 
     protected function preRun(TaskQueue $taskQueue)

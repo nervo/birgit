@@ -25,11 +25,13 @@ class ProjectEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TaskEvents::TASK_QUEUE . '.' . 'project_reference_create' => 'onProjectReferenceCreate'
+            TaskEvents::TASK_QUEUE . '.' . 'project'                  => 'onProjectTaskQueue',
+            TaskEvents::TASK_QUEUE . '.' . 'project_reference'        => 'onProjectReferenceTaskQueue',
+            TaskEvents::TASK_QUEUE . '.' . 'project_reference_create' => 'onProjectReferenceCreateTaskQueue'
         );
     }
 
-    public function onProjectReferenceCreate(TaskQueueEvent $event)
+    public function onProjectTaskQueue(TaskQueueEvent $event)
     {
         // Get task queue
         $taskQueue = $event->getTaskQueue();
@@ -37,7 +39,33 @@ class ProjectEventListener implements EventSubscriberInterface
         $taskQueue
             ->addTask(
                 $this->taskManager->createTask(
-                    'project_reference_check'
+                    'project'
+                )
+            );
+    }
+
+    public function onProjectReferenceTaskQueue(TaskQueueEvent $event)
+    {
+        // Get task queue
+        $taskQueue = $event->getTaskQueue();
+
+        $taskQueue
+            ->addTask(
+                $this->taskManager->createTask(
+                    'project_reference'
+                )
+            );
+    }
+
+    public function onProjectReferenceCreateTaskQueue(TaskQueueEvent $event)
+    {
+        // Get task queue
+        $taskQueue = $event->getTaskQueue();
+
+        $taskQueue
+            ->addTask(
+                $this->taskManager->createTask(
+                    'project_reference_environments'
                 )
             );
     }

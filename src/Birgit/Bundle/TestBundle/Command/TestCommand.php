@@ -38,14 +38,11 @@ EOF
 
         $taskQueue = $taskManager
             ->createTaskQueue(
-                'project_cron',
+                'project',
                 new Parameters(array(
                     'project_name' => 'test'
                 ))
-            )
-                ->addTask(
-                    $taskManager->createTask('project_check')
-                );
+            );
 
         $taskManager
             ->getTaskQueueHandler($taskQueue)

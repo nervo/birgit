@@ -13,9 +13,9 @@ use Birgit\Domain\Task\TaskManager;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 
 /**
- * Project reference Check Task handler
+ * Project reference Task handler
  */
-class ProjectReferenceCheckTaskHandler extends TaskHandler
+class ProjectReferenceTaskHandler extends TaskHandler
 {
     protected $eventDispatcher;
     protected $projectManager;
@@ -30,7 +30,7 @@ class ProjectReferenceCheckTaskHandler extends TaskHandler
 
     public function getType()
     {
-        return 'project_reference_check';
+        return 'project_reference';
     }
 
     public function run(Task $task, TaskQueueContext $context)
@@ -43,7 +43,7 @@ class ProjectReferenceCheckTaskHandler extends TaskHandler
         $projectReference = $context->getProjectReference();
 
         // Log
-        $context->getLogger()->notice(sprintf('Task Handler: Project Reference Check "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
+        $context->getLogger()->notice(sprintf('Task Handler: Project Reference "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
 
         // Get project handler
         $projectHandler = $this->projectManager
@@ -66,7 +66,21 @@ class ProjectReferenceCheckTaskHandler extends TaskHandler
             }
         }
 
-        if (!$projectReferenceRevisionFound) {
+        if ($projectReferenceRevisionFound) {
+            $taskQueue = $this->taskManager
+                ->createTaskQueue(
+                    'project_reference_revision',
+                    new Parameters(array(
+                        'project_name'                    => $projectReference->getProject()->getName(),
+                        'project_reference_name'          => $projectReference->getName(),
+                        'project_reference_revision_name' => $projectHandlerReferenceRevisionName
+                    ))
+                );
+
+            $this->taskManager
+                ->getTaskQueueHandler($taskQueue)
+                    ->run($taskQueue);
+        } else {
             // Log
             $context->getLogger()->info(sprintf('New Project "%s" reference "%s" revision "%s"', $projectReference->getProject()->getName(), $projectReference->getName(), $projectHandlerReferenceRevisionName));
 

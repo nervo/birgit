@@ -125,6 +125,13 @@ class ProjectManager
         $doctrineManager->flush();
     }
 
+    public function findProjectReferenceRevision(ProjectReference $projectReference, $name)
+    {
+        return $this->doctrineManagerRegistry
+            ->getRepository('Birgit:Project\Reference\Revision\ProjectReferenceRevision')
+            ->findOneByProjectReferenceAndName($projectReference, $name);
+    }
+
     public function createProjectReferenceRevision(ProjectReference $projectReference, $name)
     {
         $projectReferenceRevision = $this->doctrineManagerRegistry

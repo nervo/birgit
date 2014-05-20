@@ -16,9 +16,9 @@ use Birgit\Domain\Task\TaskManager;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
 
 /**
- * Project Check Task handler
+ * Project Task handler
  */
-class ProjectCheckTaskHandler extends TaskHandler
+class ProjectTaskHandler extends TaskHandler
 {
     protected $eventDispatcher;
     protected $projectManager;
@@ -33,7 +33,7 @@ class ProjectCheckTaskHandler extends TaskHandler
 
     public function getType()
     {
-        return 'project_check';
+        return 'project';
     }
 
     public function run(Task $task, TaskQueueContext $context)
@@ -46,7 +46,7 @@ class ProjectCheckTaskHandler extends TaskHandler
         $project = $context->getProject();
 
         // Log
-        $context->getLogger()->notice(sprintf('Task Handler: Project Check "%s"', $project->getName()));
+        $context->getLogger()->notice(sprintf('Task Handler: Project "%s"', $project->getName()));
 
         // Get project handler
         $projectHandler = $this->projectManager
@@ -82,35 +82,6 @@ class ProjectCheckTaskHandler extends TaskHandler
         $projectHandlerReferences = $projectHandler
             ->getReferences($project, $context);
 
-        // Find created project references
-        foreach ($projectHandlerReferences as $projectHandlerReferenceName => $projectHandlerReferenceRevisionName) {
-            $projectReferenceFound = false;
-            foreach ($project->getReferences() as $projectReference) {
-                if ($projectReference->getName() === $projectHandlerReferenceName) {
-                    $projectReferenceFound = true;
-                    break;
-                }
-            }
-
-            if (!$projectReferenceFound) {
-                // Log
-                $context->getLogger()->info(sprintf('New Project "%s" reference "%s" revision "%s"', $project->getName(), $projectHandlerReferenceName, $projectHandlerReferenceRevisionName));
-
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
-                        'project_reference_create',
-                        new Parameters(array(
-                            'project_name'           => $project->getName(),
-                            'project_reference_name' => $projectHandlerReferenceName
-                        ))
-                    );
-
-                $this->taskManager
-                    ->getTaskQueueHandler($taskQueue)
-                        ->run($taskQueue);
-            }
-        }
-
         // Find deleted project references
         foreach ($project->getReferences() as $projectReference) {
             $projectReferenceFound = false;
@@ -128,6 +99,48 @@ class ProjectCheckTaskHandler extends TaskHandler
                 $taskQueue = $this->taskManager
                     ->createTaskQueue(
                         'project_reference_delete',
+                        new Parameters(array(
+                            'project_name'           => $project->getName(),
+                            'project_reference_name' => $projectHandlerReferenceName
+                        ))
+                    );
+
+                $this->taskManager
+                    ->getTaskQueueHandler($taskQueue)
+                        ->run($taskQueue);
+            }
+        }
+
+        // Find created project references
+        foreach ($projectHandlerReferences as $projectHandlerReferenceName => $projectHandlerReferenceRevisionName) {
+            $projectReferenceFound = false;
+            foreach ($project->getReferences() as $projectReference) {
+                if ($projectReference->getName() === $projectHandlerReferenceName) {
+                    $projectReferenceFound = true;
+                    break;
+                }
+            }
+
+            if ($projectReferenceFound) {
+                $taskQueue = $this->taskManager
+                    ->createTaskQueue(
+                        'project_reference',
+                        new Parameters(array(
+                            'project_name'           => $project->getName(),
+                            'project_reference_name' => $projectHandlerReferenceName
+                        ))
+                    );
+
+                $this->taskManager
+                    ->getTaskQueueHandler($taskQueue)
+                        ->run($taskQueue);
+            } else {
+                // Log
+                $context->getLogger()->info(sprintf('New Project "%s" reference "%s" revision "%s"', $project->getName(), $projectHandlerReferenceName, $projectHandlerReferenceRevisionName));
+
+                $taskQueue = $this->taskManager
+                    ->createTaskQueue(
+                        'project_reference_create',
                         new Parameters(array(
                             'project_name'           => $project->getName(),
                             'project_reference_name' => $projectHandlerReferenceName
