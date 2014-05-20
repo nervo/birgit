@@ -57,7 +57,7 @@ class ProjectReferenceTaskHandler extends TaskHandler
             $context
         );
 
-        // Find created project reference revision
+        // Find project reference revisions
         $projectReferenceRevisionFound = false;
         foreach ($projectReference->getRevisions() as $projectReferenceRevision) {
             if ($projectReferenceRevision->getName() === $projectHandlerReferenceRevisionName) {

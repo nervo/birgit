@@ -82,7 +82,7 @@ class ProjectTaskHandler extends TaskHandler
         $projectHandlerReferences = $projectHandler
             ->getReferences($project, $context);
 
-        // Find deleted project references
+        // Find project references to delete
         foreach ($project->getReferences() as $projectReference) {
             $projectReferenceFound = false;
             foreach ($projectHandlerReferences as $projectHandlerReferenceName => $projectHandlerReferenceRevisionName) {
@@ -111,7 +111,7 @@ class ProjectTaskHandler extends TaskHandler
             }
         }
 
-        // Find created project references
+        // Find project references
         foreach ($projectHandlerReferences as $projectHandlerReferenceName => $projectHandlerReferenceRevisionName) {
             $projectReferenceFound = false;
             foreach ($project->getReferences() as $projectReference) {

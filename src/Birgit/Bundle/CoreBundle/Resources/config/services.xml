@@ -26,9 +26,12 @@
         <parameter key="birgit.task_queue_handler.project_reference_delete.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceDeleteTaskQueueHandler</parameter>
         <parameter key="birgit.task_queue_handler.project_reference_revision.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceRevisionTaskQueueHandler</parameter>
         <parameter key="birgit.task_queue_handler.project_reference_revision_create.class">Birgit\Domain\Project\Task\Queue\Handler\ProjectReferenceRevisionCreateTaskQueueHandler</parameter>
-
         <!-- Project - Environment Handlers -->
         <parameter key="birgit.project_environment_handler.local.class">Birgit\Domain\Project\Environment\Handler\LocalProjectEnvironmentHandler</parameter>
+
+        <!-- Host - Task Queue Handlers -->
+        <parameter key="birgit.task_queue_handler.host.class">Birgit\Domain\Host\Task\Queue\Handler\HostTaskQueueHandler</parameter>
+        <parameter key="birgit.task_queue_handler.host_create.class">Birgit\Domain\Host\Task\Queue\Handler\HostCreateTaskQueueHandler</parameter>
 
         <!-- Cron - Task Queue Handlers -->
         <parameter key="birgit.task_queue_handler.cron.class">Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler</parameter>
@@ -39,6 +42,15 @@
 
     <services>
 
+        <!-- Repositories -->
+        <service id="birgit.host_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Host\HostRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Host\Host</argument>
+        </service>
+        
         <!-- Task - Manager -->
         <service id="birgit.task_manager" class="%birgit.task_manager.class%">
             <argument type="service" id="doctrine" />
@@ -120,11 +132,28 @@
             <argument type="service" id="logger" />
             <tag name="birgit.task_queue_handler" />
         </service>
-
         <!-- Project - Environment Handlers -->
         <service id="birgit.project_environment_handler.local" class="%birgit.project_environment_handler.local.class%">
             <argument>%kernel.root_dir%</argument>
             <tag name="birgit.project_environment_handler" />
+        </service>
+
+        <!-- Host - Task Queue Handlers -->
+        <service id="birgit.task_queue_handler.host" class="%birgit.task_queue_handler.host.class%">
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.host_repository" />
+            <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="logger" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+        <service id="birgit.task_queue_handler.host_create" class="%birgit.task_queue_handler.host_create.class%">
+            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.host_repository" />
+            <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="logger" />
+            <tag name="birgit.task_queue_handler" />
         </service>
 
         <!-- Cron - Task Queue Handlers -->

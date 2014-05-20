@@ -173,6 +173,13 @@ class ProjectManager
         throw new Exception(sprintf('Project environment handler type "%s" not found', $type));
     }
 
+    public function findProjectEnvironment(Project $project, $name)
+    {
+        return $this->doctrineManagerRegistry
+            ->getRepository('Birgit:Project\Environment\ProjectEnvironment')
+            ->findOneByProjectAndName($project, $name);
+    }
+    
     public function createProjectEnvironment(Project $project, $name, $type, Parameters $parameters = null)
     {
         $projectEnvironment = $this->doctrineManagerRegistry

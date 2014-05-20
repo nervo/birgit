@@ -7,13 +7,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Domain\Project\ProjectManager;
-use Birgit\Domain\Project\ProjectEvents;
-use Birgit\Domain\Project\Event\ProjectStatusEvent;
 use Birgit\Model\Task\Task;
-use Birgit\Model\Project\ProjectStatus;
-use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Task\TaskManager;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Component\Parameters\Parameters;
 
 /**
  * Project reference Environments Task handler
@@ -48,8 +45,64 @@ class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
         // Log
         $context->getLogger()->notice(sprintf('Task Handler: Project Reference Environments "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
 
+        // Find hosts to delete
+        foreach ($projectReference->getHosts() as $host) {
+            if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
+                $taskQueue = $this->taskManager
+                    ->createTaskQueue(
+                        'host_delete',
+                        new Parameters(array(
+                            'project_name'             => $projectReference->getProject()->getName(),
+                            'project_reference_name'   => $projectReference->getName(),
+                            'project_environment_name' => $host->getProjectEnvironment()->getName()
+                        ))
+                    );
+
+                $this->taskManager
+                    ->getTaskQueueHandler($taskQueue)
+                        ->run($taskQueue);
+            }
+        }
+
+        // Find hosts
         foreach ($projectReference->getProject()->getEnvironments() as $projectEnvironment) {
-        	var_dump($projectEnvironment->getName());
+            $hostFound = false;
+            foreach ($projectReference->getHosts() as $host) {
+                if ($host->getProjectEnvironment() === $projectEnvironment) {
+                    $hostFound = true;
+                    break;
+                }
+            }
+            
+            if ($hostFound) {
+                $taskQueue = $this->taskManager
+                    ->createTaskQueue(
+                        'host',
+                        new Parameters(array(
+                            'project_name'             => $projectReference->getProject()->getName(),
+                            'project_reference_name'   => $projectReference->getName(),
+                            'project_environment_name' => $projectEnvironment->getName()
+                        ))
+                    );
+
+                $this->taskManager
+                    ->getTaskQueueHandler($taskQueue)
+                        ->run($taskQueue);                
+            } else {
+                $taskQueue = $this->taskManager
+                    ->createTaskQueue(
+                        'host_create',
+                        new Parameters(array(
+                            'project_name'             => $projectReference->getProject()->getName(),
+                            'project_reference_name'   => $projectReference->getName(),
+                            'project_environment_name' => $projectEnvironment->getName()
+                        ))
+                    );
+
+                $this->taskManager
+                    ->getTaskQueueHandler($taskQueue)
+                        ->run($taskQueue);
+            }
         }
     }
 }

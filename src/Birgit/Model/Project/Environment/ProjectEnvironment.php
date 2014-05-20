@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Birgit\Component\Type\TypeModel;
 use Birgit\Model\Project\Project;
+use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Host\Host;
 
 /**
@@ -96,6 +97,21 @@ abstract class ProjectEnvironment extends TypeModel
         return $this->referencePattern;
     }
 
+    /**
+     * Match reference
+     * 
+     * @param ProjectReference $reference
+     * 
+     * @return bool
+     */
+    public function matchReference(ProjectReference $reference)
+    {
+        return fnmatch(
+            $this->getReferencePattern(),
+            $reference->getName()
+        );
+    }
+    
     /**
      * Set active
      *
