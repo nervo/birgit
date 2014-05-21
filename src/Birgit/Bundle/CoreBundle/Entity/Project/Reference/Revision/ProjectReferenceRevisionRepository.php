@@ -12,13 +12,23 @@ use Birgit\Bundle\CoreBundle\Entity\Project\Reference\Revision\ProjectReferenceR
  */
 class ProjectReferenceRevisionRepository extends EntityRepository implements ProjectReferenceRevisionRepositoryInterface
 {
-    public function create()
+    public function create($name, ProjectReference $projectReference)
     {
-        $projectReferenceRevision = new ProjectReferenceRevision();
+        $projectReferenceRevision = $this->createEntity();
+        
+        $projectReferenceRevision
+            ->setName((string) $name);
+
+        $projectReference->addRevision($projectReferenceRevision);
         
         return $projectReferenceRevision;
     }
 
+    public function save(ProjectReferenceRevision $projectReferenceRevision)
+    {
+        $this->saveEntity($projectReferenceRevision);
+    }
+    
     public function findOneByProjectReferenceAndName(ProjectReference $projectReference, $name)
     {
         return $this->findOneBy(array(
