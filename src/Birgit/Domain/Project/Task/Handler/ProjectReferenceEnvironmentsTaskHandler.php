@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
-use Birgit\Domain\Project\ProjectManager;
 use Birgit\Model\Task\Task;
 use Birgit\Domain\Task\TaskManager;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
@@ -17,15 +16,15 @@ use Birgit\Component\Parameters\Parameters;
  */
 class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
 {
-    protected $eventDispatcher;
-    protected $projectManager;
     protected $taskManager;
+    protected $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, ProjectManager $projectManager, TaskManager $taskManager)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->projectManager  = $projectManager;
+    public function __construct(
+        TaskManager $taskManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->taskManager     = $taskManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getType()

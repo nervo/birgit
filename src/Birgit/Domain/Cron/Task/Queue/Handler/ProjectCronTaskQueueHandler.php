@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
-use Birgit\Domain\Project\ProjectManager;
+use Birgit\Model\Project\ProjectRepositoryInterface;
 use Birgit\Domain\Task\TaskManager;
 
 /**
@@ -17,11 +17,15 @@ use Birgit\Domain\Task\TaskManager;
  */
 class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
 {
-    protected $projectManager;
+    protected $projectRepository;
 
-    public function __construct(ProjectManager $projectManager, TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
-    {
-        $this->projectManager = $projectManager;
+    public function __construct(
+        ProjectRepositoryInterface $projectRepository,
+        TaskManager $taskManager,
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
+    ) {
+        $this->projectRepository = $projectRepository;
 
         parent::__construct($taskManager, $eventDispatcher, $logger);
     }
@@ -33,12 +37,11 @@ class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
 
     protected function preRun(TaskQueue $taskQueue)
     {
-        // Get project name
-        $projectName = $taskQueue->getParameters()->get('project_name');
-
         // Get project
-        $project = $this->projectManager
-            ->findProject($projectName);
+        $project = $this->projectRepository
+            ->get(
+                $taskQueue->getParameters()->get('project_name')
+            );
 
         return new ProjectTaskQueueContext(
             $project,

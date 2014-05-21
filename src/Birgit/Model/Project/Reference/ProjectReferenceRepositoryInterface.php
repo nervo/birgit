@@ -2,9 +2,11 @@
 
 namespace Birgit\Model\Project\Reference;
 
+use Birgit\Model\ModelRepositoryInterface;
+
 /**
  * Project Reference Repository Interface
  */
-interface ProjectReferenceRepositoryInterface
+interface ProjectReferenceRepositoryInterface extends ModelRepositoryInterface
 {
 }

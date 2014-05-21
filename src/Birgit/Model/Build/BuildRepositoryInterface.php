@@ -2,9 +2,11 @@
 
 namespace Birgit\Model\Build;
 
+use Birgit\Model\ModelRepositoryInterface;
+
 /**
  * Build Repository Interface
  */
-interface BuildRepositoryInterface
+interface BuildRepositoryInterface extends ModelRepositoryInterface
 {
 }

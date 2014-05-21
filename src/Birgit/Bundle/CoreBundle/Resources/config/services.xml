@@ -63,9 +63,8 @@
         </service>
         <!-- Project - Task Handlers -->
         <service id="birgit.task_handler.project" class="%birgit.task_handler.project.class%">
-            <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="birgit.task_handler" />
         </service>
         <service id="birgit.task_handler.project_reference" class="%birgit.task_handler.project_reference.class%">
@@ -131,7 +130,9 @@
 
         <!-- Host - Task Queue Handlers -->
         <service id="birgit.task_queue_handler.host" class="%birgit.task_queue_handler.host.class%">
-            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.project_repository" />
+            <argument type="service" id="birgit.project_reference_repository" />
+            <argument type="service" id="birgit.project_environment_repository" />
             <argument type="service" id="birgit.host_repository" />
             <argument type="service" id="birgit.task_manager" />
             <argument type="service" id="event_dispatcher" />
@@ -139,7 +140,9 @@
             <tag name="birgit.task_queue_handler" />
         </service>
         <service id="birgit.task_queue_handler.host_create" class="%birgit.task_queue_handler.host_create.class%">
-            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.project_repository" />
+            <argument type="service" id="birgit.project_reference_repository" />
+            <argument type="service" id="birgit.project_environment_repository" />
             <argument type="service" id="birgit.host_repository" />
             <argument type="service" id="birgit.task_manager" />
             <argument type="service" id="event_dispatcher" />
@@ -155,14 +158,15 @@
             <tag name="birgit.task_queue_handler" />
         </service>
         <service id="birgit.task_queue_handler.project_cron" class="%birgit.task_queue_handler.project_cron.class%">
-            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.project_repository" />
             <argument type="service" id="birgit.task_manager" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />
             <tag name="birgit.task_queue_handler" />
         </service>
         <service id="birgit.task_queue_handler.project_reference_cron" class="%birgit.task_queue_handler.project_reference_cron.class%">
-            <argument type="service" id="birgit.project_manager" />
+            <argument type="service" id="birgit.project_repository" />
+            <argument type="service" id="birgit.project_reference_repository" />
             <argument type="service" id="birgit.task_manager" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />

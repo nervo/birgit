@@ -9,7 +9,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
-use Birgit\Domain\Project\ProjectManager;
+use Birgit\Model\Project\ProjectRepositoryInterface;
+use Birgit\Model\Project\Reference\ProjectReferenceRepositoryInterface;
 use Birgit\Domain\Task\TaskManager;
 
 /**
@@ -17,35 +18,41 @@ use Birgit\Domain\Task\TaskManager;
  */
 class ProjectReferenceCronTaskQueueHandler extends CronTaskQueueHandler
 {
-    protected $projectManager;
+    protected $projectRepository;
+    protected $projectReferenceRepository;
 
-    public function __construct(ProjectManager $projectManager, TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
-    {
-        $this->projectManager = $projectManager;
+    public function __construct(
+        ProjectRepositoryInterface $projectRepository,
+        ProjectReferenceRepositoryInterface $projectReferenceRepository,
+        TaskManager $taskManager,
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
+    ) {
+        $this->projectRepository = $projectRepository;
+        $this->projectReferenceRepository = $projectReferenceRepository;
 
         parent::__construct($taskManager, $eventDispatcher, $logger);
     }
 
     public function getType()
     {
-        return 'project_cron';
+        return 'project_reference_cron';
     }
 
     protected function preRun(TaskQueue $taskQueue)
     {
-        // Get project name
-        $projectName = $taskQueue->getParameters()->get('project_name');
-
         // Get project
-        $project = $this->projectManager
-            ->findProject($projectName);
-
-        // Get project reference name
-        $projectReferenceName = $taskQueue->getParameters()->get('project_reference_name');
+        $project = $this->projectRepository
+            ->get(
+                $taskQueue->getParameters()->get('project_name')
+            );
 
         // Get project reference
-        $projectReference = $this->projectManager
-            ->findProjectReference($project, $projectReferenceName);
+        $projectReference = $this->projectReferenceRepository
+            ->get(
+                $taskQueue->getParameters()->get('project_reference_name'),
+                $project
+            );
 
         return new ProjectReferenceTaskQueueContext(
             $projectReference,
