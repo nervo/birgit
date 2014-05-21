@@ -14,13 +14,10 @@ class TaskQueueContext extends Context implements TaskQueueContextInterface
 {
     protected $taskQueue;
 
-    /**
-     * Constructor
-     *
-     * @param LoggerInterface $logger
-     */
-    public function __construct(TaskQueue $taskQueue, LoggerInterface $logger)
-    {
+    public function __construct(
+        TaskQueue $taskQueue,
+        LoggerInterface $logger
+    ) {
         $this->taskQueue = $taskQueue;
 
         parent::__construct($logger);

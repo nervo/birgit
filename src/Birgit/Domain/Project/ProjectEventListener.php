@@ -6,20 +6,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Birgit\Domain\Task\TaskEvents;
 use Birgit\Domain\Task\Event\TaskQueueEvent;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Model\ModelManagerInterface;
 
 /**
  * Project EventListener
  */
 class ProjectEventListener implements EventSubscriberInterface
 {
-    protected $projectManager;
-    protected $taskManager;
+    protected $modelManager;
 
-    public function __construct(ProjectManager $projectManager, TaskManager $taskManager)
-    {
-        $this->projectManager = $projectManager;
-        $this->taskManager    = $taskManager;
+    public function __construct(
+        ModelManagerInterface $modelManager
+    ) {
+        $this->modelManager = $modelManager;
     }
 
     public static function getSubscribedEvents()
@@ -38,9 +37,11 @@ class ProjectEventListener implements EventSubscriberInterface
 
         $taskQueue
             ->addTask(
-                $this->taskManager->createTask(
-                    'project'
-                )
+                $this->modelManager
+                    ->getTaskRepository()
+                    ->create(
+                        'project'
+                    )
             );
     }
 
@@ -51,9 +52,11 @@ class ProjectEventListener implements EventSubscriberInterface
 
         $taskQueue
             ->addTask(
-                $this->taskManager->createTask(
-                    'project_reference'
-                )
+                $this->modelManager
+                    ->getTaskRepository()
+                    ->create(
+                        'project_reference'
+                    )
             );
     }
 
@@ -64,9 +67,11 @@ class ProjectEventListener implements EventSubscriberInterface
 
         $taskQueue
             ->addTask(
-                $this->taskManager->createTask(
-                    'project_reference_environments'
-                )
+                $this->modelManager
+                    ->getTaskRepository()
+                    ->create(
+                        'project_reference_environments'
+                    )
             );
     }
 }

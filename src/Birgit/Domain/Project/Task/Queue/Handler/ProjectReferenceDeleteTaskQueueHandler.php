@@ -6,20 +6,24 @@ use Psr\Log\LoggerInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Birgit\Domain\Project\ProjectManager;
-use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
+use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Task\TaskManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 
 class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
 {
-    protected $projectManager;
+    protected $modelManager;
 
-    public function __construct(ProjectManager $projectManager, TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
-    {
-        $this->projectManager = $projectManager;
+    public function __construct(
+        TaskManager $taskManager,
+        ModelManagerInterface $modelManager,
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
+    ) {
+        $this->modelManager = $modelManager;
 
         parent::__construct($taskManager, $eventDispatcher, $logger);
     }
@@ -31,17 +35,19 @@ class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
 
     protected function preRun(TaskQueue $taskQueue)
     {
-        // Get project name
-        $projectName = $taskQueue->getParameters()->get('project_name');
-
         // Get project
-        $project = $this->projectManager
-            ->findProject($projectName);
+        $project = $this->modelManager
+            ->getProjectRepository()
+            ->get(
+                $taskQueue->getParameters()->get('project_name')
+            );
 
-        $projectReference = $this->projectManager
-            ->findProjectReference(
-                $project,
-                $taskQueue->getParameters()->get('project_reference_name')
+        // Get project reference
+        $projectReference = $this->modelManager
+            ->getProjectReferenceRepository()
+            ->get(
+                $taskQueue->getParameters()->get('project_reference_name'),
+                $project
             );
 
         return new ProjectReferenceTaskQueueContext(
@@ -53,8 +59,9 @@ class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
 
     protected function postRun(TaskQueueContextInterface $context)
     {
-        $this->projectManager
-            ->deleteProjectReference(
+        $this->modelManager
+            ->getProjectReferenceRepository()
+            ->delete(
                 $context->getProjectReference()
             );
     }

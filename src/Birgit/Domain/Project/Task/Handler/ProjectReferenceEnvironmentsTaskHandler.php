@@ -8,6 +8,7 @@ use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Model\Task\Task;
 use Birgit\Domain\Task\TaskManager;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Parameters\Parameters;
 
@@ -17,13 +18,16 @@ use Birgit\Component\Parameters\Parameters;
 class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
 {
     protected $taskManager;
+    protected $modelManager;
     protected $eventDispatcher;
 
     public function __construct(
         TaskManager $taskManager,
+        ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->taskManager     = $taskManager;
+        $this->modelManager = $modelManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -47,8 +51,9 @@ class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
         // Find hosts to delete
         foreach ($projectReference->getHosts() as $host) {
             if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
+                $taskQueue = $this->modelManager
+                    ->getTaskQueueRepository()
+                    ->create(
                         'host_delete',
                         new Parameters(array(
                             'project_name'             => $projectReference->getProject()->getName(),
@@ -74,8 +79,9 @@ class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
             }
             
             if ($hostFound) {
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
+                $taskQueue = $this->modelManager
+                    ->getTaskQueueRepository()
+                    ->create(
                         'host',
                         new Parameters(array(
                             'project_name'             => $projectReference->getProject()->getName(),
@@ -88,8 +94,9 @@ class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
                     ->getTaskQueueHandler($taskQueue)
                         ->run($taskQueue);                
             } else {
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
+                $taskQueue = $this->modelManager
+                    ->getTaskQueueRepository()
+                    ->create(
                         'host_create',
                         new Parameters(array(
                             'project_name'             => $projectReference->getProject()->getName(),

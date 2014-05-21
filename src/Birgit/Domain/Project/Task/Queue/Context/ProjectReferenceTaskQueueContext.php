@@ -15,13 +15,11 @@ class ProjectReferenceTaskQueueContext extends TaskQueueContext implements Proje
 {
     protected $projectReference;
 
-    /**
-     * Constructor
-     *
-     * @param LoggerInterface $logger
-     */
-    public function __construct(ProjectReference $projectReference, TaskQueue $queue, LoggerInterface $logger)
-    {
+    public function __construct(
+        ProjectReference $projectReference,
+        TaskQueue $queue,
+        LoggerInterface $logger
+    ) {
         $this->projectReference = $projectReference;
 
         parent::__construct($queue, $logger);

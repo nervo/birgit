@@ -13,6 +13,7 @@ use Birgit\Model\Task\Task;
 use Birgit\Model\Project\ProjectStatus;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Task\TaskManager;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
 
 /**
@@ -20,15 +21,21 @@ use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
  */
 class ProjectTaskHandler extends TaskHandler
 {
-    protected $eventDispatcher;
     protected $projectManager;
     protected $taskManager;
+    protected $modelManager;
+    protected $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, ProjectManager $projectManager, TaskManager $taskManager)
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        ProjectManager $projectManager,
+        TaskManager $taskManager,
+        ModelManagerInterface $modelManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->projectManager  = $projectManager;
         $this->taskManager     = $taskManager;
+        $this->modelManager    = $modelManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getType()
@@ -63,8 +70,9 @@ class ProjectTaskHandler extends TaskHandler
             // Update project status
             $project->setStatus($status);
 
-            $this->projectManager
-                ->saveProject($project);
+            $this->modelManager
+                ->getProjectRepository()
+                ->save($project);
 
             // Dispatch event
             $this->eventDispatcher
@@ -96,8 +104,9 @@ class ProjectTaskHandler extends TaskHandler
                 // Log
                 $context->getLogger()->info(sprintf('Old Project "%s" reference "%s" revision "%s"', $project->getName(), $projectHandlerReferenceName, $projectHandlerReferenceRevisionName));
 
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
+                $taskQueue =  $this->modelManager
+                    ->getTaskQueueRepository()
+                    ->create(
                         'project_reference_delete',
                         new Parameters(array(
                             'project_name'           => $project->getName(),
@@ -122,8 +131,9 @@ class ProjectTaskHandler extends TaskHandler
             }
 
             if ($projectReferenceFound) {
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
+                $taskQueue =  $this->modelManager
+                    ->getTaskQueueRepository()
+                    ->create(
                         'project_reference',
                         new Parameters(array(
                             'project_name'           => $project->getName(),
@@ -138,8 +148,9 @@ class ProjectTaskHandler extends TaskHandler
                 // Log
                 $context->getLogger()->info(sprintf('New Project "%s" reference "%s" revision "%s"', $project->getName(), $projectHandlerReferenceName, $projectHandlerReferenceRevisionName));
 
-                $taskQueue = $this->taskManager
-                    ->createTaskQueue(
+                $taskQueue =  $this->modelManager
+                    ->getTaskQueueRepository()
+                    ->create(
                         'project_reference_create',
                         new Parameters(array(
                             'project_name'           => $project->getName(),

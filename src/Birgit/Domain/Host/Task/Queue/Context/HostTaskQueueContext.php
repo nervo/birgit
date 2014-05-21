@@ -20,8 +20,11 @@ class HostTaskQueueContext extends TaskQueueContext implements HostTaskQueueCont
      *
      * @param LoggerInterface $logger
      */
-    public function __construct(Host $host, TaskQueue $queue, LoggerInterface $logger)
-    {
+    public function __construct(
+        Host $host,
+        TaskQueue $queue,
+        LoggerInterface $logger
+    ) {
         $this->host = $host;
 
         parent::__construct($queue, $logger);

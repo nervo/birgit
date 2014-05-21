@@ -9,33 +9,21 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Host\Task\Queue\Context\HostTaskQueueContext;
-use Birgit\Model\Project\ProjectRepositoryInterface;
-use Birgit\Model\Project\Reference\ProjectReferenceRepositoryInterface;
-use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Task\TaskManager;
 use Birgit\Model\Task\Queue\TaskQueue;
-use Birgit\Model\Host\HostRepositoryInterface;
 
 class HostTaskQueueHandler extends TaskQueueHandler
 {
-    protected $projectRepository;
-    protected $projectReferenceRepository;
-    protected $projectEnvironmentRepository;
-    protected $hostRepository;
+    protected $modelManager;
 
     public function __construct(
-        ProjectRepositoryInterface $projectRepository,
-        ProjectReferenceRepositoryInterface $projectReferenceRepository,
-        ProjectEnvironmentRepositoryInterface $projectEnvironmentRepository,
-        HostRepositoryInterface $hostRepository,
         TaskManager $taskManager,
+        ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
-        $this->projectRepository = $projectRepository;
-        $this->projectReferenceRepository = $projectReferenceRepository;
-        $this->projectEnvironmentRepository = $projectEnvironmentRepository;
-        $this->hostRepository = $hostRepository;
+        $this->modelManager = $modelManager;
 
         parent::__construct($taskManager, $eventDispatcher, $logger);
     }
@@ -48,27 +36,31 @@ class HostTaskQueueHandler extends TaskQueueHandler
     protected function preRun(TaskQueue $taskQueue)
     {
         // Get project
-        $project = $this->projectRepository
+        $project = $this->modelManager
+            ->getProjectRepository()
             ->get(
                 $taskQueue->getParameters()->get('project_name')
             );
 
         // Get project reference
-        $projectReference = $this->projectReferenceRepository
+        $projectReference = $this->modelManager
+            ->getProjectReferenceRepository()
             ->get(
                 $taskQueue->getParameters()->get('project_reference_name'),
                 $project
             );
 
         // Get project environment
-        $projectEnvironment = $this->projectEnvironmentRepository
+        $projectEnvironment = $this->modelManager
+            ->getProjectEnvironmentRepository()
             ->get(
                 $taskQueue->getParameters()->get('project_environment_name'),
                 $project
             );
 
         // Get host
-        $host = $this->hostRepository
+        $host = $this->modelManager
+            ->getHostRepository()
             ->get(
                 $projectReference,
                 $projectEnvironment

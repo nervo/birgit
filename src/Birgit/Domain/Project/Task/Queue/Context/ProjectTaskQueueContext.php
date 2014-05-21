@@ -15,13 +15,11 @@ class ProjectTaskQueueContext extends TaskQueueContext implements ProjectTaskQue
 {
     protected $project;
 
-    /**
-     * Constructor
-     *
-     * @param LoggerInterface $logger
-     */
-    public function __construct(Project $project, TaskQueue $queue, LoggerInterface $logger)
-    {
+    public function __construct(
+        Project $project,
+        TaskQueue $queue,
+        LoggerInterface $logger
+    ) {
         $this->project = $project;
 
         parent::__construct($queue, $logger);

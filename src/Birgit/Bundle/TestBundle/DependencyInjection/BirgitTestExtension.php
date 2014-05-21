@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Loader;
 class BirgitTestExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

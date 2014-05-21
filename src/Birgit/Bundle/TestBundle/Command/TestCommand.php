@@ -36,8 +36,13 @@ EOF
         $taskManager = $this->getContainer()
             ->get('birgit.task_manager');
 
-        $taskQueue = $taskManager
-            ->createTaskQueue(
+        // Get model manager
+        $modelManager = $this->getContainer()
+            ->get('birgit.model_manager');
+        
+        $taskQueue = $modelManager
+            ->getTaskQueueRepository()
+            ->create(
                 'project',
                 new Parameters(array(
                     'project_name' => 'test'

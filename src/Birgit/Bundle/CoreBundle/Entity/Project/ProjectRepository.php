@@ -5,6 +5,7 @@ namespace Birgit\Bundle\CoreBundle\Entity\Project;
 use Birgit\Bundle\CoreBundle\Entity\EntityRepository;
 use Birgit\Model\Project\ProjectRepositoryInterface;
 use Birgit\Component\Parameters\Parameters;
+use Birgit\Component\Exception\Model\ModelNotFoundException;
 use Birgit\Bundle\CoreBundle\Entity\Project\Project;
 
 /**
@@ -31,4 +32,16 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     {
         $this->saveEntity($project);
     }
+    
+    public function get($name)
+    {
+        $project = $this->findOneByName($name);
+        
+        if (!$project) {
+            throw new ModelNotFoundException();
+        }
+        
+        return $project;
+    }
+
 }

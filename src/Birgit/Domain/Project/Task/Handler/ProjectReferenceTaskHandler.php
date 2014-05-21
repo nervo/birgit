@@ -8,6 +8,7 @@ use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Domain\Project\ProjectManager;
 use Birgit\Model\Task\Task;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Task\TaskManager;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
@@ -17,15 +18,21 @@ use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInt
  */
 class ProjectReferenceTaskHandler extends TaskHandler
 {
-    protected $eventDispatcher;
     protected $projectManager;
     protected $taskManager;
+    protected $modelManager;
+    protected $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, ProjectManager $projectManager, TaskManager $taskManager)
+    public function __construct(
+        ProjectManager $projectManager,
+        TaskManager $taskManager,
+        ModelManagerInterface $modelManager,
+        EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
         $this->projectManager  = $projectManager;
         $this->taskManager     = $taskManager;
+        $this->modelManager    = $modelManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getType()
@@ -67,8 +74,9 @@ class ProjectReferenceTaskHandler extends TaskHandler
         }
 
         if ($projectReferenceRevisionFound) {
-            $taskQueue = $this->taskManager
-                ->createTaskQueue(
+            $taskQueue = $this->modelManager
+                ->getTaskQueueRepository()
+                ->create(
                     'project_reference_revision',
                     new Parameters(array(
                         'project_name'                    => $projectReference->getProject()->getName(),
@@ -84,8 +92,9 @@ class ProjectReferenceTaskHandler extends TaskHandler
             // Log
             $context->getLogger()->info(sprintf('New Project "%s" reference "%s" revision "%s"', $projectReference->getProject()->getName(), $projectReference->getName(), $projectHandlerReferenceRevisionName));
 
-            $taskQueue = $this->taskManager
-                ->createTaskQueue(
+            $taskQueue = $this->modelManager
+                ->getTaskQueueRepository()
+                ->create(
                     'project_reference_revision_create',
                     new Parameters(array(
                         'project_name'                    => $projectReference->getProject()->getName(),

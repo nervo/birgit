@@ -9,8 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
-use Birgit\Model\Project\ProjectRepositoryInterface;
-use Birgit\Model\Project\Reference\ProjectReferenceRepositoryInterface;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Task\TaskManager;
 
 /**
@@ -18,18 +17,15 @@ use Birgit\Domain\Task\TaskManager;
  */
 class ProjectReferenceCronTaskQueueHandler extends CronTaskQueueHandler
 {
-    protected $projectRepository;
-    protected $projectReferenceRepository;
+    protected $modelManager;
 
     public function __construct(
-        ProjectRepositoryInterface $projectRepository,
-        ProjectReferenceRepositoryInterface $projectReferenceRepository,
         TaskManager $taskManager,
+        ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
-        $this->projectRepository = $projectRepository;
-        $this->projectReferenceRepository = $projectReferenceRepository;
+        $this->modelManager = $modelManager;
 
         parent::__construct($taskManager, $eventDispatcher, $logger);
     }
@@ -42,13 +38,15 @@ class ProjectReferenceCronTaskQueueHandler extends CronTaskQueueHandler
     protected function preRun(TaskQueue $taskQueue)
     {
         // Get project
-        $project = $this->projectRepository
+        $project = $this->modelManager
+            ->getProjectRepository()
             ->get(
                 $taskQueue->getParameters()->get('project_name')
             );
 
         // Get project reference
-        $projectReference = $this->projectReferenceRepository
+        $projectReference = $this->modelManager
+            ->getProjectReferenceRepository()
             ->get(
                 $taskQueue->getParameters()->get('project_reference_name'),
                 $project

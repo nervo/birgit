@@ -15,13 +15,11 @@ class ProjectEnvironmentTaskQueueContext extends TaskQueueContext implements Pro
 {
     protected $projectEnvironment;
 
-    /**
-     * Constructor
-     *
-     * @param LoggerInterface $logger
-     */
-    public function __construct(ProjectEnvironment $projectEnvironment, TaskQueue $queue, LoggerInterface $logger)
-    {
+    public function __construct(
+        ProjectEnvironment $projectEnvironment,
+        TaskQueue $queue,
+        LoggerInterface $logger
+    ) {
         $this->projectEnvironment = $projectEnvironment;
 
         parent::__construct($queue, $logger);

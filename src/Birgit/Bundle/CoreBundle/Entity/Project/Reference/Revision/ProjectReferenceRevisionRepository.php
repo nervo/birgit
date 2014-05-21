@@ -6,6 +6,7 @@ use Birgit\Bundle\CoreBundle\Entity\EntityRepository;
 use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevisionRepositoryInterface;
 use Birgit\Bundle\CoreBundle\Entity\Project\Reference\ProjectReference;
 use Birgit\Bundle\CoreBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision;
+use Birgit\Component\Exception\Model\ModelNotFoundException;
 
 /**
  * Project reference revision Repository
@@ -29,11 +30,17 @@ class ProjectReferenceRevisionRepository extends EntityRepository implements Pro
         $this->saveEntity($projectReferenceRevision);
     }
     
-    public function findOneByProjectReferenceAndName(ProjectReference $projectReference, $name)
+    public function get($name, ProjectReference $projectReference)
     {
-        return $this->findOneBy(array(
-            'reference' => $projectReference,
-            'name'      => $name
+        $projectReferenceRevision = $this->findOneBy(array(
+            'name'      => $name,
+            'reference' => $projectReference
         ));
+        
+        if (!$projectReferenceRevision) {
+            throw new ModelNotFoundException();
+        }
+        
+        return $projectReferenceRevision;
     }
 }

@@ -7,5 +7,5 @@ namespace Birgit\Model;
  */
 interface ModelRepositoryInterface
 {
-	public function all();
+    public function all();
 }

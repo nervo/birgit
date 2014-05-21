@@ -7,6 +7,7 @@ use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Bundle\CoreBundle\Entity\Project\Project;
 use Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment;
 use Birgit\Component\Parameters\Parameters;
+use Birgit\Component\Exception\Model\ModelNotFoundException;
 
 /**
  * Project environment Repository
@@ -35,11 +36,17 @@ class ProjectEnvironmentRepository extends EntityRepository implements ProjectEn
         $this->saveEntity($projectEnvironment);
     }
     
-    public function findOneByProjectAndName(Project $project, $name)
+    public function get($name, Project $project)
     {
-        return $this->findOneBy(array(
-            'project' => $project,
-            'name'    => $name
+        $projectEnvironment = $this->findOneBy(array(
+            'name'    => $name,
+            'project' => $project
         ));
+        
+        if (!$projectEnvironment) {
+            throw new ModelNotFoundException();
+        }
+        
+        return $projectEnvironment;
     }
 }

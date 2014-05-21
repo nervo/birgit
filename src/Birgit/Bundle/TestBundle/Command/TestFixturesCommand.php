@@ -95,37 +95,43 @@ EOF
             )
         );
 
-        // Get project manager
-        $projectManager = $this->getContainer()
-            ->get('birgit.project_manager');
+        // Get model manager
+        $modelManager = $this->getContainer()
+            ->get('birgit.model_manager');
 
         $projects = array();
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
-            $projects[$projectName] = $projectManager
-                ->createProject(
+            $projects[$projectName] = $modelManager
+                ->getProjectRepository()
+                ->create(
                     $projectName,
                     $projectParameters['type'],
                     new Parameters($projectParameters['parameters'])
                 )
                     ->setActive($projectParameters['active']);
 
-            $projectManager->saveProject($projects[$projectName]);
+            $modelManager
+                ->getProjectRepository()
+                ->save($projects[$projectName]);
 
             $projectEnvironments = array();
 
             foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
-                $projectEnvironments[$projectEnvironmentName] = $projectManager
-                    ->createProjectEnvironment(
-                        $projects[$projectName],
+                $projectEnvironments[$projectEnvironmentName] = $modelManager
+                    ->getProjectEnvironmentRepository()
+                    ->create(
                         $projectEnvironmentName,
+                        $projects[$projectName],
                         $projectEnvironmentParameters['type'],
                         new Parameters($projectEnvironmentParameters['parameters'])
                     )
                         ->setReferencePattern($projectEnvironmentParameters['reference_pattern'])
                         ->setActive($projectEnvironmentParameters['active']);
 
-                $projectManager->saveProjectEnvironment($projectEnvironments[$projectEnvironmentName]);
+                $modelManager
+                    ->getProjectEnvironmentRepository()
+                    ->save($projectEnvironments[$projectEnvironmentName]);
             }
         }
     }

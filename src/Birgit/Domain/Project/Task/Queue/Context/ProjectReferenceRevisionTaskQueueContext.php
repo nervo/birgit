@@ -15,13 +15,11 @@ class ProjectReferenceRevisionTaskQueueContext extends TaskQueueContext implemen
 {
     protected $projectReferenceRevision;
 
-    /**
-     * Constructor
-     *
-     * @param LoggerInterface $logger
-     */
-    public function __construct(ProjectReferenceRevision $projectReferenceRevision, TaskQueue $queue, LoggerInterface $logger)
-    {
+    public function __construct(
+        ProjectReferenceRevision $projectReferenceRevision,
+        TaskQueue $queue,
+        LoggerInterface $logger
+    ) {
         $this->projectReferenceRevision = $projectReferenceRevision;
 
         parent::__construct($queue, $logger);

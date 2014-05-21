@@ -23,8 +23,11 @@ abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerI
     protected $eventDispatcher;
     protected $logger;
 
-    public function __construct(TaskManager $taskManager, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
-    {
+    public function __construct(
+        TaskManager $taskManager,
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
+    ) {
         $this->taskManager = $taskManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
