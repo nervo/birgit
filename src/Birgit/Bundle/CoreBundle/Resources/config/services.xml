@@ -41,15 +41,6 @@
     </parameters>
 
     <services>
-
-        <!-- Repositories -->
-        <service id="birgit.host_repository"
-            class="Birgit\Bundle\CoreBundle\Entity\Host\HostRepository"
-            factory-service="doctrine.orm.entity_manager"
-            factory-method="getRepository"
-        >
-            <argument>Birgit:Host\Host</argument>
-        </service>
         
         <!-- Task - Manager -->
         <service id="birgit.task_manager" class="%birgit.task_manager.class%">

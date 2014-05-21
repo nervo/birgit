@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- Repositories -->
+        
+        <service id="birgit.build_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Build\BuildRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Build\Build</argument>
+        </service>
+        
+        <service id="birgit.host_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Host\HostRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Host\Host</argument>
+        </service>
+        
+        <service id="birgit.project_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Project\ProjectRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Project\Project</argument>
+        </service>
+        <service id="birgit.project_environment_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironmentRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Project\Environment\ProjectEnvironment</argument>
+        </service>
+        <service id="birgit.project_reference_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Project\Reference\ProjectReferenceRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Project\Reference\ProjectReference</argument>
+        </service>
+        <service id="birgit.project_reference_revision_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Project\Reference\Revision\ProjectReferenceRevisionRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Project\Reference\Revision\ProjectReferenceRevision</argument>
+        </service>
+        
+        <service id="birgit.task_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Task\TaskRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Task\Task</argument>
+        </service>
+        <service id="birgit.task_queue_repository"
+            class="Birgit\Bundle\CoreBundle\Entity\Task\Queue\TaskQueueRepository"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>Birgit:Task\Queue\TaskQueue</argument>
+        </service>
+
+    </services>
+
+</container>

@@ -15,7 +15,7 @@ class HostRepository extends EntityRepository implements HostRepositoryInterface
 {
     public function create(ProjectReference $projectReference, ProjectEnvironment $projectEnvironment)
     {
-        $host = new Host();
+        $host = $this->createEntity();
 
         $projectReference->addHost($host);
         $projectEnvironment->addHost($host);
@@ -25,10 +25,7 @@ class HostRepository extends EntityRepository implements HostRepositoryInterface
 
     public function save(Host $host)
     {
-        $entityManager = $this->getEntityManager();
-        
-        $entityManager->persist($host);
-        $entityManager->flush($host);
+        $this->saveEntity($host);
     }
     
     public function findOneByProjectReferenceAndProjectEnvironment(ProjectReference $projectReference, ProjectEnvironment $projectEnvironment)

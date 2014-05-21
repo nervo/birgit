@@ -4,12 +4,13 @@ namespace Birgit\Bundle\CoreBundle\Entity\Project\Environment;
 
 use Birgit\Bundle\CoreBundle\Entity\EntityRepository;
 use Birgit\Bundle\CoreBundle\Entity\Project\Project;
+use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Bundle\CoreBundle\Entity\Project\Environment\ProjectEnvironment;
 
 /**
  * Project environment Repository
  */
-class ProjectEnvironmentRepository extends EntityRepository
+class ProjectEnvironmentRepository extends EntityRepository implements ProjectEnvironmentRepositoryInterface
 {
     public function create()
     {
