@@ -19,6 +19,27 @@ class Host extends Model\Host\Host
     private $id;
 
     /**
+     * Project reference
+     *
+     * @var Model\Project\Reference\ProjectReference
+     */
+    private $projectReference;
+
+    /**
+     * Project environment
+     *
+     * @var Model\Project\Environment\ProjectEnvironment
+     */
+    private $projectEnvironment;
+
+    /**
+     * Builds
+     *
+     * @var ArrayCollection
+     */
+    private $builds;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -35,5 +56,72 @@ class Host extends Model\Host\Host
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setProjectReference(Model\Project\Reference\ProjectReference $projectReference)
+    {
+        $this->projectReference = $projectReference;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectReference()
+    {
+        return $this->projectReference;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProjectEnvironment(Model\Project\Environment\ProjectEnvironment $projectEnvironment)
+    {
+        $this->projectEnvironment = $projectEnvironment;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectEnvironment()
+    {
+        return $this->projectEnvironment;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addBuild(Model\Build\Build $build)
+    {
+        if (!$this->builds->contains($build)) {
+            $this->builds->add($build);
+            $build->setHost($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeBuild(Model\Build\Build $build)
+    {
+        $this->builds->removeElement($build);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBuilds()
+    {
+        return $this->builds;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Birgit\Model\Project;
 
-use Doctrine\Common\Collections\Collection;
-
 use Birgit\Component\Type\TypeModel;
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Project\Environment\ProjectEnvironment;
@@ -14,39 +12,16 @@ use Birgit\Model\Project\Environment\ProjectEnvironment;
 abstract class Project extends TypeModel
 {
     /**
-     * Name
-     *
-     * @var string
+     * Constructor
      */
-    protected $name;
+    public function __construct()
+    {
+        // Status
+        $this->setStatus(ProjectStatus::UNKNOWN);
 
-    /**
-     * Status
-     *
-     * @var int
-     */
-    protected $status = ProjectStatus::UNKNOWN;
-
-    /**
-     * References
-     *
-     * @var Collection
-     */
-    protected $references;
-
-    /**
-     * Active
-     *
-     * @var bool
-     */
-    protected $active = true;
-
-    /**
-     * Environments
-     *
-     * @var Collection
-     */
-    protected $environments;
+        // Active
+        $this->setActive(true);
+    }
 
     /**
      * Set name
@@ -55,22 +30,14 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+    abstract public function setName($name);
 
     /**
      * Get name
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    abstract public function getName();
 
     /**
      * Set status
@@ -79,22 +46,14 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function setStatus($status)
-    {
-        $this->status = (int) $status;
-
-        return $this;
-    }
+    abstract public function setStatus($status);
 
     /**
      * Get status
      *
      * @return bool
      */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+    abstract public function getStatus();
 
     /**
      * Add reference
@@ -103,15 +62,7 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function addReference(ProjectReference $reference)
-    {
-        if (!$this->references->contains($reference)) {
-            $this->references->add($reference);
-            $reference->setProject($this);
-        }
-
-        return $this;
-    }
+    abstract public function addReference(ProjectReference $reference);
 
     /**
      * Remove reference
@@ -120,22 +71,14 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function removeReference(ProjectReference $reference)
-    {
-        $this->references->removeElement($reference);
-
-        return $this;
-    }
+    abstract public function removeReference(ProjectReference $reference);
 
     /**
      * Get references
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getReferences()
-    {
-        return $this->references;
-    }
+    abstract public function getReferences();
 
     /**
      * Set active
@@ -144,22 +87,14 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function setActive($active)
-    {
-        $this->active = (bool) $active;
-
-        return $this;
-    }
+    abstract public function setActive($active);
 
     /**
      * Get active
      *
      * @return bool
      */
-    public function getActive()
-    {
-        return $this->active;
-    }
+    abstract public function getActive();
 
     /**
      * Is active
@@ -168,7 +103,7 @@ abstract class Project extends TypeModel
      */
     public function isActive()
     {
-        return $this->active;
+        return $this->getActive();
     }
 
     /**
@@ -178,15 +113,7 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function addEnvironment(ProjectEnvironment $environment)
-    {
-        if (!$this->environments->contains($environment)) {
-            $this->environments->add($environment);
-            $environment->setProject($this);
-        }
-
-        return $this;
-    }
+    abstract public function addEnvironment(ProjectEnvironment $environment);
 
     /**
      * Remove environment
@@ -195,20 +122,12 @@ abstract class Project extends TypeModel
      *
      * @return Project
      */
-    public function removeEnvironment(ProjectEnvironment $environment)
-    {
-        $this->environments->removeElement($environment);
-
-        return $this;
-    }
+    abstract public function removeEnvironment(ProjectEnvironment $environment);
 
     /**
      * Get environments
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getEnvironments()
-    {
-        return $this->environments;
-    }
+    abstract public function getEnvironments();
 }

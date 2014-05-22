@@ -11,42 +11,20 @@ use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 abstract class Build
 {
     /**
-     * Host
-     *
-     * @var Host
-     */
-    protected $host;
-
-    /**
-     * Project reference revision
-     *
-     * @var ProjectReferenceRevision
-     */
-    protected $projectReferenceRevision;
-
-    /**
      * Set host
      *
      * @param Host $host
      *
      * @return Build
      */
-    public function setHost(Host $host)
-    {
-        $this->host = $host;
-
-        return $this;
-    }
+    abstract public function setHost(Host $host);
 
     /**
      * Get host
      *
      * @return Host
      */
-    public function getHost()
-    {
-        return $this->host;
-    }
+    abstract public function getHost();
 
     /**
      * Set project reference revision
@@ -55,20 +33,12 @@ abstract class Build
      *
      * @return Build
      */
-    public function setProjectReferenceRevision(ProjectReferenceRevision $projectReferenceRevision)
-    {
-        $this->projectReferenceRevision = $projectReferenceRevision;
-
-        return $this;
-    }
+    abstract public function setProjectReferenceRevision(ProjectReferenceRevision $projectReferenceRevision);
 
     /**
      * Get project reference revision
      *
      * @return ProjectReferenceRevision
      */
-    public function getProjectReferenceRevision()
-    {
-        return $this->projectReferenceRevision;
-    }
+    abstract public function getProjectReferenceRevision();
 }

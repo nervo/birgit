@@ -14,6 +14,13 @@ class Task extends Model\Task\Task
     private $id;
 
     /**
+     * Queue
+     *
+     * @var Model\Task\Queue\TaskQueue
+     */
+    private $queue;
+    
+    /**
      * Get id
      *
      * @return int
@@ -21,5 +28,23 @@ class Task extends Model\Task\Task
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueue(Model\Task\Queue\TaskQueue $queue)
+    {
+        $this->queue = $queue;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueue()
+    {
+        return $this->queue;
     }
 }

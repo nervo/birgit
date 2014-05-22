@@ -2,8 +2,6 @@
 
 namespace Birgit\Model\Project\Reference;
 
-use Doctrine\Common\Collections\Collection;
-
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 use Birgit\Model\Host\Host;
@@ -14,56 +12,20 @@ use Birgit\Model\Host\Host;
 abstract class ProjectReference
 {
     /**
-     * Name
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Project
-     *
-     * @var Project
-     */
-    protected $project;
-
-    /**
-     * Revisions
-     *
-     * @var Collection
-     */
-    protected $revisions;
-
-    /**
-     * Hosts
-     *
-     * @var Collection
-     */
-    protected $hosts;
-
-    /**
      * Set name
      *
      * @param string $name
      *
      * @return ProjectReference
      */
-    public function setName($name)
-    {
-        $this->name = (string) $name;
-
-        return $this;
-    }
+    abstract public function setName($name);
 
     /**
      * Get name
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    abstract public function getName();
 
     /**
      * Set project
@@ -72,22 +34,14 @@ abstract class ProjectReference
      *
      * @return ProjectReference
      */
-    public function setProject(Project $project)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
+    abstract public function setProject(Project $project);
 
     /**
      * Get project
      *
      * @return Project
      */
-    public function getProject()
-    {
-        return $this->project;
-    }
+    abstract public function getProject();
 
     /**
      * Add revision
@@ -96,15 +50,7 @@ abstract class ProjectReference
      *
      * @return ProjectReference
      */
-    public function addRevision(ProjectReferenceRevision $revision)
-    {
-        if (!$this->revisions->contains($revision)) {
-            $this->revisions->add($revision);
-            $revision->setReference($this);
-        }
-
-        return $this;
-    }
+    abstract public function addRevision(ProjectReferenceRevision $revision);
 
     /**
      * Remove revision
@@ -113,22 +59,14 @@ abstract class ProjectReference
      *
      * @return ProjectReference
      */
-    public function removeRevision(ProjectReferenceRevision $revision)
-    {
-        $this->revisions->removeElement($revision);
-
-        return $this;
-    }
+    abstract public function removeRevision(ProjectReferenceRevision $revision);
 
     /**
      * Get revisions
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getRevisions()
-    {
-        return $this->revisions;
-    }
+    abstract public function getRevisions();
 
     /**
      * Add host
@@ -137,15 +75,7 @@ abstract class ProjectReference
      *
      * @return ProjectReference
      */
-    public function addHost(Host $host)
-    {
-        if (!$this->hosts->contains($host)) {
-            $this->hosts->add($host);
-            $host->setProjectReference($this);
-        }
-
-        return $this;
-    }
+    abstract public function addHost(Host $host);
 
     /**
      * Remove host
@@ -154,20 +84,12 @@ abstract class ProjectReference
      *
      * @return ProjectReference
      */
-    public function removeHost(Host $host)
-    {
-        $this->hosts->removeElement($host);
-
-        return $this;
-    }
+    abstract public function removeHost(Host $host);
 
     /**
      * Get hosts
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getHosts()
-    {
-        return $this->hosts;
-    }
+    abstract public function getHosts();
 }

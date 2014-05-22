@@ -3,37 +3,23 @@
 namespace Birgit\Model\Task;
 
 use Birgit\Component\Type\TypeModel;
+use Birgit\Model\Task\Queue\TaskQueue;
 
 abstract class Task extends TypeModel
 {
     /**
-     * Queue
-     *
-     * @var Queue\TaskQueue
-     */
-    protected $queue;
-
-    /**
      * Set queue
      *
-     * @param Queue\TaskQueue $queue
+     * @param TaskQueue $queue
      *
      * @return Task
      */
-    public function setQueue(Queue\TaskQueue $queue)
-    {
-        $this->queue = $queue;
-
-        return $this;
-    }
+    abstract public function setQueue(TaskQueue $queue);
 
     /**
      * Get queue
      *
-     * @return Queue\TaskQueue
+     * @return TaskQueue
      */
-    public function getQueue()
-    {
-        return $this->queue;
-    }
+    abstract public function getQueue();
 }

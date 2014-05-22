@@ -2,8 +2,6 @@
 
 namespace Birgit\Model\Project\Reference\Revision;
 
-use Doctrine\Common\Collections\Collection;
-
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Build\Build;
 
@@ -13,49 +11,20 @@ use Birgit\Model\Build\Build;
 abstract class ProjectReferenceRevision
 {
     /**
-     * Name
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Reference
-     *
-     * @var ProjectReference
-     */
-    protected $reference;
-
-    /**
-     * Builds
-     *
-     * @var Collection
-     */
-    protected $builds;
-
-    /**
      * Set name
      *
      * @param string $name
      *
      * @return ProjectReferenceRevision
      */
-    public function setName($name)
-    {
-        $this->name = (string) $name;
-
-        return $this;
-    }
+    abstract public function setName($name);
 
     /**
      * Get name
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    abstract public function getName();
 
     /**
      * Set reference
@@ -64,22 +33,14 @@ abstract class ProjectReferenceRevision
      *
      * @return ProjectReferenceRevision
      */
-    public function setReference(ProjectReference $reference)
-    {
-        $this->reference = $reference;
-
-        return $this;
-    }
+    abstract public function setReference(ProjectReference $reference);
 
     /**
      * Get reference
      *
      * @return ProjectReference
      */
-    public function getReference()
-    {
-        return $this->reference;
-    }
+    abstract public function getReference();
 
     /**
      * Add build
@@ -88,15 +49,7 @@ abstract class ProjectReferenceRevision
      *
      * @return ProjectReferenceRevision
      */
-    public function addBuild(Build $build)
-    {
-        if (!$this->builds->contains($build)) {
-            $this->builds->add($build);
-            $build->setProjectReferenceRevision($this);
-        }
-
-        return $this;
-    }
+    abstract public function addBuild(Build $build);
 
     /**
      * Remove build
@@ -105,20 +58,12 @@ abstract class ProjectReferenceRevision
      *
      * @return ProjectReferenceRevision
      */
-    public function removeBuild(Build $build)
-    {
-        $this->builds->removeElement($build);
-
-        return $this;
-    }
+    abstract public function removeBuild(Build $build);
 
     /**
      * Get builds
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getBuilds()
-    {
-        return $this->builds;
-    }
+    abstract public function getBuilds();
 }

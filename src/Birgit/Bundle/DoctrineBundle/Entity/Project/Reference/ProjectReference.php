@@ -19,6 +19,34 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
     private $id;
 
     /**
+     * Name
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
+     * Project
+     *
+     * @var Model\Project\Project
+     */
+    private $project;
+
+    /**
+     * Revisions
+     *
+     * @var ArrayCollection
+     */
+    private $revisions;
+
+    /**
+     * Hosts
+     *
+     * @var ArrayCollection
+     */
+    private $hosts;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -38,5 +66,103 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setName($name)
+    {
+        $this->name = (string) $name;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProject(Model\Project\Project $project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRevision(Model\Project\Reference\Revision\ProjectReferenceRevision $revision)
+    {
+        if (!$this->revisions->contains($revision)) {
+            $this->revisions->add($revision);
+            $revision->setReference($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeRevision(Model\Project\Reference\Revision\ProjectReferenceRevision $revision)
+    {
+        $this->revisions->removeElement($revision);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRevisions()
+    {
+        return $this->revisions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addHost(Model\Host\Host $host)
+    {
+        if (!$this->hosts->contains($host)) {
+            $this->hosts->add($host);
+            $host->setProjectReference($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeHost(Model\Host\Host $host)
+    {
+        $this->hosts->removeElement($host);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
     }
 }

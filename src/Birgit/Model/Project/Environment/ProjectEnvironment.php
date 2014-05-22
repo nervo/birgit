@@ -2,8 +2,6 @@
 
 namespace Birgit\Model\Project\Environment;
 
-use Doctrine\Common\Collections\Collection;
-
 use Birgit\Component\Type\TypeModel;
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
@@ -15,39 +13,13 @@ use Birgit\Model\Host\Host;
 abstract class ProjectEnvironment extends TypeModel
 {
     /**
-     * Name
-     *
-     * @var string
+     * Constructor
      */
-    protected $name;
-
-    /**
-     * Reference pattern
-     *
-     * @var string
-     */
-    protected $referencePattern;
-
-    /**
-     * Active
-     *
-     * @var bool
-     */
-    protected $active = true;
-
-    /**
-     * Project
-     *
-     * @var Project
-     */
-    protected $project;
-
-    /**
-     * Hosts
-     *
-     * @var Collection
-     */
-    protected $hosts;
+    public function __construct()
+    {
+        // Active
+        $this->setActive(true);
+    }
 
     /**
      * Set name
@@ -56,22 +28,14 @@ abstract class ProjectEnvironment extends TypeModel
      *
      * @return ProjectEnvironment
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+    abstract public function setName($name);
 
     /**
      * Get name
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    abstract public function getName();
 
     /**
      * Set reference pattern
@@ -80,22 +44,14 @@ abstract class ProjectEnvironment extends TypeModel
      *
      * @return ProjectEnvironment
      */
-    public function setReferencePattern($pattern)
-    {
-        $this->referencePattern = (string) $pattern;
-
-        return $this;
-    }
+    abstract public function setReferencePattern($pattern);
 
     /**
      * Get reference pattern
      *
      * @return string
      */
-    public function getReferencePattern()
-    {
-        return $this->referencePattern;
-    }
+    abstract public function getReferencePattern();
 
     /**
      * Match reference
@@ -119,22 +75,14 @@ abstract class ProjectEnvironment extends TypeModel
      *
      * @return ProjectEnvironment
      */
-    public function setActive($active)
-    {
-        $this->active = (bool) $active;
-
-        return $this;
-    }
+    abstract public function setActive($active);
 
     /**
      * Get active
      *
      * @return bool
      */
-    public function getActive()
-    {
-        return $this->active;
-    }
+    abstract public function getActive();
 
     /**
      * Is active
@@ -143,7 +91,7 @@ abstract class ProjectEnvironment extends TypeModel
      */
     public function isActive()
     {
-        return $this->active;
+        return $this->getActive();
     }
 
     /**
@@ -153,22 +101,14 @@ abstract class ProjectEnvironment extends TypeModel
      *
      * @return ProjectEnvironment
      */
-    public function setProject(Project $project)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
+    abstract public function setProject(Project $project);
 
     /**
      * Get project
      *
      * @return Project
      */
-    public function getProject()
-    {
-        return $this->project;
-    }
+    abstract public function getProject();
 
     /**
      * Add host
@@ -177,15 +117,7 @@ abstract class ProjectEnvironment extends TypeModel
      *
      * @return ProjectEnvironment
      */
-    public function addHost(Host $host)
-    {
-        if (!$this->hosts->contains($host)) {
-            $this->hosts->add($host);
-            $host->setProjectEnvironment($this);
-        }
-
-        return $this;
-    }
+    abstract public function addHost(Host $host);
 
     /**
      * Remove host
@@ -194,20 +126,12 @@ abstract class ProjectEnvironment extends TypeModel
      *
      * @return ProjectEnvironment
      */
-    public function removeHost(Host $host)
-    {
-        $this->hosts->removeElement($host);
-
-        return $this;
-    }
+    abstract public function removeHost(Host $host);
 
     /**
      * Get hosts
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getHosts()
-    {
-        return $this->hosts;
-    }
+    abstract public function getHosts();
 }

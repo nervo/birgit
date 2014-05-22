@@ -2,8 +2,6 @@
 
 namespace Birgit\Model\Host;
 
-use Doctrine\Common\Collections\Collection;
-
 use Birgit\Model\Project\Environment\ProjectEnvironment;
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Build\Build;
@@ -14,49 +12,20 @@ use Birgit\Model\Build\Build;
 abstract class Host
 {
     /**
-     * Project reference
-     *
-     * @var ProjectReference
-     */
-    protected $projectReference;
-
-    /**
-     * Project environment
-     *
-     * @var ProjectEnvironment
-     */
-    protected $projectEnvironment;
-
-    /**
-     * Builds
-     *
-     * @var Collection
-     */
-    protected $builds;
-
-    /**
      * Set project reference
      *
      * @param ProjectReference $projectReference
      *
      * @return Host
      */
-    public function setProjectReference(ProjectReference $projectReference)
-    {
-        $this->projectReference = $projectReference;
-
-        return $this;
-    }
+    abstract public function setProjectReference(ProjectReference $projectReference);
 
     /**
      * Get project reference
      *
      * @return ProjectReference
      */
-    public function getProjectReference()
-    {
-        return $this->projectReference;
-    }
+    abstract public function getProjectReference();
 
     /**
      * Set project environment
@@ -65,22 +34,14 @@ abstract class Host
      *
      * @return Host
      */
-    public function setProjectEnvironment(ProjectEnvironment $projectEnvironment)
-    {
-        $this->projectEnvironment = $projectEnvironment;
-
-        return $this;
-    }
+    abstract public function setProjectEnvironment(ProjectEnvironment $projectEnvironment);
 
     /**
      * Get project environment
      *
      * @return ProjectEnvironment
      */
-    public function getProjectEnvironment()
-    {
-        return $this->projectEnvironment;
-    }
+    abstract public function getProjectEnvironment();
 
     /**
      * Add build
@@ -89,15 +50,7 @@ abstract class Host
      *
      * @return Host
      */
-    public function addBuild(Build $build)
-    {
-        if (!$this->builds->contains($build)) {
-            $this->builds->add($build);
-            $build->setHost($this);
-        }
-
-        return $this;
-    }
+    abstract public function addBuild(Build $build);
 
     /**
      * Remove build
@@ -106,20 +59,12 @@ abstract class Host
      *
      * @return Host
      */
-    public function removeBuild(Build $build)
-    {
-        $this->builds->removeElement($build);
-
-        return $this;
-    }
+    abstract public function removeBuild(Build $build);
 
     /**
      * Get builds
      *
-     * @return Collection
+     * @return \Traversable
      */
-    public function getBuilds()
-    {
-        return $this->builds;
-    }
+    abstract public function getBuilds();
 }
