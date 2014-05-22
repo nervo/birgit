@@ -1,0 +1,19 @@
+Birgit\Bundle\DoctrineBundle\Entity\Build\Build:
+    type:            entity
+    table:           birgit_build
+    repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Build\BuildRepository
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    manyToOne:
+        host:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Host\Host
+            inversedBy:   builds
+            joinColumn:
+                nullable: false
+        projectReferenceRevision:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision
+            inversedBy:   builds
+            joinColumn:
+                nullable: false

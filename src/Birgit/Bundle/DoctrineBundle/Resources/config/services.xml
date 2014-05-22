@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <!-- Model - Manager -->
+        <parameter key="birgit.model_manager.class">Birgit\Bundle\DoctrineBundle\Entity\EntityManager</parameter>
+    
+    </parameters>
+    
+    <services>
+        
+        <!-- Model - Manager -->
+        <service id="birgit.model_manager" class="%birgit.model_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+
+    </services>
+
+</container>

@@ -1,0 +1,19 @@
+Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue:
+    type:  entity
+    table: birgit_task_queue
+    repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueueRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        type:
+            type:     string
+            length:   255
+        parameters:
+            type:     parameters
+    oneToMany:
+        tasks:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Task\Task
+            mappedBy:     queue
+            cascade:      ['persist']

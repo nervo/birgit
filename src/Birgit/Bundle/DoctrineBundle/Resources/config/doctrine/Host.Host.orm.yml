@@ -1,0 +1,24 @@
+Birgit\Bundle\DoctrineBundle\Entity\Host\Host:
+    type:            entity
+    table:           birgit_host
+    repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Host\HostRepository
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    manyToOne:
+        projectEnvironment:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment
+            inversedBy:   hosts
+            joinColumn:
+                nullable: false
+        projectReference:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference
+            inversedBy:   hosts
+            joinColumn:
+                nullable: false
+    oneToMany:
+        builds:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Build\Build
+            mappedBy:     host
+            cascade:      ['persist']

@@ -1,0 +1,26 @@
+Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision:
+    type:            entity
+    table:           birgit_project_reference_revision
+    repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevisionRepository
+    uniqueConstraints:
+        reference_id_name:
+            columns: ['reference_id', 'name']
+    id:
+        id:
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type:     string
+            length:   255
+    manyToOne:
+        reference:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference
+            inversedBy:   revisions
+            joinColumn:
+                nullable: false
+    oneToMany:
+        builds:
+            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Build\Build
+            mappedBy:     projectReferenceRevision
+            cascade:      ['persist']
