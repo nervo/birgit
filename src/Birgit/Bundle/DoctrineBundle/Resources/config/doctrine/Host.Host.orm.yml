@@ -4,6 +4,7 @@ Birgit\Bundle\DoctrineBundle\Entity\Host\Host:
     repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Host\HostRepository
     id:
         id:
+            name:      id
             type:      integer
             generator: { strategy: AUTO }
     manyToOne:
@@ -11,12 +12,14 @@ Birgit\Bundle\DoctrineBundle\Entity\Host\Host:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment
             inversedBy:   hosts
             joinColumn:
-                nullable: false
+                name:      project_environment_id
+                nullable:  false
         projectReference:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference
             inversedBy:   hosts
             joinColumn:
-                nullable: false
+                name:      project_reference_id
+                nullable:  false
     oneToMany:
         builds:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Build\Build

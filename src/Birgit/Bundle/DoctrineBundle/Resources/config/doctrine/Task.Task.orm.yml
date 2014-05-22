@@ -4,17 +4,21 @@ Birgit\Bundle\DoctrineBundle\Entity\Task\Task:
     repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Task\TaskRepository
     id:
         id:
-            type: integer
+            name:      id
+            type:      integer
             generator: { strategy: AUTO }
     fields:
         type:
-            type:     string
-            length:   255
+            name:      type
+            type:      string
+            length:    255
         parameters:
-            type:     parameters
+            name:      parameters
+            type:      parameters
     manyToOne:
         queue:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
             inversedBy:   tasks
             joinColumn:
-                nullable: false
+                name:      queue_id
+                nullable:  false

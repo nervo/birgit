@@ -7,18 +7,21 @@ Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference:
             columns: ['project_id', 'name']
     id:
         id:
+            name:      id
             type:      integer
             generator: { strategy: AUTO }
     fields:
         name:
-            type:     string
-            length:   255
+            name:      name
+            type:      string
+            length:    255
     manyToOne:
         project:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Project
             inversedBy:   references
             joinColumn:
-                nullable: false
+                name:      project_id
+                nullable:  false
     oneToMany:
         revisions:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision

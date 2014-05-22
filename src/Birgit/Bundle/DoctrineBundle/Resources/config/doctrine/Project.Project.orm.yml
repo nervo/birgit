@@ -7,21 +7,27 @@ Birgit\Bundle\DoctrineBundle\Entity\Project\Project:
             columns: ['name']
     id:
         id:
+            name:      id
             type:      integer
             generator: { strategy: AUTO }
     fields:
         name:
-            type:     string
-            length:   255
+            name:      name
+            type:      string
+            length:    255
         status:
-            type:     integer
+            name:      status
+            type:      integer
         type:
-            type:     string
-            length:   255
+            name:      type
+            type:      string
+            length:    255
         parameters:
-            type:     parameters
+            name:      parameters
+            type:      parameters
         active:
-            type:     boolean
+            name:      active
+            type:      boolean
     oneToMany:
         references:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference
