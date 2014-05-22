@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Parameters\Doctrine;
+namespace Birgit\Bundle\DoctrineBundle\Types;
 
 use Doctrine\DBAL\Types\JsonArrayType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
