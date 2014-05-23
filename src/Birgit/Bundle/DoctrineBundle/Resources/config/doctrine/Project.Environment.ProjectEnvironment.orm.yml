@@ -15,13 +15,6 @@ Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment:
             name:      name
             type:      string
             length:    255
-        type:
-            name:      type
-            type:      string
-            length:    255
-        parameters:
-            name:      parameters
-            type:      parameters
         referencePattern:
             name:      reference_pattern
             type:      string
@@ -29,6 +22,14 @@ Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment:
         active:
             name:      active
             type:      boolean
+        # Handler definition
+        handlerType:
+            name:      handler_type
+            type:      string
+            length:    255
+        handlerParameters:
+            name:      handler_parameters
+            type:      parameters
     manyToOne:
         project:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Project\Project

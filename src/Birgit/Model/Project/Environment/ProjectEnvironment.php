@@ -2,7 +2,8 @@
 
 namespace Birgit\Model\Project\Environment;
 
-use Birgit\Component\Type\TypeModel;
+use Birgit\Component\Handler\Handleable;
+use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Host\Host;
@@ -10,15 +11,21 @@ use Birgit\Model\Host\Host;
 /**
  * Project environment
  */
-abstract class ProjectEnvironment extends TypeModel
+abstract class ProjectEnvironment implements Handleable
 {
     /**
      * Constructor
+     *
+     * @param string            $name
+     * @param Project           $project
+     * @param HandlerDefinition $handlerDefinition
      */
-    public function __construct()
+    public function __construct($name, Project $project, HandlerDefinition $handlerDefinition)
     {
-        // Active
-        $this->setActive(true);
+        $this
+            ->setName($name)
+            ->setProject($project)
+            ->setHandlerDefinition($handlerDefinition);
     }
 
     /**
@@ -134,4 +141,13 @@ abstract class ProjectEnvironment extends TypeModel
      * @return \Traversable
      */
     abstract public function getHosts();
+
+    /**
+     * Set Handler Definition
+     *
+     * @param HandlerDefinition $handlerDefinition
+     *
+     * @return Task
+     */
+    abstract public function setHandlerDefinition(HandlerDefinition $handlerDefinition);
 }

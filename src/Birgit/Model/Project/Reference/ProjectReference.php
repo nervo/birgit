@@ -12,6 +12,19 @@ use Birgit\Model\Host\Host;
 abstract class ProjectReference
 {
     /**
+     * Constructor
+     *
+     * @param string  $name
+     * @param Project $project
+     */
+    public function __construct($name, Project $project)
+    {
+        $this
+            ->setName($name)
+            ->setProject($project);
+    }
+
+    /**
      * Set name
      *
      * @param string $name

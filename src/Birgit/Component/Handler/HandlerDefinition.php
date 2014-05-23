@@ -4,6 +4,9 @@ namespace Birgit\Component\Handler;
 
 use Birgit\Component\Parameters\Parameters;
 
+/**
+ * Handler Definition
+ */
 class HandlerDefinition
 {
     /**

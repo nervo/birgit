@@ -8,12 +8,13 @@ Birgit\Bundle\DoctrineBundle\Entity\Task\Task:
             type:      integer
             generator: { strategy: AUTO }
     fields:
-        type:
-            name:      type
+        # Handler definition
+        handlerType:
+            name:      handler_type
             type:      string
             length:    255
-        parameters:
-            name:      parameters
+        handlerParameters:
+            name:      handler_parameters
             type:      parameters
     manyToOne:
         queue:

@@ -2,14 +2,26 @@
 
 namespace Birgit\Model\Task\Queue;
 
-use Birgit\Component\Type\TypeModel;
+use Birgit\Component\Handler\Handleable;
+use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Model\Task\Task;
 
 /**
  * Task queue
  */
-abstract class TaskQueue extends TypeModel
+abstract class TaskQueue implements Handleable
 {
+    /**
+     * Constructor
+     *
+     * @param HandlerDefinition $handlerDefinition
+     */
+    public function __construct(HandlerDefinition $handlerDefinition)
+    {
+        $this
+            ->setHandlerDefinition($handlerDefinition);
+    }
+
     /**
      * Add task
      *
@@ -34,4 +46,13 @@ abstract class TaskQueue extends TypeModel
      * @return \Traversable
      */
     abstract public function getTasks();
+
+    /**
+     * Set Handler Definition
+     *
+     * @param HandlerDefinition $handlerDefinition
+     *
+     * @return Task
+     */
+    abstract public function setHandlerDefinition(HandlerDefinition $handlerDefinition);
 }

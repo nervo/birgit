@@ -11,6 +11,17 @@ use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 abstract class Build
 {
     /**
+     * Constructor
+     *
+     * @param Host $host
+     */
+    public function __construct(Host $host)
+    {
+        $this
+            ->setHost($host);
+    }
+
+    /**
      * Set host
      *
      * @param Host $host

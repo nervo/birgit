@@ -12,6 +12,19 @@ use Birgit\Model\Build\Build;
 abstract class Host
 {
     /**
+     * Constructor
+     *
+     * @param ProjectReference   $projectReference
+     * @param ProjectEnvironment $projectEnvironment
+     */
+    public function __construct(ProjectReference $projectReference, ProjectEnvironment $projectEnvironment)
+    {
+        $this
+            ->setProjectReference($projectReference)
+            ->setProjectEnvironment($projectEnvironment);
+    }
+
+    /**
      * Set project reference
      *
      * @param ProjectReference $projectReference

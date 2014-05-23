@@ -5,6 +5,8 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Project\Environment;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
+use Birgit\Component\Parameters\Parameters;
+use Birgit\Component\Handler\HandlerDefinition;
 
 /**
  * Project environment
@@ -53,6 +55,20 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
      */
     private $hosts;
     
+    /**
+     * Handler Definition : Type
+     *
+     * @var string
+     */
+    protected $handlerType;
+
+    /**
+     * Handler Definition : Parameters
+     *
+     * @var Parameters
+     */
+    protected $handlerParameters;
+
     /**
      * Constructor
      */
@@ -177,5 +193,78 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
     public function getHosts()
     {
         return $this->hosts;
+    }
+
+    /**
+     * Handler Definition : Set type
+     *
+     * @param string $type
+     *
+     * @return ProjectEnvironment
+     */
+    public function setHandlerType($type)
+    {
+        $this->handlerType = (string) $type;
+
+        return $this;
+    }
+
+    /**
+     * Handler Definition : Get type
+     *
+     * @return string
+     */
+    public function getHandlerType()
+    {
+        return $this->handlerType;
+    }
+
+    /**
+     * Handler Definition : Set parameters
+     *
+     * @param Parameters $parameters
+     *
+     * @return ProjectEnvironment
+     */
+    public function setHandlerParameters(Parameters $parameters)
+    {
+        $this->handlerParameters = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * Handler Definition : Get parameters
+     *
+     * @return Parameters
+     */
+    public function getHandlerParameters()
+    {
+        return $this->handlerParameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHandlerDefinition(HandlerDefinition $handlerDefinition)
+    {
+        $this->handlerType       = $handlerDefinition->getType();
+        $this->handlerParameters = $handlerDefinition->getParameters();
+
+        return $this
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHandlerDefinition()
+    {
+        $handlerDefinition = new HandlerDefinition();
+
+        $handlerDefinition
+            ->setType($this->handlerType)
+            ->setParameters($this->handlerParameters);
+
+        return $handlerDefinition;
     }
 }

@@ -5,6 +5,8 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Task\Queue;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
+use Birgit\Component\Parameters\Parameters;
+use Birgit\Component\Handler\HandlerDefinition;
 
 /**
  * Task queue
@@ -24,7 +26,21 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
      * @var ArrayCollection
      */
     private $tasks;
-    
+
+    /**
+     * Handler Definition : Type
+     *
+     * @var string
+     */
+    protected $handlerType;
+
+    /**
+     * Handler Definition : Parameters
+     *
+     * @var Parameters
+     */
+    protected $handlerParameters;
+
     /**
      * Constructor
      */
@@ -75,5 +91,64 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Handler Definition : Set type
+     *
+     * @param string $type
+     *
+     * @return TaskQueue
+     */
+    public function setHandlerType($type)
+    {
+        $this->handlerType = (string) $type;
+
+        return $this;
+    }
+
+    /**
+     * Handler Definition : Get type
+     *
+     * @return string
+     */
+    public function getHandlerType()
+    {
+        return $this->handlerType;
+    }
+
+    /**
+     * Handler Definition : Get parameters
+     *
+     * @return Parameters
+     */
+    public function getHandlerParameters()
+    {
+        return $this->handlerParameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHandlerDefinition(HandlerDefinition $handlerDefinition)
+    {
+        $this->handlerType       = $handlerDefinition->getType();
+        $this->handlerParameters = $handlerDefinition->getParameters();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHandlerDefinition()
+    {
+        $handlerDefinition = new HandlerDefinition();
+
+        $handlerDefinition
+            ->setType($this->handlerType)
+            ->setParameters($this->handlerParameters);
+
+        return $handlerDefinition;
     }
 }
