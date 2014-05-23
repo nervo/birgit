@@ -1,10 +1,10 @@
 <?php
 
-namespace Birgit\Model;
+namespace Birgit\Component\Handler;
 
 use Birgit\Component\Parameters\Parameters;
 
-class ModelHandlerDefinition
+class HandlerDefinition
 {
     /**
      * Type
