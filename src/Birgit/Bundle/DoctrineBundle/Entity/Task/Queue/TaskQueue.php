@@ -128,7 +128,11 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Set Handler Definition
+     *
+     * @param HandlerDefinition $handlerDefinition
+     *
+     * @return TaskQueue
      */
     public function setHandlerDefinition(HandlerDefinition $handlerDefinition)
     {

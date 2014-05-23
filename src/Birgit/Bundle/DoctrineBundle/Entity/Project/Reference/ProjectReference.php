@@ -69,7 +69,11 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
     }
     
     /**
-     * {@inheritdoc}
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return ProjectReference
      */
     public function setName($name)
     {
@@ -87,7 +91,11 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
     }
 
     /**
-     * {@inheritdoc}
+     * Set project
+     *
+     * @param Project $project
+     *
+     * @return ProjectReference
      */
     public function setProject(Model\Project\Project $project)
     {

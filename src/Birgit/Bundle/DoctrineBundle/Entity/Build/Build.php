@@ -41,7 +41,11 @@ class Build extends Model\Build\Build
     }
     
     /**
-     * {@inheritdoc}
+     * Set host
+     *
+     * @param Host $host
+     *
+     * @return Build
      */
     public function setHost(Model\Host\Host $host)
     {
@@ -59,7 +63,11 @@ class Build extends Model\Build\Build
     }
 
     /**
-     * {@inheritdoc}
+     * Set project reference revision
+     *
+     * @param ProjectReferenceRevisionn $projectReferenceRevision
+     *
+     * @return Build
      */
     public function setProjectReferenceRevision(Model\Project\Reference\Revision\ProjectReferenceRevision $projectReferenceRevision)
     {

@@ -59,7 +59,11 @@ class Host extends Model\Host\Host
     }
     
     /**
-     * {@inheritdoc}
+     * Set project reference
+     *
+     * @param ProjectReference $projectReference
+     *
+     * @return Host
      */
     public function setProjectReference(Model\Project\Reference\ProjectReference $projectReference)
     {
@@ -77,7 +81,11 @@ class Host extends Model\Host\Host
     }
 
     /**
-     * {@inheritdoc}
+     * Set project environment
+     *
+     * @param ProjectEnvironment $projectEnvironment
+     *
+     * @return Host
      */
     public function setProjectEnvironment(Model\Project\Environment\ProjectEnvironment $projectEnvironment)
     {

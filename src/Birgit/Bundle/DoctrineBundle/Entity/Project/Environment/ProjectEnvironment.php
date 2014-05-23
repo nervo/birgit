@@ -74,10 +74,10 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Hosts
         $this->hosts = new ArrayCollection();
-        
-        parent::__construct();
     }
 
     /**
@@ -91,7 +91,11 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
     }
     
     /**
-     * {@inheritdoc}
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return ProjectEnvironment
      */
     public function setName($name)
     {
@@ -145,7 +149,11 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
     }
 
     /**
-     * {@inheritdoc}
+     * Set project
+     *
+     * @param Project $project
+     *
+     * @return ProjectEnvironment
      */
     public function setProject(Model\Project\Project $project)
     {
@@ -244,14 +252,18 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
     }
 
     /**
-     * {@inheritdoc}
+     * Set Handler Definition
+     *
+     * @param HandlerDefinition $handlerDefinition
+     *
+     * @return ProjectEnvironment
      */
     public function setHandlerDefinition(HandlerDefinition $handlerDefinition)
     {
         $this->handlerType       = $handlerDefinition->getType();
         $this->handlerParameters = $handlerDefinition->getParameters();
 
-        return $this
+        return $this;
     }
 
     /**

@@ -50,7 +50,11 @@ class Task extends Model\Task\Task
     }
     
     /**
-     * {@inheritdoc}
+     * Set queue
+     *
+     * @param TaskQueue $queue
+     *
+     * @return Task
      */
     public function setQueue(Model\Task\Queue\TaskQueue $queue)
     {
@@ -116,14 +120,18 @@ class Task extends Model\Task\Task
     }
 
     /**
-     * {@inheritdoc}
+     * Set Handler Definition
+     *
+     * @param HandlerDefinition $handlerDefinition
+     *
+     * @return Task
      */
     public function setHandlerDefinition(HandlerDefinition $handlerDefinition)
     {
         $this->handlerType       = $handlerDefinition->getType();
         $this->handlerParameters = $handlerDefinition->getParameters();
 
-        return $this
+        return $this;
     }
 
     /**

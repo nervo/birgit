@@ -11,42 +11,11 @@ use Birgit\Model\Build\Build;
 abstract class ProjectReferenceRevision
 {
     /**
-     * Constructor
-     *
-     * @param string           $name
-     * @param ProjectReference $reference
-     */
-    public function __construct(name, ProjectReference $reference)
-    {
-        $this
-            ->setName($name)
-            ->setReference($reference);
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return ProjectReferenceRevision
-     */
-    abstract public function setName($name);
-
-    /**
      * Get name
      *
      * @return string
      */
     abstract public function getName();
-
-    /**
-     * Set reference
-     *
-     * @param ProjectReference $reference
-     *
-     * @return ProjectReferenceRevision
-     */
-    abstract public function setReference(ProjectReference $reference);
 
     /**
      * Get reference

@@ -59,7 +59,11 @@ class ProjectReferenceRevision extends Model\Project\Reference\Revision\ProjectR
     }
     
     /**
-     * {@inheritdoc}
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return ProjectReferenceRevision
      */
     public function setName($name)
     {
@@ -77,7 +81,11 @@ class ProjectReferenceRevision extends Model\Project\Reference\Revision\ProjectR
     }
 
     /**
-     * {@inheritdoc}
+     * Set reference
+     *
+     * @param ProjectReference $reference
+     *
+     * @return ProjectReferenceRevision
      */
     public function setReference(Model\Project\Reference\ProjectReference $reference)
     {

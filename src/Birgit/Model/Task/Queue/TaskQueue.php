@@ -3,7 +3,6 @@
 namespace Birgit\Model\Task\Queue;
 
 use Birgit\Component\Handler\Handleable;
-use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Model\Task\Task;
 
 /**
@@ -11,17 +10,6 @@ use Birgit\Model\Task\Task;
  */
 abstract class TaskQueue implements Handleable
 {
-    /**
-     * Constructor
-     *
-     * @param HandlerDefinition $handlerDefinition
-     */
-    public function __construct(HandlerDefinition $handlerDefinition)
-    {
-        $this
-            ->setHandlerDefinition($handlerDefinition);
-    }
-
     /**
      * Add task
      *
@@ -46,13 +34,4 @@ abstract class TaskQueue implements Handleable
      * @return \Traversable
      */
     abstract public function getTasks();
-
-    /**
-     * Set Handler Definition
-     *
-     * @param HandlerDefinition $handlerDefinition
-     *
-     * @return Task
-     */
-    abstract public function setHandlerDefinition(HandlerDefinition $handlerDefinition);
 }

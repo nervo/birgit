@@ -74,13 +74,13 @@ class Project extends Model\Project\Project
      */
     public function __construct()
     {
+        parent::__construct();
+
         // References
         $this->references = new ArrayCollection();
 
         // Environments
         $this->environments = new ArrayCollection();
-        
-        parent::__construct();
     }
 
     /**
@@ -94,7 +94,11 @@ class Project extends Model\Project\Project
     }
     
     /**
-     * {@inheritdoc}
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Project
      */
     public function setName($name)
     {
@@ -258,14 +262,18 @@ class Project extends Model\Project\Project
     }
 
     /**
-     * {@inheritdoc}
+     * Set Handler Definition
+     *
+     * @param HandlerDefinition $handlerDefinition
+     *
+     * @return Project
      */
     public function setHandlerDefinition(HandlerDefinition $handlerDefinition)
     {
         $this->handlerType       = $handlerDefinition->getType();
         $this->handlerParameters = $handlerDefinition->getParameters();
 
-        return $this
+        return $this;
     }
 
     /**
