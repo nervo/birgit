@@ -10,7 +10,7 @@ use Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerManager;
 
 /**
  * Project Cron Task queue Handler
@@ -20,14 +20,14 @@ class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($taskManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager, $eventDispatcher, $logger);
     }
 
     public function getType()
@@ -41,7 +41,7 @@ class ProjectCronTaskQueueHandler extends CronTaskQueueHandler
         $project = $this->modelManager
             ->getProjectRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_name')
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_name')
             );
 
         return new ProjectTaskQueueContext(

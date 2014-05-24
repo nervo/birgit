@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 
 class ProjectReferenceCreateTaskQueueHandler extends TaskQueueHandler
@@ -17,14 +17,14 @@ class ProjectReferenceCreateTaskQueueHandler extends TaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($taskManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager, $eventDispatcher, $logger);
     }
 
     public function getType()
@@ -38,14 +38,14 @@ class ProjectReferenceCreateTaskQueueHandler extends TaskQueueHandler
         $project = $this->modelManager
             ->getProjectRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_name')
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_name')
             );
 
         // Create project reference
         $projectReference = $this->modelManager
             ->getProjectReferenceRepository()
             ->create(
-                $taskQueue->getParameters()->get('project_reference_name'),
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_reference_name'),
                 $project
             );
 

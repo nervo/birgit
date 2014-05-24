@@ -6,11 +6,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
-use Birgit\Domain\Project\ProjectManager;
+use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\Task\Task;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 
 /**
@@ -18,19 +18,16 @@ use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInt
  */
 class ProjectReferenceTaskHandler extends TaskHandler
 {
-    protected $projectManager;
-    protected $taskManager;
+    protected $handlerManager;
     protected $modelManager;
     protected $eventDispatcher;
 
     public function __construct(
-        ProjectManager $projectManager,
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher)
     {
-        $this->projectManager  = $projectManager;
-        $this->taskManager     = $taskManager;
+        $this->handlerManager  = $handlerManager;
         $this->modelManager    = $modelManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -53,7 +50,7 @@ class ProjectReferenceTaskHandler extends TaskHandler
         $context->getLogger()->notice(sprintf('Task Handler: Project Reference "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
 
         // Get project handler
-        $projectHandler = $this->projectManager
+        $projectHandler = $this->handlerManager
             ->getProjectHandler(
                 $projectReference->getProject()
             );
@@ -77,15 +74,17 @@ class ProjectReferenceTaskHandler extends TaskHandler
             $taskQueue = $this->modelManager
                 ->getTaskQueueRepository()
                 ->create(
-                    'project_reference_revision',
-                    new Parameters(array(
-                        'project_name'                    => $projectReference->getProject()->getName(),
-                        'project_reference_name'          => $projectReference->getName(),
-                        'project_reference_revision_name' => $projectHandlerReferenceRevisionName
-                    ))
+                    new HandlerDefinition(
+                        'project_reference_revision',
+                        new Parameters(array(
+                            'project_name'                    => $projectReference->getProject()->getName(),
+                            'project_reference_name'          => $projectReference->getName(),
+                            'project_reference_revision_name' => $projectHandlerReferenceRevisionName
+                        ))
+                    )
                 );
 
-            $this->taskManager
+            $this->handlerManager
                 ->getTaskQueueHandler($taskQueue)
                     ->run($taskQueue);
         } else {
@@ -95,15 +94,17 @@ class ProjectReferenceTaskHandler extends TaskHandler
             $taskQueue = $this->modelManager
                 ->getTaskQueueRepository()
                 ->create(
-                    'project_reference_revision_create',
-                    new Parameters(array(
-                        'project_name'                    => $projectReference->getProject()->getName(),
-                        'project_reference_name'          => $projectReference->getName(),
-                        'project_reference_revision_name' => $projectHandlerReferenceRevisionName
-                    ))
+                    new HandlerDefinition(
+                        'project_reference_revision_create',
+                        new Parameters(array(
+                            'project_name'                    => $projectReference->getProject()->getName(),
+                            'project_reference_name'          => $projectReference->getName(),
+                            'project_reference_revision_name' => $projectHandlerReferenceRevisionName
+                        ))
+                    )
                 );
 
-            $this->taskManager
+            $this->handlerManager
                 ->getTaskQueueHandler($taskQueue)
                     ->run($taskQueue);
         }

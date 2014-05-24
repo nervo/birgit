@@ -7,27 +7,27 @@ Birgit\Bundle\DoctrineBundle\Entity\Project\Project:
             columns: ['name']
     id:
         id:
-            name:      id
+            column:    id
             type:      integer
             generator: { strategy: AUTO }
     fields:
         name:
-            name:      name
+            column:    name
             type:      string
             length:    255
         status:
-            name:      status
+            column:    status
             type:      integer
         active:
-            name:      active
+            column:    active
             type:      boolean
         # Handler definition
         handlerType:
-            name:      handler_type
+            column:    handler_type
             type:      string
             length:    255
         handlerParameters:
-            name:      handler_parameters
+            column:    handler_parameters
             type:      parameters
     oneToMany:
         references:

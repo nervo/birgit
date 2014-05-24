@@ -2,7 +2,7 @@
 
 namespace Birgit\Model\Project\Environment;
 
-use Birgit\Component\Handler\Handleable;
+use Birgit\Domain\Handler\Handleable;
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Host\Host;

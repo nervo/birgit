@@ -6,13 +6,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
-use Birgit\Domain\Project\ProjectManager;
+use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Domain\Project\ProjectEvents;
 use Birgit\Domain\Project\Event\ProjectStatusEvent;
 use Birgit\Model\Task\Task;
 use Birgit\Model\Project\ProjectStatus;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
 
@@ -21,19 +21,16 @@ use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
  */
 class ProjectTaskHandler extends TaskHandler
 {
-    protected $projectManager;
-    protected $taskManager;
+    protected $handlerManager;
     protected $modelManager;
     protected $eventDispatcher;
 
     public function __construct(
-        ProjectManager $projectManager,
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->projectManager  = $projectManager;
-        $this->taskManager     = $taskManager;
+        $this->handlerManager  = $handlerManager;
         $this->modelManager    = $modelManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -56,7 +53,7 @@ class ProjectTaskHandler extends TaskHandler
         $context->getLogger()->notice(sprintf('Task Handler: Project "%s"', $project->getName()));
 
         // Get project handler
-        $projectHandler = $this->projectManager
+        $projectHandler = $this->handlerManager
             ->getProjectHandler($project);
 
         // Is project up ?
@@ -107,14 +104,16 @@ class ProjectTaskHandler extends TaskHandler
                 $taskQueue =  $this->modelManager
                     ->getTaskQueueRepository()
                     ->create(
-                        'project_reference_delete',
-                        new Parameters(array(
-                            'project_name'           => $project->getName(),
-                            'project_reference_name' => $projectHandlerReferenceName
-                        ))
+                        new HandlerDefinition(
+                            'project_reference_delete',
+                            new Parameters(array(
+                                'project_name'           => $project->getName(),
+                                'project_reference_name' => $projectHandlerReferenceName
+                            ))
+                        )
                     );
 
-                $this->taskManager
+                $this->handlerManager
                     ->getTaskQueueHandler($taskQueue)
                         ->run($taskQueue);
             }
@@ -134,14 +133,16 @@ class ProjectTaskHandler extends TaskHandler
                 $taskQueue =  $this->modelManager
                     ->getTaskQueueRepository()
                     ->create(
-                        'project_reference',
-                        new Parameters(array(
-                            'project_name'           => $project->getName(),
-                            'project_reference_name' => $projectHandlerReferenceName
-                        ))
+                        new HandlerDefinition(
+                            'project_reference',
+                            new Parameters(array(
+                                'project_name'           => $project->getName(),
+                                'project_reference_name' => $projectHandlerReferenceName
+                            ))
+                        )
                     );
 
-                $this->taskManager
+                $this->handlerManager
                     ->getTaskQueueHandler($taskQueue)
                         ->run($taskQueue);
             } else {
@@ -151,14 +152,16 @@ class ProjectTaskHandler extends TaskHandler
                 $taskQueue =  $this->modelManager
                     ->getTaskQueueRepository()
                     ->create(
-                        'project_reference_create',
-                        new Parameters(array(
-                            'project_name'           => $project->getName(),
-                            'project_reference_name' => $projectHandlerReferenceName
-                        ))
+                        new HandlerDefinition(
+                            'project_reference_create',
+                            new Parameters(array(
+                                'project_name'           => $project->getName(),
+                                'project_reference_name' => $projectHandlerReferenceName
+                            ))
+                        )
                     );
 
-                $this->taskManager
+                $this->handlerManager
                     ->getTaskQueueHandler($taskQueue)
                         ->run($taskQueue);
             }

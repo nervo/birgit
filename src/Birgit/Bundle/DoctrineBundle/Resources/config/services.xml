@@ -7,14 +7,16 @@
     <parameters>
 
         <!-- Model - Manager -->
-        <parameter key="birgit.model_manager.class">Birgit\Bundle\DoctrineBundle\Entity\EntityManager</parameter>
+        <parameter key="birgit.model_manager.doctrine_orm.class">Birgit\Bundle\DoctrineBundle\Entity\EntityManager</parameter>
     
     </parameters>
     
     <services>
         
         <!-- Model - Manager -->
-        <service id="birgit.model_manager" class="%birgit.model_manager.class%">
+        <service id="birgit.model_manager" alias="birgit.model_manager.doctrine_orm" />
+        
+        <service id="birgit.model_manager.doctrine_orm" public="false" class="%birgit.model_manager.doctrine_orm.class%">
             <argument type="service" id="doctrine" />
         </service>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Handler;
+namespace Birgit\Domain\Handler;
 
 use Birgit\Component\Parameters\Parameters;
 
@@ -26,23 +26,13 @@ class HandlerDefinition
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($type, Parameters $parameters = null)
     {
-        $this->parameters = new Parameters();
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     *
-     * @return TypeModel
-     */
-    public function setType($type)
-    {
+        // Type
         $this->type = (string) $type;
-
-        return $this;
+        
+        // Parameters
+        $this->parameters = $parameters ? $parameters : new Parameters();
     }
 
     /**
@@ -53,20 +43,6 @@ class HandlerDefinition
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Set parameters
-     *
-     * @param Parameters $parameters
-     *
-     * @return TypeModel
-     */
-    public function setParameters(Parameters $parameters)
-    {
-        $this->parameters = $parameters;
-
-        return $this;
     }
 
     /**

@@ -4,23 +4,19 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Task\Queue;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Task\Queue\TaskQueueRepositoryInterface;
-use Birgit\Component\Parameters\Parameters;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Task queue Repository
  */
 class TaskQueueRepository extends EntityRepository implements TaskQueueRepositoryInterface
 {
-    public function create($type, Parameters $parameters = null)
+    public function create(HandlerDefinition $handlerDefinition)
     {
         $taskQueue = $this->createEntity();
         
         $taskQueue
-            ->setType((string) $type);
-
-        if ($parameters) {
-            $taskQueue->setParameters($parameters);
-        }
+            ->setHandlerDefinition($handlerDefinition);
         
         return $taskQueue;
     }

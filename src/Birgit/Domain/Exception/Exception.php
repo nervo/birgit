@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Exception;
+namespace Birgit\Domain\Exception;
 
 class Exception extends \Exception
 {

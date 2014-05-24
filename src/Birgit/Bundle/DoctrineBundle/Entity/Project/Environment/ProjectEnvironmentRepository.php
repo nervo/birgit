@@ -6,25 +6,21 @@ use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Project;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment;
-use Birgit\Component\Parameters\Parameters;
-use Birgit\Component\Exception\Model\ModelNotFoundException;
+use Birgit\Domain\Exception\Model\ModelNotFoundException;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Project environment Repository
  */
 class ProjectEnvironmentRepository extends EntityRepository implements ProjectEnvironmentRepositoryInterface
 {
-    public function create($name, Project $project, $type, Parameters $parameters = null)
+    public function create($name, Project $project, HandlerDefinition $handlerDefinition)
     {
         $projectEnvironment = $this->createEntity();
         
         $projectEnvironment
             ->setName((string) $name)
-            ->setType((string) $type);
-
-        if ($parameters) {
-            $projectEnvironment->setParameters($parameters);
-        }
+            ->setHandlerDefinition($handlerDefinition);
 
         $project->addEnvironment($projectEnvironment);
         

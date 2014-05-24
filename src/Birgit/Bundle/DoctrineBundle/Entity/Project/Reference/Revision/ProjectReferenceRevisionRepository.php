@@ -6,7 +6,7 @@ use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevisionRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision;
-use Birgit\Component\Exception\Model\ModelNotFoundException;
+use Birgit\Domain\Exception\Model\ModelNotFoundException;
 
 /**
  * Project reference revision Repository

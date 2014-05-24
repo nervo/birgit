@@ -4,7 +4,7 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Task;
 
 use Birgit\Model;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Component\Handler\HandlerDefinition;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Task
@@ -139,12 +139,9 @@ class Task extends Model\Task\Task
      */
     public function getHandlerDefinition()
     {
-        $handlerDefinition = new HandlerDefinition();
-
-        $handlerDefinition
-            ->setType($this->handlerType)
-            ->setParameters($this->handlerParameters);
-
-        return $handlerDefinition;
+        return new HandlerDefinition(
+            $this->handlerType,
+            $this->handlerParameters
+        );
     }
 }

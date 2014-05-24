@@ -10,7 +10,7 @@ use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 
 class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
@@ -18,14 +18,14 @@ class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($taskManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager, $eventDispatcher, $logger);
     }
 
     public function getType()
@@ -39,14 +39,14 @@ class ProjectReferenceDeleteTaskQueueHandler extends TaskQueueHandler
         $project = $this->modelManager
             ->getProjectRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_name')
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_name')
             );
 
         // Get project reference
         $projectReference = $this->modelManager
             ->getProjectReferenceRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_reference_name'),
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_reference_name'),
                 $project
             );
 

@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Host\Task\Queue\Context\HostTaskQueueContext;
 use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 
 class HostTaskQueueHandler extends TaskQueueHandler
@@ -18,14 +18,14 @@ class HostTaskQueueHandler extends TaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($taskManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager, $eventDispatcher, $logger);
     }
 
     public function getType()
@@ -39,14 +39,14 @@ class HostTaskQueueHandler extends TaskQueueHandler
         $project = $this->modelManager
             ->getProjectRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_name')
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_name')
             );
 
         // Get project reference
         $projectReference = $this->modelManager
             ->getProjectReferenceRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_reference_name'),
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_reference_name'),
                 $project
             );
 
@@ -54,7 +54,7 @@ class HostTaskQueueHandler extends TaskQueueHandler
         $projectEnvironment = $this->modelManager
             ->getProjectEnvironmentRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_environment_name'),
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_environment_name'),
                 $project
             );
 

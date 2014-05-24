@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Component\Handler\HandlerDefinition;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Task queue
@@ -48,8 +48,6 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     {
         // Tasks
         $this->tasks = new ArrayCollection();
-        
-        parent::__construct();
     }
 
     /**
@@ -147,12 +145,9 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
      */
     public function getHandlerDefinition()
     {
-        $handlerDefinition = new HandlerDefinition();
-
-        $handlerDefinition
-            ->setType($this->handlerType)
-            ->setParameters($this->handlerParameters);
-
-        return $handlerDefinition;
+        return new HandlerDefinition(
+            $this->handlerType,
+            $this->handlerParameters
+        );
     }
 }

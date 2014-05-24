@@ -2,11 +2,11 @@
 
 namespace Birgit\Domain\Project\Environment\Handler;
 
-use Birgit\Component\Type\TypeHandler;
+use Birgit\Domain\Handler\Handler;
 
 /**
  * Project environment Handler
  */
-abstract class ProjectEnvironmentHandler extends TypeHandler implements ProjectEnvironmentHandlerInterface
+abstract class ProjectEnvironmentHandler extends Handler implements ProjectEnvironmentHandlerInterface
 {
 }

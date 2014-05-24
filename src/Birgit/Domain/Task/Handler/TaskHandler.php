@@ -2,11 +2,11 @@
 
 namespace Birgit\Domain\Task\Handler;
 
-use Birgit\Component\Type\TypeHandler;
+use Birgit\Domain\Handler\Handler;
 
 /**
  * Task Handler
  */
-abstract class TaskHandler extends TypeHandler implements TaskHandlerInterface
+abstract class TaskHandler extends Handler implements TaskHandlerInterface
 {
 }

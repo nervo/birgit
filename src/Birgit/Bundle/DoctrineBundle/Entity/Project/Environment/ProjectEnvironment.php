@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Component\Handler\HandlerDefinition;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Project environment
@@ -271,12 +271,9 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
      */
     public function getHandlerDefinition()
     {
-        $handlerDefinition = new HandlerDefinition();
-
-        $handlerDefinition
-            ->setType($this->handlerType)
-            ->setParameters($this->handlerParameters);
-
-        return $handlerDefinition;
+        return new HandlerDefinition(
+            $this->handlerType,
+            $this->handlerParameters
+        );
     }
 }

@@ -6,10 +6,10 @@ use Psr\Log\LoggerInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Birgit\Component\Type\TypeHandler;
+use Birgit\Domain\Handler\Handler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Domain\Task\Event\TaskQueueEvent;
 use Birgit\Domain\Task\TaskEvents;
@@ -17,18 +17,18 @@ use Birgit\Domain\Task\TaskEvents;
 /**
  * Task queue Handler
  */
-abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerInterface
+abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInterface
 {
-    protected $taskManager;
+    protected $handlerManager;
     protected $eventDispatcher;
     protected $logger;
 
     public function __construct(
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
-        $this->taskManager = $taskManager;
+        $this->handlerManager = $handlerManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
     }
@@ -47,7 +47,7 @@ abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerI
         $context = $this->preRun($taskQueue);
 
         // Log
-        $context->getLogger()->notice(sprintf('Task queue Handler: Run task queue type "%s"', $taskQueue->getType()), $taskQueue->getParameters()->all());
+        $context->getLogger()->notice(sprintf('Task queue Handler: Run task queue type "%s"', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
 
         // Dispatch event
         $this->eventDispatcher
@@ -62,9 +62,9 @@ abstract class TaskQueueHandler extends TypeHandler implements TaskQueueHandlerI
             $task = array_pop($tasks);
 
             // Log
-            $context->getLogger()->notice(sprintf('Task queue Handler: Run task type "%s"', $task->getType()), $task->getParameters()->all());
+            $context->getLogger()->notice(sprintf('Task queue Handler: Run task type "%s"', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
 
-            $this->taskManager
+            $this->handlerManager
                 ->getTaskHandler($task)
                     ->run($task, $context);
         }

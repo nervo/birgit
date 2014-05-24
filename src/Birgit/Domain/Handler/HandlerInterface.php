@@ -1,8 +1,8 @@
 <?php
 
-namespace Birgit\Component\Type;
+namespace Birgit\Domain\Handler;
 
-interface TypeHandlerInterface
+interface HandlerInterface
 {
     /**
      * Get type

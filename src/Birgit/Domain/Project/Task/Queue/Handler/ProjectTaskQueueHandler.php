@@ -10,7 +10,7 @@ use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContext;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Model\Task\Queue\TaskQueue;
-use Birgit\Domain\Task\TaskManager;
+use Birgit\Domain\Handler\HandlerManager;
 
 /**
  * Project Task queue Handler
@@ -20,14 +20,14 @@ class ProjectTaskQueueHandler extends TaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        TaskManager $taskManager,
+        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($taskManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager, $eventDispatcher, $logger);
     }
 
     public function getType()
@@ -41,7 +41,7 @@ class ProjectTaskQueueHandler extends TaskQueueHandler
         $project = $this->modelManager
             ->getProjectRepository()
             ->get(
-                $taskQueue->getParameters()->get('project_name')
+                $taskQueue->getHandlerDefinition()->getParameters()->get('project_name')
             );
 
         return new ProjectTaskQueueContext(

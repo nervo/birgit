@@ -4,23 +4,19 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Task;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Task\TaskRepositoryInterface;
-use Birgit\Component\Parameters\Parameters;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Task Repository
  */
 class TaskRepository extends EntityRepository implements TaskRepositoryInterface
 {
-    public function create($type, Parameters $parameters = null)
+    public function create(HandlerDefinition $handlerDefinition)
     {
         $task = $this->createEntity();
         
         $task
-            ->setType((string) $type);
-
-        if ($parameters) {
-            $task->setParameters($parameters);
-        }
+            ->setHandlerDefinition($handlerDefinition);
         
         return $task;
     }

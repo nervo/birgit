@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Birgit\Domain\Task\TaskEvents;
 use Birgit\Domain\Task\Event\TaskQueueEvent;
 use Birgit\Model\ModelManagerInterface;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Project EventListener
@@ -40,7 +41,7 @@ class ProjectEventListener implements EventSubscriberInterface
                 $this->modelManager
                     ->getTaskRepository()
                     ->create(
-                        'project'
+                        new HandlerDefinition('project')
                     )
             );
     }
@@ -55,7 +56,7 @@ class ProjectEventListener implements EventSubscriberInterface
                 $this->modelManager
                     ->getTaskRepository()
                     ->create(
-                        'project_reference'
+                        new HandlerDefinition('project_reference')
                     )
             );
     }
@@ -70,7 +71,7 @@ class ProjectEventListener implements EventSubscriberInterface
                 $this->modelManager
                     ->getTaskRepository()
                     ->create(
-                        'project_reference_environments'
+                        new HandlerDefinition('project_reference_environments')
                     )
             );
     }

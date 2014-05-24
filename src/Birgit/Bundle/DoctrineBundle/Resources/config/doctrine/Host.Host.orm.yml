@@ -4,7 +4,7 @@ Birgit\Bundle\DoctrineBundle\Entity\Host\Host:
     repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Host\HostRepository
     id:
         id:
-            name:      id
+            column:    id
             type:      integer
             generator: { strategy: AUTO }
     manyToOne:

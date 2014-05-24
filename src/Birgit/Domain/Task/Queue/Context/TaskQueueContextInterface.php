@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Task\Queue\Context;
 
-use Birgit\Component\Context\ContextInterface;
+use Birgit\Domain\Context\ContextInterface;
 
 /**
  * Task queue Context Interface

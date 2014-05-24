@@ -4,26 +4,22 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Project;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Project\ProjectRepositoryInterface;
-use Birgit\Component\Parameters\Parameters;
-use Birgit\Component\Exception\Model\ModelNotFoundException;
+use Birgit\Domain\Exception\Model\ModelNotFoundException;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Project;
+use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
  * Project Repository
  */
 class ProjectRepository extends EntityRepository implements ProjectRepositoryInterface
 {
-    public function create($name, $type, Parameters $parameters = null)
+    public function create($name, HandlerDefinition $handlerDefinition)
     {
         $project = $this->createEntity();
         
         $project
             ->setName((string) $name)
-            ->setType((string) $type);
-
-        if ($parameters) {
-            $project->setParameters($parameters);
-        }
+            ->setHandlerDefinition($handlerDefinition);
         
         return $project;
     }

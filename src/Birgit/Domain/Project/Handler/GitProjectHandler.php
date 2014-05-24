@@ -7,8 +7,8 @@ use Symfony\Component\Process\ProcessBuilder;
 
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
-use Birgit\Component\Context\ContextInterface;
-use Birgit\Component\Exception\Exception;
+use Birgit\Domain\Context\ContextInterface;
+use Birgit\Domain\Exception\Exception;
 
 /**
  * Git Project handler
@@ -30,7 +30,7 @@ class GitProjectHandler extends ProjectHandler
     public function getReferences(Project $project, ContextInterface $context)
     {
         // Get path
-        $path = $project->getParameters()
+        $path = $project->getHandlerDefinition()->getParameters()
             ->get('path');
 
         // Log

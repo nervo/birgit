@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Component\Parameters\Parameters;
 
 class TestCommand extends ContainerAwareCommand
@@ -32,9 +33,9 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get task manager
-        $taskManager = $this->getContainer()
-            ->get('birgit.task_manager');
+        // Get handler manager
+        $handlerManager = $this->getContainer()
+            ->get('birgit.handler_manager');
 
         // Get model manager
         $modelManager = $this->getContainer()
@@ -43,13 +44,15 @@ EOF
         $taskQueue = $modelManager
             ->getTaskQueueRepository()
             ->create(
-                'project',
-                new Parameters(array(
-                    'project_name' => 'test'
-                ))
+                new HandlerDefinition(
+                    'project',
+                    new Parameters(array(
+                        'project_name' => 'test'
+                    ))
+                )
             );
 
-        $taskManager
+        $handlerManager
             ->getTaskQueueHandler($taskQueue)
                 ->run($taskQueue);
     }

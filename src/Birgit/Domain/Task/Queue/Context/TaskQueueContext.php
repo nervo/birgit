@@ -4,7 +4,7 @@ namespace Birgit\Domain\Task\Queue\Context;
 
 use Psr\Log\LoggerInterface;
 
-use Birgit\Component\Context\Context;
+use Birgit\Domain\Context\Context;
 use Birgit\Model\Task\Queue\TaskQueue;
 
 /**
@@ -18,9 +18,9 @@ class TaskQueueContext extends Context implements TaskQueueContextInterface
         TaskQueue $taskQueue,
         LoggerInterface $logger
     ) {
-        $this->taskQueue = $taskQueue;
-
         parent::__construct($logger);
+        
+        $this->taskQueue = $taskQueue;
     }
 
     public function getTaskQueue()

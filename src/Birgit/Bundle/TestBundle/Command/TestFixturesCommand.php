@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Component\Parameters\Parameters;
 
 class TestFixturesCommand extends ContainerAwareCommand
@@ -32,82 +33,98 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $projectsDefinitions = array(
-            'test'  => array(
+        $projectsDefinitions = [
+            'test'  => [
                 'active'       => true,
-                'type'         => 'git',
-                'parameters'   => array(
-                    //'path' => 'git@github.com:nervo/birgit-test.git'
-                    'path' => '~/workspace/birgit-test'
-                ),
-                'environments' => array(
-                    'test'    => array(
+                'handler'      => [
+                    'type'       => 'git',
+                    'parameters' => [
+                        //'path' => 'git@github.com:nervo/birgit-test.git'
+                        'path' => '~/workspace/birgit-test'
+                    ]
+                ],
+                'environments' => [
+                    'test'    => [
                         'active'            => true,
-                        'type'              => 'local',
-                        'parameters'        => array(
-                            'workspace' => 'workspace'
-                        ),
-                        'reference_pattern' => 'heads/*'
-                    ),
-                    'quality' => array(
+                        'reference_pattern' => 'heads/*',
+                        'handler'           => [
+                            'type'       => 'local',
+                            'parameters' => [
+                                'workspace' => 'workspace'
+                            ]
+                        ]
+                    ],
+                    'quality' => [
                         'active'            => true,
-                        'type'              => 'local',
-                        'parameters'        => array(
-                            'workspace' => 'workspace'
-                        ),
-                        'reference_pattern' => 'heads/*'
-                    )
-                )
-            ),
-            'adele' => array(
+                        'reference_pattern' => 'heads/*',
+                        'handler'           => [
+                            'type'       => 'local',
+                            'parameters' => [
+                                'workspace' => 'workspace'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'adele' => [
                 'active'       => true,
-                'type'         => 'git',
-                'parameters'   => array(
-                    //'path' => 'git@github.com:Elao/adele.git'
-                    'path' => '~/workspace/elao/adele'
-                ),
-                'environments' => array(
-                    'test'    => array(
+                'handler'      => [
+                    'type'       => 'git',
+                    'parameters' => [
+                        //'path' => 'git@github.com:Elao/adele.git'
+                        'path' => '~/workspace/elao/adele'
+                    ]
+                ],
+                'environments' => [
+                    'test'    => [
                         'active'            => true,
-                        'type'              => 'local',
-                        'parameters'        => array(
-                            'workspace' => 'workspace'
-                        ),
-                        'reference_pattern' => 'heads/*'
-                    ),
-                    'quality' => array(
+                        'reference_pattern' => 'heads/*',
+                        'handler'           => [
+                            'type'       => 'local',
+                            'parameters' => [
+                                'workspace' => 'workspace'
+                            ]
+                        ]
+                    ],
+                    'quality' => [
                         'active'            => true,
-                        'type'              => 'local',
-                        'parameters'        => array(
-                            'workspace' => 'workspace'
-                        ),
-                        'reference_pattern' => 'heads/*'
-                    ),
-                    'demo'    => array(
+                        'reference_pattern' => 'heads/*',
+                        'handler'           => [
+                            'type'              => 'local',
+                            'parameters'        => [
+                                'workspace' => 'workspace'
+                            ]
+                        ]
+                    ],
+                    'demo'    => [
                         'active'            => true,
-                        'type'              => 'local',
-                        'parameters'        => array(
-                            'workspace' => 'workspace'
-                        ),
-                        'reference_pattern' => 'heads/*'
-                    )
-                )
-            )
-        );
+                        'reference_pattern' => 'heads/*',
+                        'handler'           => [
+                            'type'              => 'local',
+                            'parameters'        => [
+                                'workspace' => 'workspace'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
         // Get model manager
         $modelManager = $this->getContainer()
             ->get('birgit.model_manager');
 
-        $projects = array();
+        $projects = [];
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
             $projects[$projectName] = $modelManager
                 ->getProjectRepository()
                 ->create(
                     $projectName,
-                    $projectParameters['type'],
-                    new Parameters($projectParameters['parameters'])
+                    new HandlerDefinition(
+                        $projectParameters['handler']['type'],
+                        new Parameters($projectParameters['handler']['parameters'])
+                    )
                 )
                     ->setActive($projectParameters['active']);
 
@@ -115,7 +132,7 @@ EOF
                 ->getProjectRepository()
                 ->save($projects[$projectName]);
 
-            $projectEnvironments = array();
+            $projectEnvironments = [];
 
             foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
                 $projectEnvironments[$projectEnvironmentName] = $modelManager
@@ -123,8 +140,10 @@ EOF
                     ->create(
                         $projectEnvironmentName,
                         $projects[$projectName],
-                        $projectEnvironmentParameters['type'],
-                        new Parameters($projectEnvironmentParameters['parameters'])
+                        new HandlerDefinition(
+                            $projectEnvironmentParameters['handler']['type'],
+                            new Parameters($projectEnvironmentParameters['handler']['parameters'])
+                        )
                     )
                         ->setReferencePattern($projectEnvironmentParameters['reference_pattern'])
                         ->setActive($projectEnvironmentParameters['active']);

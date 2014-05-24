@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Handler;
+namespace Birgit\Domain\Handler;
 
 /**
  * Handleable
@@ -12,5 +12,5 @@ interface Handleable
      *
      * @return HandlerDefinition
      */
-    public function getHandlerDefinition()
+    public function getHandlerDefinition();
 }
