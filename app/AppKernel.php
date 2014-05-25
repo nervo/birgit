@@ -19,7 +19,8 @@ class AppKernel extends Kernel
 
             // Birgit
             new Birgit\Bundle\CoreBundle\BirgitCoreBundle(),
-            new Birgit\Bundle\DoctrineBundle\BirgitDoctrineBundle()
+            new Birgit\Bundle\DoctrineBundle\BirgitDoctrineBundle(),
+            new Birgit\Bundle\FrontBundle\BirgitFrontBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

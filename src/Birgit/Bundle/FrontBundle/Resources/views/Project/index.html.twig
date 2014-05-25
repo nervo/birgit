@@ -1,0 +1,48 @@
+{% extends 'BirgitFrontBundle::layout.html.twig' %}
+
+{% block body %}
+        
+    <h1>{{ project.name }}</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <td colspan="2"></td>
+            {% for projectEnvironment in project.environments %}
+                <th colspan="2">
+                    {{ projectEnvironment.name }}
+                    <br />
+                    <em>{{ projectEnvironment.referencePattern }}</em>
+                </th>
+            {% endfor %}
+        </tr>
+        {% for projectReference in project.references %}
+            <tr>
+                <th colspan="2">{{ projectReference.name }}</th>
+                {% for projectEnvironment in project.environments %}
+                    <td colspan="2">
+                        {% for host in projectReference.hosts %}
+                            {% if host.projectEnvironment == projectEnvironment %}
+                                Host...
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+            {% for projectReferenceRevision in projectReference.revisions %}
+                <tr>
+                    <th></th>
+                    <th>
+                        <abbr title="{{ projectReferenceRevision.name }}">
+                            {{ projectReferenceRevision.name|truncate(6, false, '') }}
+                        </abbr>
+                    </th>
+                    {% for projectEnvironment in project.environments %}
+                        <td></td>
+                        <td>Build...</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+
+{% endblock %}
