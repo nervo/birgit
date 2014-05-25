@@ -38,14 +38,18 @@
                             </abbr>
                         </th>
                         {% for projectEnvironment in project.environments %}
-                            <td></td>
-                            <td>
-                                {% for host in projectReference.hosts %}
-                                    {% if host.projectEnvironment == projectEnvironment %}
-                                        Build...
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
+                            {% set buildFound = false %}
+                            {% for host in projectReference.hosts %}
+                                {% if host.projectEnvironment == projectEnvironment %}
+                                    {% set buildFound = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if buildFound %}
+                                <td></td>
+                                <td>Build...</td>
+                            {% else %}
+                                <td colspan="2"></td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                 {% endfor %}
