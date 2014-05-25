@@ -22,8 +22,6 @@ class GitProjectHandler extends ProjectHandler
 
     public function isUp(Project $project, ContextInterface $context)
     {
-        $context->getLogger()->notice('Git Project: isUp');
-
         return true;
     }
 
@@ -32,9 +30,6 @@ class GitProjectHandler extends ProjectHandler
         // Get path
         $path = $project->getHandlerDefinition()->getParameters()
             ->get('path');
-
-        // Log
-        $context->getLogger()->notice(sprintf('Git Project: Get "%s" references', $path));
 
         // Find git executable
         $executableFinder = new ExecutableFinder();

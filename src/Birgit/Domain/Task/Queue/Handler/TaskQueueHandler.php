@@ -47,7 +47,7 @@ abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInter
         $context = $this->preRun($taskQueue);
 
         // Log
-        $context->getLogger()->notice(sprintf('Task queue Handler: Run task queue type "%s"', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
+        $context->getLogger()->notice(sprintf('Task Queue: %s', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
 
         // Dispatch event
         $this->eventDispatcher
@@ -62,7 +62,7 @@ abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInter
             $task = array_pop($tasks);
 
             // Log
-            $context->getLogger()->notice(sprintf('Task queue Handler: Run task type "%s"', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
+            $context->getLogger()->notice(sprintf('Task: %s', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
 
             $this->handlerManager
                 ->getTaskHandler($task)

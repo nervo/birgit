@@ -46,9 +46,6 @@ class ProjectReferenceTaskHandler extends TaskHandler
         // Get project reference
         $projectReference = $context->getProjectReference();
 
-        // Log
-        $context->getLogger()->notice(sprintf('Task Handler: Project Reference "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
-
         // Get project handler
         $projectHandler = $this->handlerManager
             ->getProjectHandler(
@@ -88,8 +85,6 @@ class ProjectReferenceTaskHandler extends TaskHandler
                 ->getTaskQueueHandler($taskQueue)
                     ->run($taskQueue);
         } else {
-            // Log
-            $context->getLogger()->info(sprintf('New Project "%s" reference "%s" revision "%s"', $projectReference->getProject()->getName(), $projectReference->getName(), $projectHandlerReferenceRevisionName));
 
             $taskQueue = $this->modelManager
                 ->getTaskQueueRepository()

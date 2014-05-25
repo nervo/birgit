@@ -46,9 +46,6 @@ class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
         // Get project reference
         $projectReference = $context->getProjectReference();
 
-        // Log
-        $context->getLogger()->notice(sprintf('Task Handler: Project Reference Environments "%s" "%s"', $projectReference->getProject()->getName(), $projectReference->getName()));
-
         // Find hosts to delete
         foreach ($projectReference->getHosts() as $host) {
             if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
