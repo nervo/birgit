@@ -39,7 +39,13 @@
                         </th>
                         {% for projectEnvironment in project.environments %}
                             <td></td>
-                            <td>Build...</td>
+                            <td>
+                                {% for host in projectReference.hosts %}
+                                    {% if host.projectEnvironment == projectEnvironment %}
+                                        Build...
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
                         {% endfor %}
                     </tr>
                 {% endfor %}

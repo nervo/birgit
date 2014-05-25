@@ -56,7 +56,7 @@ EOF
                     ],
                     'quality' => [
                         'active'            => true,
-                        'reference_pattern' => 'heads/*',
+                        'reference_pattern' => 'heads/master',
                         'handler'           => [
                             'type'       => 'local',
                             'parameters' => [
