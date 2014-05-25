@@ -95,7 +95,7 @@ class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
                 $this->handlerManager
                     ->getTaskQueueHandler($taskQueue)
                         ->run($taskQueue);                
-            } else {
+            } else if ($projectEnvironment->matchReference($projectReference)) {
                 $taskQueue = $this->modelManager
                     ->getTaskQueueRepository()
                     ->create(

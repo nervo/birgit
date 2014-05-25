@@ -16,32 +16,41 @@
             {% endfor %}
         </tr>
         {% for projectReference in project.references %}
-            <tr>
-                <th colspan="2">{{ projectReference.name }}</th>
-                {% for projectEnvironment in project.environments %}
-                    <td colspan="2">
-                        {% for host in projectReference.hosts %}
-                            {% if host.projectEnvironment == projectEnvironment %}
-                                Host...
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                {% endfor %}
-            </tr>
-            {% for projectReferenceRevision in projectReference.revisions %}
+            {% if projectReference.hosts|length %}
                 <tr>
-                    <th></th>
-                    <th>
-                        <abbr title="{{ projectReferenceRevision.name }}">
-                            {{ projectReferenceRevision.name|truncate(6, false, '') }}
-                        </abbr>
-                    </th>
+                    <th colspan="2">{{ projectReference.name }}</th>
                     {% for projectEnvironment in project.environments %}
-                        <td></td>
-                        <td>Build...</td>
+                        <td colspan="2">
+                            {% for host in projectReference.hosts %}
+                                {% if host.projectEnvironment == projectEnvironment %}
+                                    Host...
+                                {% endif %}
+                            {% endfor %}
+                        </td>
                     {% endfor %}
                 </tr>
-            {% endfor %}
+                {% for projectReferenceRevision in projectReference.revisions %}
+                    <tr>
+                        <th></th>
+                        <th>
+                            <abbr title="{{ projectReferenceRevision.name }}">
+                                {{ projectReferenceRevision.name|truncate(6, false, '') }}
+                            </abbr>
+                        </th>
+                        {% for projectEnvironment in project.environments %}
+                            <td></td>
+                            <td>Build...</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <th colspan="2"><em>{{ projectReference.name }}</em></th>
+                    {% for projectEnvironment in project.environments %}
+                        <td colspan="2"></td>
+                    {% endfor %}
+                </tr>
+            {% endif %}
         {% endfor %}
     </table>
 
