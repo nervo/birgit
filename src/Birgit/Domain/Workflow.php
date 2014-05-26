@@ -10,9 +10,9 @@ use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Handler\HandlerDefinition;
 
 /**
- * Project EventListener
+ * Workflow
  */
-class ProjectEventListener implements EventSubscriberInterface
+class Workflow implements EventSubscriberInterface
 {
     protected $modelManager;
 

@@ -1,17 +1,22 @@
 Birgit
 ======
 
-[[Project]]
-     |
-     |
- (Project)-----------+-----------------------+--------------------------+
-                     |                       |                          |
-            [[ProjectReference]] [[ProjectReferenceCreate]] [[ProjectReferenceDelete]]
-                     |                       |
-                     |                       |
-             (ProjectReference)  (ProjectReferenceEnvironments)
-               |                                          |  
-               |                                          |
-   +-----------+--------------+                           +----------------------------+
-   |           |              |                           |                            |
-[[Host]] [[HostCreate]] [[HostDelete]]       [[ProjectReferenceRevision]] [[ProjectReferenceRevisionCreate]]
+Workflow
+--------
+
+╔═════════╦═╤═══════╤═╗
+║ Project ║ │Project│ ║
+╚═════════╩═╧╤╤═════╧═╝
+             ││
+             │└─────┐
+             │    ╔═╧══════════════════════════╦═╤════════════════════════════════╤═╗
+             │    ║ Project Reference - Create ║ │Project Reference - Environments│ ║
+             │    ╚════════════════════════════╩═╧╤╤══════════════════════════════╧═╝
+             │                                    ││
+             │                                    │└──────────┐
+             │                                  ╔═╧════╦══╗ ╔═╧═════════════╦══╗
+  ┌──────────┘                                  ║ Host ║  ║ ║ Host - Create ║  ║
+  │                                             ╚══════╩══╝ ╚═══════════════╩══╝
+╔═╧═════════════════╦═╤═════════════════╤═╗
+║ Project Reference ║ │Project Reference│ ║
+╚═══════════════════╩═╧═════════════════╧═╝

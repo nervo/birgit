@@ -6,11 +6,12 @@
 
     <parameters>
 
+        <!-- Workflow -->
+        <parameter key="birgit.workflow.class">Birgit\Domain\Workflow</parameter>
+
         <!-- Handler - Manager -->
         <parameter key="birgit.handler_manager.class">Birgit\Domain\Handler\HandlerManager</parameter>
 
-        <!-- Project - Event Listener -->
-        <parameter key="birgit.project_event_listener.class">Birgit\Domain\Project\ProjectEventListener</parameter>
         <!-- Project - Handlers -->
         <parameter key="birgit.project_handler.git.class">Birgit\Domain\Project\Handler\GitProjectHandler</parameter>
         <!-- Project - Task Handlers -->
@@ -39,15 +40,16 @@
     </parameters>
 
     <services>
+
+        <!-- Workflow -->
+        <service id="birgit.workflow" class="%birgit.workflow.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <tag name="kernel.event_subscriber" />
+        </service>
         
         <!-- Handler - Manager -->
         <service id="birgit.handler_manager" class="%birgit.handler_manager.class%" />
 
-        <!-- Project - Event Listener -->
-        <service id="birgit.project_event_listener" class="%birgit.project_event_listener.class%">
-            <argument type="service" id="birgit.model_manager" />
-            <tag name="kernel.event_subscriber" />
-        </service>
         <!-- Project - Handlers -->
         <service id="birgit.project_handler.git" public="false" class="%birgit.project_handler.git.class%">
             <tag name="birgit.project_handler" />
