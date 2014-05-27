@@ -2,9 +2,8 @@
 
 namespace Birgit\Domain\Host\Task\Queue\Context;
 
-use Psr\Log\LoggerInterface;
-
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
+use Birgit\Domain\Context\ContextInterface;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Host\Host;
 
@@ -15,19 +14,14 @@ class HostTaskQueueContext extends TaskQueueContext implements HostTaskQueueCont
 {
     protected $host;
 
-    /**
-     * Constructor
-     *
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         Host $host,
-        TaskQueue $queue,
-        LoggerInterface $logger
+        TaskQueue $taskQueue,
+        ContextInterface $context
     ) {
         $this->host = $host;
 
-        parent::__construct($queue, $logger);
+        parent::__construct($taskQueue, $context);
     }
 
     public function getHost()

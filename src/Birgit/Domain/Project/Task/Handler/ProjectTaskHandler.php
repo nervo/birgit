@@ -2,8 +2,6 @@
 
 namespace Birgit\Domain\Project\Task\Handler;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Handler\HandlerManager;
@@ -15,24 +13,22 @@ use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
+use Birgit\Domain\Exception\Context\ContextException;
 
 /**
  * Project Task handler
  */
 class ProjectTaskHandler extends TaskHandler
 {
-    protected $handlerManager;
     protected $modelManager;
-    protected $eventDispatcher;
+    protected $handlerManager;
 
     public function __construct(
-        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
-        EventDispatcherInterface $eventDispatcher
+        HandlerManager $handlerManager
     ) {
-        $this->handlerManager  = $handlerManager;
-        $this->modelManager    = $modelManager;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->modelManager   = $modelManager;
+        $this->handlerManager = $handlerManager;
     }
 
     public function getType()
@@ -43,7 +39,7 @@ class ProjectTaskHandler extends TaskHandler
     public function run(Task $task, TaskQueueContextInterface $context)
     {
         if (!$context instanceof ProjectTaskQueueContextInterface) {
-            return;
+            throw new ContextException();
         }
 
         // Get project
@@ -69,7 +65,7 @@ class ProjectTaskHandler extends TaskHandler
                 ->save($project);
 
             // Dispatch event
-            $this->eventDispatcher
+            $context->getEventDispatcher()
                 ->dispatch(
                     ProjectEvents::PROJECT_STATUS,
                     new ProjectStatusEvent($project->getName(), $status)

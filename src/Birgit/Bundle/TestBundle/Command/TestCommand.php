@@ -6,9 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Birgit\Domain\Context\Context;
 use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Component\Parameters\Parameters;
+use Birgit\Domain\Workflow\WorkflowEvents;
+use Birgit\Domain\Project\Event\ProjectEvent;
 
+/**
+ * Test command
+ */
 class TestCommand extends ContainerAwareCommand
 {
     /**
@@ -37,36 +43,17 @@ EOF
         $modelManager = $this->getContainer()
             ->get('birgit.model_manager');
 
-        // Get handler manager
-        $handlerManager = $this->getContainer()
-            ->get('birgit.handler_manager');
+        // Get project
+        $project = $modelManager
+            ->getProjectRepository()
+            ->get('test');
 
-        // Create task queue
-        $taskQueue = $modelManager
-            ->getTaskQueueRepository()
-            ->create(
-                new HandlerDefinition(
-                    'project',
-                    new Parameters(array(
-                        'project_name' => 'test'
-                    ))
-                )
+        // Dispatch event
+        $this->getContainer()
+            ->get('event_dispatcher')
+            ->dispatch(
+                WorkflowEvents::PROJECT,
+                new ProjectEvent($project)
             );
-        
-        // Add task
-        $taskQueue
-            ->addTask(
-                $modelManager
-                    ->getTaskRepository()
-                    ->create(
-                        new HandlerDefinition(
-                            'project_status'
-                        )
-                    )
-            );
-
-        $handlerManager
-            ->getTaskQueueHandler($taskQueue)
-                ->run($taskQueue);
     }
 }

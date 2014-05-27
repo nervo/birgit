@@ -2,11 +2,10 @@
 
 namespace Birgit\Domain\Project\Task\Queue\Context;
 
-use Psr\Log\LoggerInterface;
-
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Project\Environment\ProjectEnvironment;
+use Birgit\Domain\Context\ContextInterface;
 
 /**
  * Project environment Task queue Context
@@ -18,11 +17,11 @@ class ProjectEnvironmentTaskQueueContext extends TaskQueueContext implements Pro
     public function __construct(
         ProjectEnvironment $projectEnvironment,
         TaskQueue $queue,
-        LoggerInterface $logger
+        ContextInterface $context
     ) {
         $this->projectEnvironment = $projectEnvironment;
 
-        parent::__construct($queue, $logger);
+        parent::__construct($queue, $context);
     }
 
     public function getProjectEnvironment()

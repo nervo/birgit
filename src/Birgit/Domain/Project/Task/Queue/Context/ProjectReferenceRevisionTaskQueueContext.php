@@ -2,11 +2,10 @@
 
 namespace Birgit\Domain\Project\Task\Queue\Context;
 
-use Psr\Log\LoggerInterface;
-
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
+use Birgit\Domain\Context\ContextInterface;
 
 /**
  * Project reference revision Task queue Context
@@ -18,11 +17,11 @@ class ProjectReferenceRevisionTaskQueueContext extends TaskQueueContext implemen
     public function __construct(
         ProjectReferenceRevision $projectReferenceRevision,
         TaskQueue $queue,
-        LoggerInterface $logger
+        ContextInterface $context
     ) {
         $this->projectReferenceRevision = $projectReferenceRevision;
 
-        parent::__construct($queue, $logger);
+        parent::__construct($queue, $context);
     }
 
     public function getProjectReferenceRevision()

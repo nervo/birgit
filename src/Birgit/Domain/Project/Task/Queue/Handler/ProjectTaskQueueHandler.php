@@ -2,11 +2,8 @@
 
 namespace Birgit\Domain\Project\Task\Queue\Handler;
 
-use Psr\Log\LoggerInterface;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
+use Birgit\Domain\Context\ContextInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContext;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Model\Task\Queue\TaskQueue;
@@ -20,14 +17,12 @@ class ProjectTaskQueueHandler extends TaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
-        EventDispatcherInterface $eventDispatcher,
-        LoggerInterface $logger
+        HandlerManager $handlerManager
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($handlerManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager);
     }
 
     public function getType()
@@ -35,7 +30,7 @@ class ProjectTaskQueueHandler extends TaskQueueHandler
         return 'project';
     }
 
-    protected function preRun(TaskQueue $taskQueue)
+    protected function preRun(TaskQueue $taskQueue, ContextInterface $context)
     {
         // Get project
         $project = $this->modelManager
@@ -47,7 +42,7 @@ class ProjectTaskQueueHandler extends TaskQueueHandler
         return new ProjectTaskQueueContext(
             $project,
             $taskQueue,
-            $this->logger
+            $context
         );
     }
 }

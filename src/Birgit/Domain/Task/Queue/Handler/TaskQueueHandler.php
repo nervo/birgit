@@ -2,11 +2,8 @@
 
 namespace Birgit\Domain\Task\Queue\Handler;
 
-use Psr\Log\LoggerInterface;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Birgit\Domain\Handler\Handler;
+use Birgit\Domain\Context\ContextInterface;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Handler\HandlerManager;
@@ -20,37 +17,31 @@ use Birgit\Domain\Task\TaskEvents;
 abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInterface
 {
     protected $handlerManager;
-    protected $eventDispatcher;
-    protected $logger;
 
     public function __construct(
-        HandlerManager $handlerManager,
-        EventDispatcherInterface $eventDispatcher,
-        LoggerInterface $logger
+        HandlerManager $handlerManager
     ) {
         $this->handlerManager = $handlerManager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->logger = $logger;
     }
 
-    protected function preRun(TaskQueue $taskQueue)
+    protected function preRun(TaskQueue $taskQueue, ContextInterface $context)
     {
         return new TaskQueueContext(
             $taskQueue,
-            $this->logger
+            $context
         );
     }
 
-    public function run(TaskQueue $taskQueue)
+    public function run(TaskQueue $taskQueue, ContextInterface $context)
     {
         // Pre run
-        $context = $this->preRun($taskQueue);
+        $context = $this->preRun($taskQueue, $context);
 
         // Log
         $context->getLogger()->notice(sprintf('Task Queue: %s', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
 
         // Dispatch event
-        $this->eventDispatcher
+        $context->getEventDispatcher()
             ->dispatch(
                 TaskEvents::TASK_QUEUE . '.' . $this->getType(),
                 new TaskQueueEvent($taskQueue)

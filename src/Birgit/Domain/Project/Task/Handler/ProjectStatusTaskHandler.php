@@ -67,7 +67,7 @@ class ProjectStatusTaskHandler extends TaskHandler
         // Dispatch event
         $context->getEventDispatcher()
             ->dispatch(
-                $isUp ? ProjectEvents::PROJECT_STATUS_UP : ProjectEvents::PROJECT_STATUS_DOWN,
+                $isUp ? ProjectEvents::STATUS_UP : ProjectEvents::STATUS_DOWN,
                 new ProjectEvent($project)
             );
     }

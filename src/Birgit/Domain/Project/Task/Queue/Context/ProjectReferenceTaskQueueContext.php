@@ -2,11 +2,10 @@
 
 namespace Birgit\Domain\Project\Task\Queue\Context;
 
-use Psr\Log\LoggerInterface;
-
 use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Project\Reference\ProjectReference;
+use Birgit\Domain\Context\ContextInterface;
 
 /**
  * Project reference Task queue Context
@@ -17,12 +16,12 @@ class ProjectReferenceTaskQueueContext extends TaskQueueContext implements Proje
 
     public function __construct(
         ProjectReference $projectReference,
-        TaskQueue $queue,
-        LoggerInterface $logger
+        TaskQueue $taskQueue,
+        ContextInterface $context
     ) {
         $this->projectReference = $projectReference;
 
-        parent::__construct($queue, $logger);
+        parent::__construct($taskQueue, $context);
     }
 
     public function getProjectReference()

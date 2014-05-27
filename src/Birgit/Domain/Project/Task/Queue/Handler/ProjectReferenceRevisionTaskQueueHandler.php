@@ -2,11 +2,8 @@
 
 namespace Birgit\Domain\Project\Task\Queue\Handler;
 
-use Psr\Log\LoggerInterface;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
+use Birgit\Domain\Context\ContextInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceRevisionTaskQueueContext;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Handler\HandlerManager;
@@ -17,14 +14,12 @@ class ProjectReferenceRevisionTaskQueueHandler extends TaskQueueHandler
     protected $modelManager;
 
     public function __construct(
-        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
-        EventDispatcherInterface $eventDispatcher,
-        LoggerInterface $logger
+        HandlerManager $handlerManager
     ) {
         $this->modelManager = $modelManager;
 
-        parent::__construct($handlerManager, $eventDispatcher, $logger);
+        parent::__construct($handlerManager);
     }
 
     public function getType()
@@ -32,7 +27,7 @@ class ProjectReferenceRevisionTaskQueueHandler extends TaskQueueHandler
         return 'project_reference_revision';
     }
 
-    protected function preRun(TaskQueue $taskQueue)
+    protected function preRun(TaskQueue $taskQueue, ContextInterface $context)
     {
         // Get project
         $project = $this->modelManager
@@ -60,7 +55,7 @@ class ProjectReferenceRevisionTaskQueueHandler extends TaskQueueHandler
         return new ProjectReferenceRevisionTaskQueueContext(
             $projectReferenceRevision,
             $taskQueue,
-            $this->logger
+            $context
         );
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Birgit\Domain\Project\Task\Handler;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Handler\HandlerManager;
@@ -12,24 +10,22 @@ use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Domain\Exception\Context\ContextException;
 
 /**
  * Project reference Task handler
  */
 class ProjectReferenceTaskHandler extends TaskHandler
 {
-    protected $handlerManager;
     protected $modelManager;
-    protected $eventDispatcher;
+    protected $handlerManager;
 
     public function __construct(
-        HandlerManager $handlerManager,
         ModelManagerInterface $modelManager,
-        EventDispatcherInterface $eventDispatcher)
-    {
-        $this->handlerManager  = $handlerManager;
-        $this->modelManager    = $modelManager;
-        $this->eventDispatcher = $eventDispatcher;
+        HandlerManager $handlerManager
+    ) {
+        $this->modelManager   = $modelManager;
+        $this->handlerManager = $handlerManager;
     }
 
     public function getType()
@@ -40,7 +36,7 @@ class ProjectReferenceTaskHandler extends TaskHandler
     public function run(Task $task, TaskQueueContextInterface $context)
     {
         if (!$context instanceof ProjectReferenceTaskQueueContextInterface) {
-            return;
+            throw new ContextException();
         }
 
         // Get project reference
