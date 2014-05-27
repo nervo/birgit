@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Domain\Project;
+namespace Birgit\Domain;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -25,9 +25,9 @@ class Workflow implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TaskEvents::TASK_QUEUE . '.' . 'project'                  => 'onProjectTaskQueue',
-            TaskEvents::TASK_QUEUE . '.' . 'project_reference'        => 'onProjectReferenceTaskQueue',
-            TaskEvents::TASK_QUEUE . '.' . 'project_reference_create' => 'onProjectReferenceCreateTaskQueue'
+            //TaskEvents::TASK_QUEUE . '.' . 'project'                  => 'onProjectTaskQueue',
+            //TaskEvents::TASK_QUEUE . '.' . 'project_reference'        => 'onProjectReferenceTaskQueue',
+            //TaskEvents::TASK_QUEUE . '.' . 'project_reference_create' => 'onProjectReferenceCreateTaskQueue'
         );
     }
 

@@ -5,7 +5,7 @@ namespace Birgit\Domain\Project\Task\Handler;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Birgit\Domain\Task\Handler\TaskHandler;
-use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
+use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Domain\Project\ProjectEvents;
 use Birgit\Domain\Project\Event\ProjectStatusEvent;
@@ -40,7 +40,7 @@ class ProjectTaskHandler extends TaskHandler
         return 'project';
     }
 
-    public function run(Task $task, TaskQueueContext $context)
+    public function run(Task $task, TaskQueueContextInterface $context)
     {
         if (!$context instanceof ProjectTaskQueueContextInterface) {
             return;

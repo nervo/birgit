@@ -33,14 +33,15 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Get model manager
+        $modelManager = $this->getContainer()
+            ->get('birgit.model_manager');
+
         // Get handler manager
         $handlerManager = $this->getContainer()
             ->get('birgit.handler_manager');
 
-        // Get model manager
-        $modelManager = $this->getContainer()
-            ->get('birgit.model_manager');
-        
+        // Create task queue
         $taskQueue = $modelManager
             ->getTaskQueueRepository()
             ->create(
@@ -50,6 +51,18 @@ EOF
                         'project_name' => 'test'
                     ))
                 )
+            );
+        
+        // Add task
+        $taskQueue
+            ->addTask(
+                $modelManager
+                    ->getTaskRepository()
+                    ->create(
+                        new HandlerDefinition(
+                            'project_status'
+                        )
+                    )
             );
 
         $handlerManager
