@@ -2,9 +2,6 @@
 
 namespace Birgit\Domain\Project\Task\Handler;
 
-use Birgit\Domain\Task\Handler\TaskHandler;
-use Birgit\Domain\Handler\HandlerManager;
-use Birgit\Model\ModelManagerInterface;
 use Birgit\Model\Task\Task;
 use Birgit\Model\Project\ProjectStatus;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
@@ -16,19 +13,8 @@ use Birgit\Domain\Exception\Context\ContextException;
 /**
  * Project - Status Task handler
  */
-class ProjectStatusTaskHandler extends TaskHandler
+class ProjectStatusTaskHandler extends ProjectTaskHandler
 {
-    protected $modelManager;
-    protected $handlerManager;
-
-    public function __construct(
-        ModelManagerInterface $modelManager,
-        HandlerManager $handlerManager
-    ) {
-        $this->modelManager   = $modelManager;
-        $this->handlerManager = $handlerManager;
-    }
-
     public function getType()
     {
         return 'project_status';

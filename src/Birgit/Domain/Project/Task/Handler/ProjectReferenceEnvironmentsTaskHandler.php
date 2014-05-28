@@ -2,11 +2,8 @@
 
 namespace Birgit\Domain\Project\Task\Handler;
 
-use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\Task\Task;
-use Birgit\Domain\Handler\HandlerManager;
-use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Handler\HandlerDefinition;
@@ -15,19 +12,8 @@ use Birgit\Domain\Exception\Context\ContextException;
 /**
  * Project reference Environments Task handler
  */
-class ProjectReferenceEnvironmentsTaskHandler extends TaskHandler
+class ProjectReferenceEnvironmentsTaskHandler extends ProjectTaskHandler
 {
-    protected $modelManager;
-    protected $handlerManager;
-
-    public function __construct(
-        ModelManagerInterface $modelManager,
-        HandlerManager $handlerManager
-    ) {
-        $this->modelManager   = $modelManager;
-        $this->handlerManager = $handlerManager;
-    }
-
     public function getType()
     {
         return 'project_reference_environments';

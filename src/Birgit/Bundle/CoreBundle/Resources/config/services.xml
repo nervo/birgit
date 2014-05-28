@@ -15,8 +15,9 @@
         <!-- Project - Handlers -->
         <parameter key="birgit.project_handler.git.class">Birgit\Domain\Project\Handler\GitProjectHandler</parameter>
         <!-- Project - Task Handlers -->
-        <parameter key="birgit.task_handler.project.class">Birgit\Domain\Project\Task\Handler\ProjectTaskHandler</parameter>
         <parameter key="birgit.task_handler.project_status.class">Birgit\Domain\Project\Task\Handler\ProjectStatusTaskHandler</parameter>
+        <parameter key="birgit.task_handler.project_references.class">Birgit\Domain\Project\Task\Handler\ProjectReferencesTaskHandler</parameter>
+        
         <parameter key="birgit.task_handler.project_reference.class">Birgit\Domain\Project\Task\Handler\ProjectReferenceTaskHandler</parameter>
         <parameter key="birgit.task_handler.project_reference_environments.class">Birgit\Domain\Project\Task\Handler\ProjectReferenceEnvironmentsTaskHandler</parameter>
         <!-- Project - Task Queue Handlers -->
@@ -59,16 +60,17 @@
             <tag name="birgit.project_handler" />
         </service>
         <!-- Project - Task Handlers -->
-        <service id="birgit.task_handler.project" public="false" class="%birgit.task_handler.project.class%">
-            <argument type="service" id="birgit.model_manager" />
-            <argument type="service" id="birgit.handler_manager" />
-            <tag name="birgit.task_handler" />
-        </service>
         <service id="birgit.task_handler.project_status" public="false" class="%birgit.task_handler.project_status.class%">
             <argument type="service" id="birgit.model_manager" />
             <argument type="service" id="birgit.handler_manager" />
             <tag name="birgit.task_handler" />
         </service>
+        <service id="birgit.task_handler.project_references" public="false" class="%birgit.task_handler.project_references.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <argument type="service" id="birgit.handler_manager" />
+            <tag name="birgit.task_handler" />
+        </service>
+
         <service id="birgit.task_handler.project_reference" public="false" class="%birgit.task_handler.project_reference.class%">
             <argument type="service" id="birgit.model_manager" />
             <argument type="service" id="birgit.handler_manager" />

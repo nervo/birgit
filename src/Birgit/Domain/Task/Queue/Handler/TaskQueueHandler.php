@@ -53,7 +53,7 @@ abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInter
             $task = array_pop($tasks);
 
             // Log
-            $context->getLogger()->notice(sprintf('Task: %s', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
+            $context->getLogger()->notice(sprintf('> Task: %s', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
 
             $this->handlerManager
                 ->getTaskHandler($task)
