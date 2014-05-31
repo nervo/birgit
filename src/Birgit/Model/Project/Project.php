@@ -17,7 +17,9 @@ abstract class Project implements Handleable
     public function __construct()
     {
         $this
-            ->setStatus(ProjectStatus::UNKNOWN)
+            ->setStatus(
+                new ProjectStatus(ProjectStatus::UNKNOWN)
+            )
             ->setActive(true);
     }
 
@@ -29,18 +31,44 @@ abstract class Project implements Handleable
     abstract public function getName();
 
     /**
-     * Set status
+     * Set active
      *
-     * @param int $status
+     * @param bool $active
      *
      * @return Project
      */
-    abstract public function setStatus($status);
+    abstract public function setActive($active);
+
+    /**
+     * Get active
+     *
+     * @return bool
+     */
+    abstract public function getActive();
+
+    /**
+     * Is active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->getActive();
+    }
+
+    /**
+     * Set status
+     *
+     * @param ProjectStatus $status
+     *
+     * @return Project
+     */
+    abstract public function setStatus(ProjectStatus $status);
 
     /**
      * Get status
      *
-     * @return bool
+     * @return ProjectStatus
      */
     abstract public function getStatus();
 
@@ -68,32 +96,6 @@ abstract class Project implements Handleable
      * @return \Traversable
      */
     abstract public function getReferences();
-
-    /**
-     * Set active
-     *
-     * @param bool $active
-     *
-     * @return Project
-     */
-    abstract public function setActive($active);
-
-    /**
-     * Get active
-     *
-     * @return bool
-     */
-    abstract public function getActive();
-
-    /**
-     * Is active
-     *
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->getActive();
-    }
 
     /**
      * Add environment

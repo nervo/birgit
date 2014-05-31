@@ -54,7 +54,7 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
      * @var ArrayCollection
      */
     private $hosts;
-    
+
     /**
      * Handler Definition : Type
      *
@@ -89,7 +89,7 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
     {
         return $this->id;
     }
-    
+
     /**
      * Set name
      *
@@ -129,7 +129,7 @@ class ProjectEnvironment extends Model\Project\Environment\ProjectEnvironment
     {
         return $this->referencePattern;
     }
-    
+
     /**
      * {@inheritdoc}
      */

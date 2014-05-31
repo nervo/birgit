@@ -30,7 +30,7 @@ class HandlerManager
      * @var array
      */
     protected $projectEnvironmentHandlers = array();
-    
+
     /**
      * Task handlers
      *
@@ -44,12 +44,12 @@ class HandlerManager
      * @var array
      */
     protected $taskQueueHandlers = array();
-    
+
     /**
      * Add Project handler
-     * 
+     *
      * @param ProjectHandlerInterface $handler
-     * 
+     *
      * @return HandlerManager
      */
     public function addProjectHandler(ProjectHandlerInterface $handler)
@@ -61,11 +61,11 @@ class HandlerManager
 
     /**
      * Get project Handler
-     * 
+     *
      * @param Project $project
-     * 
+     *
      * @return ProjectHandlerInterface
-     * 
+     *
      * @throws Exception
      */
     public function getProjectHandler(Project $project)
@@ -83,9 +83,9 @@ class HandlerManager
 
     /**
      * Add Project Environment Handler
-     * 
+     *
      * @param ProjectEnvironmentHandlerInterface $handler
-     * 
+     *
      * @return HandlerManager
      */
     public function addProjectEnvironmentHandler(ProjectEnvironmentHandlerInterface $handler)
@@ -97,11 +97,11 @@ class HandlerManager
 
     /**
      * Get Project Environment Handler
-     * 
+     *
      * @param ProjectEnvironment $projectEnvironment
-     * 
+     *
      * @return ProjectEnvironmentHandlerInterface
-     * 
+     *
      * @throws Exception
      */
     public function getProjectEnvironmentHandler(ProjectEnvironment $projectEnvironment)
@@ -116,12 +116,12 @@ class HandlerManager
 
         throw new Exception(sprintf('Project environment handler type "%s" not found', $type));
     }
-    
+
     /**
      * Add Task Handler
-     * 
+     *
      * @param TaskHandlerInterface $handler
-     * 
+     *
      * @return HandlerManager
      */
     public function addTaskHandler(TaskHandlerInterface $handler)
@@ -133,11 +133,11 @@ class HandlerManager
 
     /**
      * Get Task Handler
-     * 
+     *
      * @param Task $task
-     * 
+     *
      * @return TaskHandlerInterface
-     * 
+     *
      * @throws Exception
      */
     public function getTaskHandler(Task $task)
@@ -155,9 +155,9 @@ class HandlerManager
 
     /**
      * Add Task Queue Handler
-     * 
+     *
      * @param TaskQueueHandlerInterface $handler
-     * 
+     *
      * @return HandlerManager
      */
     public function addTaskQueueHandler(TaskQueueHandlerInterface $handler)
@@ -166,14 +166,14 @@ class HandlerManager
 
         return $this;
     }
-    
+
     /**
      * Get Task Queue Handler
-     * 
+     *
      * @param TaskQueueHandlerInterface $taskQueue
-     * 
+     *
      * @return type
-     * 
+     *
      * @throws Exception
      */
     public function getTaskQueueHandler(TaskQueue $taskQueue)

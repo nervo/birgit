@@ -16,13 +16,13 @@ class ProjectController extends Controller
     {
         // Get model manager
         $modelManager = $this->get('birgit.model_manager');
-        
+
         // Get project repository
         $projectRepository = $modelManager
                 ->getProjectRepository();
-        
+
         $project = $projectRepository->get($name);
-        
+
         return array('project' => $project);
     }
 }

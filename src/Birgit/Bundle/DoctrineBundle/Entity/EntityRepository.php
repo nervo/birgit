@@ -25,8 +25,16 @@ abstract class EntityRepository extends DoctrineEntityRepository implements Mode
     protected function saveEntity($entity)
     {
         $entityManager = $this->getEntityManager();
-        
+
         $entityManager->persist($entity);
-        $entityManager->flush($entity);
+        $entityManager->flush();
+    }
+
+    protected function deleteEntity($entity)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $entityManager->remove($entity);
+        $entityManager->flush();
     }
 }

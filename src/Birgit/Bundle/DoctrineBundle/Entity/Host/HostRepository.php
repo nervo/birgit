@@ -4,7 +4,6 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Host;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Host\HostRepositoryInterface;
-use Birgit\Bundle\DoctrineBundle\Entity\Host\Host;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment;
 
@@ -19,7 +18,7 @@ class HostRepository extends EntityRepository implements HostRepositoryInterface
 
         $projectReference->addHost($host);
         $projectEnvironment->addHost($host);
-        
+
         return $host;
     }
 
@@ -27,7 +26,7 @@ class HostRepository extends EntityRepository implements HostRepositoryInterface
     {
         $this->saveEntity($host);
     }
-    
+
     public function findOneByProjectReferenceAndProjectEnvironment(ProjectReference $projectReference, ProjectEnvironment $projectEnvironment)
     {
         return $this->findOneBy(array(

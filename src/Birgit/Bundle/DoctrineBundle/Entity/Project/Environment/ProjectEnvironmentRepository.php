@@ -5,7 +5,6 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Project\Environment;
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Project;
-use Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 use Birgit\Domain\Handler\HandlerDefinition;
 
@@ -17,13 +16,13 @@ class ProjectEnvironmentRepository extends EntityRepository implements ProjectEn
     public function create($name, Project $project, HandlerDefinition $handlerDefinition)
     {
         $projectEnvironment = $this->createEntity();
-        
+
         $projectEnvironment
             ->setName((string) $name)
             ->setHandlerDefinition($handlerDefinition);
 
         $project->addEnvironment($projectEnvironment);
-        
+
         return $projectEnvironment;
     }
 
@@ -31,18 +30,18 @@ class ProjectEnvironmentRepository extends EntityRepository implements ProjectEn
     {
         $this->saveEntity($projectEnvironment);
     }
-    
+
     public function get($name, Project $project)
     {
         $projectEnvironment = $this->findOneBy(array(
             'name'    => $name,
             'project' => $project
         ));
-        
+
         if (!$projectEnvironment) {
             throw new ModelNotFoundException();
         }
-        
+
         return $projectEnvironment;
     }
 }

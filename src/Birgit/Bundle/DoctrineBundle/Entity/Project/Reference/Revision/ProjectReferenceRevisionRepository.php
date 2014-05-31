@@ -5,7 +5,6 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision;
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevisionRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference;
-use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 
 /**
@@ -16,12 +15,12 @@ class ProjectReferenceRevisionRepository extends EntityRepository implements Pro
     public function create($name, ProjectReference $projectReference)
     {
         $projectReferenceRevision = $this->createEntity();
-        
+
         $projectReferenceRevision
             ->setName((string) $name);
 
         $projectReference->addRevision($projectReferenceRevision);
-        
+
         return $projectReferenceRevision;
     }
 
@@ -29,18 +28,18 @@ class ProjectReferenceRevisionRepository extends EntityRepository implements Pro
     {
         $this->saveEntity($projectReferenceRevision);
     }
-    
+
     public function get($name, ProjectReference $projectReference)
     {
         $projectReferenceRevision = $this->findOneBy(array(
             'name'      => $name,
             'reference' => $projectReference
         ));
-        
+
         if (!$projectReferenceRevision) {
             throw new ModelNotFoundException();
         }
-        
+
         return $projectReferenceRevision;
     }
 }

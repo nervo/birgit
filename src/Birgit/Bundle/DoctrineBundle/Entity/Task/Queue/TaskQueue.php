@@ -21,6 +21,20 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     private $id;
 
     /**
+     * Status
+     *
+     * @var int
+     */
+    protected $status;
+
+    /**
+     * Attempts
+     *
+     * @var int
+     */
+    protected $attempts;
+
+    /**
      * Tasks
      *
      * @var ArrayCollection
@@ -42,12 +56,31 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     protected $handlerParameters;
 
     /**
+     * Parent
+     *
+     * @var TaskQueue
+     */
+    protected $parent;
+
+    /**
+     * Children
+     *
+     * @var ArrayCollection
+     */
+    private $children;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Tasks
         $this->tasks = new ArrayCollection();
+
+        // Children
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -59,7 +92,45 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     {
         return $this->id;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStatus(Model\Task\Queue\TaskQueueStatus $status)
+    {
+        $this->status = $status->get();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatus()
+    {
+        return new Model\Task\Queue\TaskQueueStatus(
+            $this->status
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttempts($attempts)
+    {
+        $this->attempts = (int) $attempts;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttempts()
+    {
+        return $this->attempts;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -149,5 +220,56 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
             $this->handlerType,
             $this->handlerParameters
         );
+    }
+
+    /**
+     * Set parent
+     *
+     * @return TaskQueue
+     */
+    public function setParent(Model\Task\Queue\TaskQueue $parent)
+    {
+        return $this->parent = $parent;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return TaskQueue
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addChild(Model\Task\Queue\TaskQueue $child)
+    {
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+            $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChild(Model\Task\Queue\TaskQueue $child)
+    {
+        $this->children->removeElement($child);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

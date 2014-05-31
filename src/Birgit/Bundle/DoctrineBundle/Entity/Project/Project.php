@@ -54,7 +54,7 @@ class Project extends Model\Project\Project
      * @var ArrayCollection
      */
     private $environments;
-    
+
     /**
      * Handler Definition : Type
      *
@@ -92,7 +92,7 @@ class Project extends Model\Project\Project
     {
         return $this->id;
     }
-    
+
     /**
      * Set name
      *
@@ -118,9 +118,27 @@ class Project extends Model\Project\Project
     /**
      * {@inheritdoc}
      */
-    public function setStatus($status)
+    public function setActive($active)
     {
-        $this->status = (int) $status;
+        $this->active = (bool) $active;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStatus(Model\Project\ProjectStatus $status)
+    {
+        $this->status = $status->get();
 
         return $this;
     }
@@ -130,7 +148,9 @@ class Project extends Model\Project\Project
      */
     public function getStatus()
     {
-        return $this->status;
+        return new Model\Project\ProjectStatus(
+            $this->status
+        );
     }
 
     /**
@@ -162,24 +182,6 @@ class Project extends Model\Project\Project
     public function getReferences()
     {
         return $this->references;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setActive($active)
-    {
-        $this->active = (bool) $active;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActive()
-    {
-        return $this->active;
     }
 
     /**

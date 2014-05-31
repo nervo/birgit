@@ -38,7 +38,7 @@ class ProjectReferenceRevision extends Model\Project\Reference\Revision\ProjectR
      * @var ArrayCollection
      */
     private $builds;
-    
+
     /**
      * Constructor
      */
@@ -57,7 +57,7 @@ class ProjectReferenceRevision extends Model\Project\Reference\Revision\ProjectR
     {
         return $this->id;
     }
-    
+
     /**
      * Set name
      *

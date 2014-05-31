@@ -13,14 +13,14 @@ class ProjectEvent extends Event
 {
     /**
      * Project
-     * 
+     *
      * @var Project
      */
     protected $project;
 
     /**
      * Constructor
-     * 
+     *
      * @param Project $project
      */
     public function __construct(Project $project)
@@ -31,7 +31,7 @@ class ProjectEvent extends Event
 
     /**
      * Get project
-     * 
+     *
      * @return Project
      */
     public function getProject()

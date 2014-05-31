@@ -45,7 +45,7 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
      * @var ArrayCollection
      */
     private $hosts;
-    
+
     /**
      * Constructor
      */
@@ -67,7 +67,7 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
     {
         return $this->id;
     }
-    
+
     /**
      * Set name
      *

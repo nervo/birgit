@@ -12,14 +12,14 @@ class EntityManager implements ModelManagerInterface
 {
     /**
      * Manager registry
-     * 
+     *
      * @var ManagerRegistry
      */
     protected $managerRegistry;
 
     /**
      * Constructor
-     * 
+     *
      * @param ManagerRegistry $managerRegistry
      */
     public function __construct(ManagerRegistry $managerRegistry)
@@ -36,7 +36,7 @@ class EntityManager implements ModelManagerInterface
         return $this->managerRegistry
             ->getRepository('BirgitDoctrineBundle:Build\Build');
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -45,7 +45,7 @@ class EntityManager implements ModelManagerInterface
         return $this->managerRegistry
             ->getRepository('BirgitDoctrineBundle:Host\Host');
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -63,7 +63,7 @@ class EntityManager implements ModelManagerInterface
         return $this->managerRegistry
             ->getRepository('BirgitDoctrineBundle:Project\Environment\ProjectEnvironment');
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -81,7 +81,7 @@ class EntityManager implements ModelManagerInterface
         return $this->managerRegistry
             ->getRepository('BirgitDoctrineBundle:Project\Reference\Revision\ProjectReferenceRevision');
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -90,7 +90,7 @@ class EntityManager implements ModelManagerInterface
         return $this->managerRegistry
             ->getRepository('BirgitDoctrineBundle:Task\Task');
     }
-    
+
     /**
      * {@inheritdoc}
      */

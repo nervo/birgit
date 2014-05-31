@@ -38,7 +38,7 @@ class Host extends Model\Host\Host
      * @var ArrayCollection
      */
     private $builds;
-    
+
     /**
      * Constructor
      */
@@ -57,7 +57,7 @@ class Host extends Model\Host\Host
     {
         return $this->id;
     }
-    
+
     /**
      * Set project reference
      *

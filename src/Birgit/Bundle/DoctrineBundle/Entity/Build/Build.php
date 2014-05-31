@@ -29,7 +29,7 @@ class Build extends Model\Build\Build
      * @var Model\Project\Reference\Revision\ProjectReferenceRevision
      */
     private $projectReferenceRevision;
-    
+
     /**
      * Get id
      *
@@ -39,7 +39,7 @@ class Build extends Model\Build\Build
     {
         return $this->id;
     }
-    
+
     /**
      * Set host
      *

@@ -1,15 +1,14 @@
 <?php
 
-namespace Birgit\Model\Project;
+namespace Birgit\Model\Task\Queue;
 
 /**
- * Project Status
+ * Task Queue Status
  */
-class ProjectStatus
+class TaskQueueStatus
 {
-    const DOWN    = -1;
-    const UNKNOWN = 0;
-    const UP      = 1;
+    const PENDING = 0;
+    const RUNNING = 1;
 
     /**
      * Value
@@ -50,12 +49,12 @@ class ProjectStatus
     }
 
     /**
-     * Is up ?
+     * Is pending ?
      *
      * @return bool
      */
-    public function isUp()
+    public function isPending()
     {
-        return $this->is(self::UP);
+        return $this->is(self::PENDING);
     }
 }

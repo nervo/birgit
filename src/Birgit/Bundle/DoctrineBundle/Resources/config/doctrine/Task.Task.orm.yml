@@ -8,6 +8,14 @@ Birgit\Bundle\DoctrineBundle\Entity\Task\Task:
             type:      integer
             generator: { strategy: AUTO }
     fields:
+        # Status
+        status:
+            column:    status
+            type:      integer
+        # Attempts
+        attempts:
+            column:    attempts
+            type:      integer
         # Handler definition
         handlerType:
             column:    handler_type

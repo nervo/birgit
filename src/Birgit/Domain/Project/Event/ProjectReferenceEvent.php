@@ -13,14 +13,14 @@ class ProjectReferenceEvent extends Event
 {
     /**
      * Project Reference
-     * 
+     *
      * @var ProjectReference
      */
     protected $projectReference;
 
     /**
      * Constructor
-     * 
+     *
      * @param ProjectReference $projectReference
      */
     public function __construct(ProjectReference $projectReference)
@@ -31,7 +31,7 @@ class ProjectReferenceEvent extends Event
 
     /**
      * Get project reference
-     * 
+     *
      * @return ProjectReference
      */
     public function getProjectReference()

@@ -3,7 +3,7 @@
 namespace Birgit\Domain\Workflow;
 
 use Psr\Log\LoggerInterface;
- 
+
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,7 +13,6 @@ use Birgit\Domain\Task\Event\TaskQueueEvent;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Domain\Project\Event\ProjectEvent;
-use Birgit\Domain\Workflow\WorkflowEvents;
 use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Context\Context;
@@ -35,7 +34,7 @@ class Workflow implements EventSubscriberInterface
     ) {
         $this->modelManager   = $modelManager;
         $this->handlerManager = $handlerManager;
-        
+
         $this->context = new Context(
             $eventDispatcher,
             $logger
@@ -46,12 +45,11 @@ class Workflow implements EventSubscriberInterface
     {
         return array(
             WorkflowEvents::PROJECT         => 'onWorkflowProject',
-            ProjectEvents::STATUS_UP        => 'onProjectStatusUp',
-            ProjectEvents::REFERENCE        => 'onProjectReference',
-            ProjectEvents::REFERENCE_CREATE => 'onProjectReferenceCreate',
-            ProjectEvents::REFERENCE_DELETE => 'onProjectReferenceDelete'
-            
-                
+            //ProjectEvents::STATUS_UP        => 'onProjectStatusUp',
+            //ProjectEvents::REFERENCE        => 'onProjectReference',
+            //ProjectEvents::REFERENCE_CREATE => 'onProjectReferenceCreate',
+            //ProjectEvents::REFERENCE_DELETE => 'onProjectReferenceDelete'
+
             //TaskEvents::TASK_QUEUE . '.' . 'project'                  => 'onProjectTaskQueue',
             //TaskEvents::TASK_QUEUE . '.' . 'project_reference'        => 'onProjectReferenceTaskQueue',
             //TaskEvents::TASK_QUEUE . '.' . 'project_reference_create' => 'onProjectReferenceCreateTaskQueue'
@@ -64,15 +62,15 @@ class Workflow implements EventSubscriberInterface
         $project = $event->getProject();
 
         // Task queue
-        $this->runTaskQueue(
+        $this->pushTaskQueue(
             'project', [
                 'project_name' => $project->getName()
             ], [[
-                'project_status'
+                'project'
             ]]
         );
     }
-    
+
     public function onProjectStatusUp(ProjectEvent $event)
     {
         // Get project
@@ -129,7 +127,7 @@ class Workflow implements EventSubscriberInterface
             ]
         );
     }
-    
+
     public function onProjectTaskQueue(TaskQueueEvent $event)
     {
         // Get task queue
@@ -174,13 +172,13 @@ class Workflow implements EventSubscriberInterface
                     )
             );
     }
-    
+
     /**
-     * Run task queue
-     * 
+     * Push task queue
+     *
      * @param array $parameters
      */
-    protected function runTaskQueue($type, array $parameters = array(), $tasks = array())
+    protected function pushTaskQueue($type, array $parameters = array(), $tasks = array())
     {
         // Create task queue
         $taskQueue = $this->modelManager
@@ -207,12 +205,9 @@ class Workflow implements EventSubscriberInterface
                 );
         }
 
-        // Run
+        // Push
         $this->handlerManager
             ->getTaskQueueHandler($taskQueue)
-                ->run(
-                    $taskQueue,
-                    $this->context
-                );
+                ->push($taskQueue);
     }
 }

@@ -40,7 +40,7 @@ class HandlerCompilerPass implements CompilerPassInterface
                 array(new Reference($handlerServiceId))
             );
         }
-        
+
         // Task handlers
         $handlerServiceIds = $container->findTaggedServiceIds('birgit.task_handler');
 

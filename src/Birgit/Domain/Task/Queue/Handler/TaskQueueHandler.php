@@ -4,41 +4,41 @@ namespace Birgit\Domain\Task\Queue\Handler;
 
 use Birgit\Domain\Handler\Handler;
 use Birgit\Domain\Context\ContextInterface;
-use Birgit\Domain\Task\Queue\Context\TaskQueueContext;
-use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Handler\HandlerManager;
+use Birgit\Model\ModelManagerInterface;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Domain\Task\Event\TaskQueueEvent;
 use Birgit\Domain\Task\TaskEvents;
+use Birgit\Model\Task\TaskStatus;
+use Birgit\Domain\Exception\Task\Queue\SuspendTaskQueueException;
 
 /**
  * Task queue Handler
  */
 abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInterface
 {
+    protected $modelManager;
     protected $handlerManager;
 
     public function __construct(
+        ModelManagerInterface $modelManager,
         HandlerManager $handlerManager
     ) {
+        $this->modelManager = $modelManager;
         $this->handlerManager = $handlerManager;
     }
 
-    protected function preRun(TaskQueue $taskQueue, ContextInterface $context)
+    public function push(TaskQueue $taskQueue)
     {
-        return new TaskQueueContext(
-            $taskQueue,
-            $context
-        );
+        $this->modelManager
+            ->getTaskQueueRepository()
+            ->save($taskQueue);
     }
 
     public function run(TaskQueue $taskQueue, ContextInterface $context)
     {
-        // Pre run
-        $context = $this->preRun($taskQueue, $context);
-
         // Log
-        $context->getLogger()->notice(sprintf('Task Queue: %s', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
+        $context->getLogger()->notice(sprintf('Task Queue: "%s"', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
 
         // Dispatch event
         $context->getEventDispatcher()
@@ -47,24 +47,53 @@ abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInter
                 new TaskQueueEvent($taskQueue)
             );
 
+        // Get task repository
+        $taskRepository = $this->modelManager
+            ->getTaskRepository();
+
+        // Get tasks
         $tasks = $taskQueue->getTasks()->toArray();
 
         while ($tasks) {
+            // Get task
             $task = array_pop($tasks);
 
             // Log
-            $context->getLogger()->notice(sprintf('> Task: %s', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
+            $context->getLogger()->notice(sprintf('> Task: "%s"', $task->getHandlerDefinition()->getType()), $task->getHandlerDefinition()->getParameters()->all());
 
-            $this->handlerManager
-                ->getTaskHandler($task)
-                    ->run($task, $context);
+            // Update
+            $task
+                ->setStatus(new TaskStatus(TaskStatus::RUNNING))
+                ->incrementAttempts();
+
+            // Save
+            $taskRepository
+                ->save($task);
+
+            try {
+                // Run
+                $this->handlerManager
+                    ->getTaskHandler($task)
+                        ->run($task, $context);
+
+                // Delete
+                $taskRepository
+                    ->delete($task);
+            } catch (SuspendTaskQueueException $exception) {
+
+                // Log
+                $context->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getHandlerDefinition()->getType()), $taskQueue->getHandlerDefinition()->getParameters()->all());
+
+                // Update
+                $task
+                    ->setStatus(new TaskStatus(TaskStatus::PENDING));
+
+                // Save
+                $taskRepository
+                    ->save($task);
+
+                throw $exception;
+            }
         }
-
-        // Post run
-        $this->postRun($context);
-    }
-
-    protected function postRun(TaskQueueContextInterface $context)
-    {
     }
 }

@@ -9,17 +9,24 @@ use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
 use Birgit\Domain\Project\ProjectEvents;
 use Birgit\Domain\Project\Event\ProjectEvent;
 use Birgit\Domain\Exception\Context\ContextException;
+use Birgit\Domain\Task\Handler\TaskHandler;
 
 /**
  * Project - Status Task handler
  */
-class ProjectStatusTaskHandler extends ProjectTaskHandler
+class ProjectStatusTaskHandler extends TaskHandler
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getType()
     {
         return 'project_status';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function run(Task $task, TaskQueueContextInterface $context)
     {
         if (!$context instanceof ProjectTaskQueueContextInterface) {
@@ -41,20 +48,20 @@ class ProjectStatusTaskHandler extends ProjectTaskHandler
         $status = $isUp ? ProjectStatus::UP : ProjectStatus::DOWN;
 
         // Update project status
-        if ($project->getStatus() != $status) {
-            
-            $project->setStatus($status);
+        if (!$project->getStatus()->is($status)) {
+
+            $project->setStatus(new ProjectStatus($status));
 
             $this->modelManager
                 ->getProjectRepository()
                 ->save($project);
+
+            // Dispatch event
+            $context->getEventDispatcher()
+                ->dispatch(
+                    ProjectEvents::STATUS,
+                    new ProjectEvent($project)
+                );
         }
-        
-        // Dispatch event
-        $context->getEventDispatcher()
-            ->dispatch(
-                $isUp ? ProjectEvents::STATUS_UP : ProjectEvents::STATUS_DOWN,
-                new ProjectEvent($project)
-            );
     }
 }

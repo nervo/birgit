@@ -28,7 +28,7 @@ class HostTaskQueueContext extends TaskQueueContext implements HostTaskQueueCont
     {
         return $this->host;
     }
-    
+
     public function getProjectReference()
     {
         return $this->getHost()->getProjectReference();
@@ -38,7 +38,7 @@ class HostTaskQueueContext extends TaskQueueContext implements HostTaskQueueCont
     {
         return $this->getProjectReference()->getProject();
     }
-    
+
     public function getProjectEnvironment()
     {
         return $this->getHost()->getProjectEnvironment();

@@ -46,9 +46,9 @@ abstract class ProjectEnvironment implements Handleable
 
     /**
      * Match reference
-     * 
+     *
      * @param ProjectReference $reference
-     * 
+     *
      * @return bool
      */
     public function matchReference(ProjectReference $reference)
@@ -58,7 +58,7 @@ abstract class ProjectEnvironment implements Handleable
             $reference->getName()
         );
     }
-    
+
     /**
      * Set active
      *

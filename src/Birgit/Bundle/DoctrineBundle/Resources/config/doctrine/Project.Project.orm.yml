@@ -15,12 +15,13 @@ Birgit\Bundle\DoctrineBundle\Entity\Project\Project:
             column:    name
             type:      string
             length:    255
-        status:
-            column:    status
-            type:      integer
         active:
             column:    active
             type:      boolean
+        # Status
+        status:
+            column:    status
+            type:      integer
         # Handler definition
         handlerType:
             column:    handler_type

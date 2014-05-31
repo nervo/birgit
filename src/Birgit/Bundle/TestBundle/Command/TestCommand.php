@@ -6,9 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Domain\Context\Context;
-use Birgit\Domain\Handler\HandlerDefinition;
-use Birgit\Component\Parameters\Parameters;
 use Birgit\Domain\Workflow\WorkflowEvents;
 use Birgit\Domain\Project\Event\ProjectEvent;
 

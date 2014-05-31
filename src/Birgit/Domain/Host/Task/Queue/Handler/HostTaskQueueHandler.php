@@ -5,29 +5,16 @@ namespace Birgit\Domain\Host\Task\Queue\Handler;
 use Birgit\Domain\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Domain\Context\ContextInterface;
 use Birgit\Domain\Host\Task\Queue\Context\HostTaskQueueContext;
-use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 
 class HostTaskQueueHandler extends TaskQueueHandler
 {
-    protected $modelManager;
-
-    public function __construct(
-        ModelManagerInterface $modelManager,
-        HandlerManager $handlerManager
-    ) {
-        $this->modelManager = $modelManager;
-
-        parent::__construct($handlerManager);
-    }
-
     public function getType()
     {
         return 'host';
     }
 
-    protected function preRun(TaskQueue $taskQueue, ContextInterface $context)
+    public function run(TaskQueue $taskQueue, ContextInterface $context)
     {
         // Get project
         $project = $this->modelManager
@@ -59,11 +46,14 @@ class HostTaskQueueHandler extends TaskQueueHandler
                 $projectReference,
                 $projectEnvironment
             );
-        
-        return new HostTaskQueueContext(
-            $host,
+
+        parent::run(
             $taskQueue,
-            $context
+            new HostTaskQueueContext(
+                $host,
+                $taskQueue,
+                $context
+            )
         );
     }
 }

@@ -20,7 +20,7 @@ class Context implements ContextInterface
     {
         return $this->eventDispatcher;
     }
-    
+
     public function getLogger()
     {
         return $this->logger;

@@ -19,12 +19,26 @@ class Task extends Model\Task\Task
     private $id;
 
     /**
+     * Status
+     *
+     * @var int
+     */
+    protected $status;
+
+    /**
+     * Attempts
+     *
+     * @var int
+     */
+    protected $attempts;
+
+    /**
      * Queue
      *
      * @var Model\Task\Queue\TaskQueue
      */
     private $queue;
-    
+
     /**
      * Handler Definition : Type
      *
@@ -48,7 +62,45 @@ class Task extends Model\Task\Task
     {
         return $this->id;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStatus(Model\Task\TaskStatus $status)
+    {
+        $this->status = $status->get();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatus()
+    {
+        return new Model\Task\TaskStatus(
+            $this->status
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttempts($attempts)
+    {
+        $this->attempts = (int) $attempts;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttempts()
+    {
+        return $this->attempts;
+    }
+
     /**
      * Set queue
      *

@@ -25,12 +25,15 @@ class HandlerDefinition
 
     /**
      * Constructor
+     *
+     * @param string     $type
+     * @param Parameters $parameters
      */
     public function __construct($type, Parameters $parameters = null)
     {
         // Type
         $this->type = (string) $type;
-        
+
         // Parameters
         $this->parameters = $parameters ? $parameters : new Parameters();
     }
