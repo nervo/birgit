@@ -12,7 +12,7 @@ class BirgitDoctrineBundle extends Bundle
     {
         $entityManager = $this->container
             ->get('doctrine')
-            ->getEntityManager();
+            ->getManager();
 
         if (!Type::hasType('parameters')) {
             Type::addType(
