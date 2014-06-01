@@ -6,8 +6,6 @@ use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\Task\Task;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Project\Reference\ProjectReference;
-use Birgit\Component\Parameters\Parameters;
-use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Domain\Exception\Context\ContextException;
 use Birgit\Domain\Task\Handler\TaskHandler;
@@ -34,41 +32,17 @@ class ProjectReferenceTaskHandler extends TaskHandler
         foreach ($projectReference->getHosts() as $host) {
             if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
 
-                // Create task queue child
-                $taskQueueChild = $this->modelManager
-                    ->getTaskQueueRepository()
-                    ->create(
-                        new HandlerDefinition(
-                            'project_reference',
-                            new Parameters(array(
-                                'project_name'             => $projectReference->getProject()->getName(),
-                                'project_reference_name'   => $projectReference->getName()
-                            ))
-                        )
-                    );
-
-                // Add task
-                $taskQueueChild
-                    ->addTask(
-                        $this->modelManager
-                            ->getTaskRepository()
-                            ->create(
-                                new HandlerDefinition(
-                                    'host_delete',
-                                    new Parameters(array(
-                                        'project_environment_name' => $host->getProjectEnvironment()->getName()
-                                    ))
-                                )
-                            )
-                    );
+                $taskQueueChild = $this->taskManager
+                    ->createProjectReferenceTaskQueue($projectReference, [
+                        'host_delete' => [
+                            'project_environment_name' => $host->getProjectEnvironment()->getName()
+                        ]
+                    ]);
 
                 $taskQueue
                     ->addChild($taskQueueChild);
 
-                // Push
-                $this->handlerManager
-                    ->getTaskQueueHandler($taskQueueChild)
-                        ->push($taskQueueChild);
+                $this->taskManager->pushTaskQueue($taskQueueChild);
 
                 $suspend = true;
             }
@@ -85,41 +59,18 @@ class ProjectReferenceTaskHandler extends TaskHandler
             }
 
             if (!$hostFound && $projectEnvironment->matchReference($projectReference)) {
-                // Create task queue child
-                $taskQueueChild = $this->modelManager
-                    ->getTaskQueueRepository()
-                    ->create(
-                        new HandlerDefinition(
-                            'project_reference',
-                            new Parameters(array(
-                                'project_name'             => $projectReference->getProject()->getName(),
-                                'project_reference_name'   => $projectReference->getName()
-                            ))
-                        )
-                    );
 
-                // Add task
-                $taskQueueChild
-                    ->addTask(
-                        $this->modelManager
-                            ->getTaskRepository()
-                            ->create(
-                                new HandlerDefinition(
-                                    'host_create',
-                                    new Parameters(array(
-                                        'project_environment_name' => $projectEnvironment->getName()
-                                    ))
-                                )
-                            )
-                    );
+                $taskQueueChild = $this->taskManager
+                    ->createProjectReferenceTaskQueue($projectReference, [
+                        'host_create' => [
+                            'project_environment_name' => $projectEnvironment->getName()
+                        ]
+                    ]);
 
                 $taskQueue
                     ->addChild($taskQueueChild);
 
-                // Push
-                $this->handlerManager
-                    ->getTaskQueueHandler($taskQueueChild)
-                        ->push($taskQueueChild);
+                $this->taskManager->pushTaskQueue($taskQueueChild);
 
                 $suspend = true;
             }
@@ -184,34 +135,11 @@ class ProjectReferenceTaskHandler extends TaskHandler
             $projectReferenceRevisionRepository->save($projectReferenceRevision);
         }
 
-        $taskQueue = $this->modelManager
-            ->getTaskQueueRepository()
-            ->create(
-                new HandlerDefinition(
-                    'project_reference_revision',
-                    new Parameters(array(
-                        'project_name'                    => $projectReference->getProject()->getName(),
-                        'project_reference_name'          => $projectReference->getName(),
-                        'project_reference_revision_name' => $projectReferenceRevision->getName()
-                    ))
-                )
-            );
+        $taskQueue = $this->taskManager
+            ->createProjectReferenceRevisionTaskQueue($projectReferenceRevision, [
+                'project_reference_revision'
+            ]);
 
-        // Add task
-        $taskQueue
-            ->addTask(
-                $this->modelManager
-                    ->getTaskRepository()
-                    ->create(
-                        new HandlerDefinition(
-                            'project_reference_revision'
-                        )
-                    )
-            );
-
-        // Push
-        $this->handlerManager
-            ->getTaskQueueHandler($taskQueue)
-                ->push($taskQueue);
+        $this->taskManager->pushTaskQueue($taskQueue);
     }
 }

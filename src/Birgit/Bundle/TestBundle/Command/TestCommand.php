@@ -6,9 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Domain\Workflow\WorkflowEvents;
-use Birgit\Domain\Project\Event\ProjectEvent;
-
 /**
  * Test command
  */
@@ -45,12 +42,15 @@ EOF
             ->getProjectRepository()
             ->get('test');
 
-        // Dispatch event
-        $this->getContainer()
-            ->get('event_dispatcher')
-            ->dispatch(
-                WorkflowEvents::PROJECT,
-                new ProjectEvent($project)
-            );
+        // Get task manager
+        $taskManager = $this->getContainer()
+            ->get('birgit.task_manager');
+
+        // Push task queue
+        $taskManager->pushTaskQueue(
+            $taskManager->createProjectTaskQueue($project, [
+                'project'
+            ])
+        );
     }
 }

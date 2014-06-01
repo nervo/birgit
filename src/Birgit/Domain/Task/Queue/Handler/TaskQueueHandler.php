@@ -6,6 +6,7 @@ use Birgit\Domain\Handler\Handler;
 use Birgit\Domain\Context\ContextInterface;
 use Birgit\Domain\Handler\HandlerManager;
 use Birgit\Model\ModelManagerInterface;
+use Birgit\Domain\Task\TaskManager;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Domain\Task\Event\TaskQueueEvent;
 use Birgit\Domain\Task\TaskEvents;
@@ -17,22 +18,47 @@ use Birgit\Domain\Exception\Task\Queue\SuspendTaskQueueException;
  */
 abstract class TaskQueueHandler extends Handler implements TaskQueueHandlerInterface
 {
+    /**
+     * Model Manager
+     *
+     * @var ModelManagerInterface
+     */
     protected $modelManager;
+
+    /**
+     * Handler Manager
+     *
+     * @var HandlerManager
+     */
     protected $handlerManager;
 
+    /**
+     * Task Manager
+     *
+     * @var TaskManager
+     */
+    protected $taskManager;
+
+    /**
+     * Constructor
+     *
+     * @param ModelManagerInterface $modelManager
+     * @param HandlerManager        $handlerManager
+     * @param TaskManager           $taskManager
+     */
     public function __construct(
         ModelManagerInterface $modelManager,
-        HandlerManager $handlerManager
+        HandlerManager $handlerManager,
+        TaskManager $taskManager
     ) {
-        $this->modelManager = $modelManager;
-        $this->handlerManager = $handlerManager;
-    }
+        // Model manager
+        $this->modelManager   = $modelManager;
 
-    public function push(TaskQueue $taskQueue)
-    {
-        $this->modelManager
-            ->getTaskQueueRepository()
-            ->save($taskQueue);
+        // Handler manager
+        $this->handlerManager = $handlerManager;
+
+        // Task manager
+        $this->taskManager = $taskManager;
     }
 
     public function run(TaskQueue $taskQueue, ContextInterface $context)

@@ -6,8 +6,6 @@ use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\Task\Task;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Project\Project;
-use Birgit\Component\Parameters\Parameters;
-use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectTaskQueueContextInterface;
 use Birgit\Domain\Exception\Context\ContextException;
 use Birgit\Domain\Task\Handler\TaskHandler;
@@ -28,37 +26,15 @@ class ProjectTaskHandler extends TaskHandler
 
     protected function runProjectStatus(Project $project, TaskQueue $taskQueue)
     {
-        // Create task queue child
-        $taskQueueChild = $this->modelManager
-            ->getTaskQueueRepository()
-            ->create(
-                new HandlerDefinition(
-                    'project',
-                    new Parameters(array(
-                        'project_name' => $project->getName()
-                    ))
-                )
-            );
-
-        // Add task
-        $taskQueueChild
-            ->addTask(
-                $this->modelManager
-                    ->getTaskRepository()
-                    ->create(
-                        new HandlerDefinition(
-                            'project_status'
-                        )
-                    )
-            );
+        $taskQueueChild = $this->taskManager
+            ->createProjectTaskQueue($project, [
+                'project_status'
+            ]);
 
         $taskQueue
             ->addChild($taskQueueChild);
 
-        // Push
-        $this->handlerManager
-            ->getTaskQueueHandler($taskQueueChild)
-                ->push($taskQueueChild);
+        $this->taskManager->pushTaskQueue($taskQueueChild);
 
         throw new SuspendTaskQueueException();
     }
@@ -102,39 +78,16 @@ class ProjectTaskHandler extends TaskHandler
 
             // Delete project reference
             if (!$projectReferenceFound) {
-                // Create task queue
-                $taskQueue = $this->modelManager
-                    ->getTaskQueueRepository()
-                    ->create(
-                        new HandlerDefinition(
-                            'project',
-                            new Parameters(array(
-                                'project_name' => $project->getName(),
 
-                            ))
-                        )
-                    );
+                $taskQueue = $this->taskManager
+                    ->createProjectTaskQueue($project, [
+                        'project_reference_delete' => [
+                            'project_reference_name' => $projectReference->getName()
+                        ]
+                    ]);
 
-                // Add task
-                $taskQueue
-                    ->addTask(
-                        $this->modelManager
-                            ->getTaskRepository()
-                            ->create(
-                                new HandlerDefinition(
-                                    'project_reference_delete',
-                                    new Parameters(array(
-                                        'project_reference_name' => $projectReference->getName()
-                                    ))
-                                )
-                            )
-                    );
-
-                // Push
-                $this->handlerManager
-                    ->getTaskQueueHandler($taskQueue)
-                        ->push($taskQueue);
-                    }
+                $this->taskManager->pushTaskQueue($taskQueue);
+            }
         }
 
         // Find project references
@@ -163,34 +116,12 @@ class ProjectTaskHandler extends TaskHandler
                 $projectReferenceRepository->save($projectReference);
             }
 
-            $taskQueue =  $this->modelManager
-                ->getTaskQueueRepository()
-                ->create(
-                    new HandlerDefinition(
-                        'project_reference',
-                        new Parameters(array(
-                            'project_name'           => $project->getName(),
-                            'project_reference_name' => $projectReference->getName()
-                        ))
-                    )
-                );
+            $taskQueue = $this->taskManager
+                ->createProjectReferenceTaskQueue($projectReference, [
+                    'project_reference'
+                ]);
 
-            // Add task
-            $taskQueue
-                ->addTask(
-                    $this->modelManager
-                        ->getTaskRepository()
-                        ->create(
-                            new HandlerDefinition(
-                                'project_reference'
-                            )
-                        )
-                );
-
-            // Push
-            $this->handlerManager
-                ->getTaskQueueHandler($taskQueue)
-                    ->push($taskQueue);
+            $this->taskManager->pushTaskQueue($taskQueue);
         }
     }
 }
