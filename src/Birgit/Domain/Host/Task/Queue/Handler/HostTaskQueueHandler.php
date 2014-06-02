@@ -7,6 +7,9 @@ use Birgit\Domain\Context\ContextInterface;
 use Birgit\Domain\Host\Task\Queue\Context\HostTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 
+/**
+ * Host Task queue Handler
+ */
 class HostTaskQueueHandler extends TaskQueueHandler
 {
     public function getType()

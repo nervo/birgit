@@ -35,6 +35,11 @@
         <!-- Host - Task Queue Handlers -->
         <parameter key="birgit.task_queue_handler.host.class">Birgit\Domain\Host\Task\Queue\Handler\HostTaskQueueHandler</parameter>
 
+        <!-- Build - Task Handlers -->
+        <parameter key="birgit.task_handler.build.class">Birgit\Domain\Build\Task\Handler\BuildTaskHandler</parameter>
+        <!-- Build - Task Queue Handlers -->
+        <parameter key="birgit.task_queue_handler.build.class">Birgit\Domain\Build\Task\Queue\Handler\BuildTaskQueueHandler</parameter>
+
         <!-- Cron - Task Queue Handlers -->
         <parameter key="birgit.task_queue_handler.cron.class">Birgit\Domain\Cron\Task\Queue\Handler\CronTaskQueueHandler</parameter>
         <parameter key="birgit.task_queue_handler.project_cron.class">Birgit\Domain\Cron\Task\Queue\Handler\ProjectCronTaskQueueHandler</parameter>
@@ -127,6 +132,21 @@
         </service>
         <!-- Host - Task Queue Handlers -->
         <service id="birgit.task_queue_handler.host" public="false" class="%birgit.task_queue_handler.host.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <argument type="service" id="birgit.handler_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+
+        <!-- Build - Task Handlers -->
+        <service id="birgit.task_handler.build" public="false" class="%birgit.task_handler.build.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <argument type="service" id="birgit.handler_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_handler" />
+        </service>
+        <!-- Build - Task Queue Handlers -->
+        <service id="birgit.task_queue_handler.build" public="false" class="%birgit.task_queue_handler.build.class%">
             <argument type="service" id="birgit.model_manager" />
             <argument type="service" id="birgit.handler_manager" />
             <argument type="service" id="birgit.task_manager" />
