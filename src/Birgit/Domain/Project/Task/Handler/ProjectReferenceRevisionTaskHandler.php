@@ -32,5 +32,31 @@ class ProjectReferenceRevisionTaskHandler extends TaskHandler
 
         // Get project reference revision
         $projectReferenceRevision = $context->getProjectReferenceRevision();
+
+        foreach ($projectReferenceRevision->getReference()->getHosts() as $host) {
+            $buildFound = false;
+            foreach ($host->getBuilds() as $build) {
+                if ($build->getProjectReferenceRevision() === $projectReferenceRevision) {
+                    $buildFound = true;
+                    break;
+                }
+            }
+
+            if (!$buildFound) {
+                // Get build repository
+                $buildRepository =  $this->modelManager
+                    ->getBuildRepository();
+
+                // Create
+                $build = $buildRepository
+                    ->create(
+                        $host,
+                        $projectReferenceRevision
+                    );
+
+                // Save
+                $buildRepository->save($build);
+            }
+        }
     }
 }
