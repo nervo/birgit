@@ -3,7 +3,7 @@
 namespace Birgit\Domain\Task\Handler\Project;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Model\Task\Task;
+use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Context\Exception\ContextException;
 use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\ProjectReferenceRevisionTaskQueueContextInterface;

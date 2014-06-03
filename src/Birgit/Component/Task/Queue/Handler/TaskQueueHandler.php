@@ -7,10 +7,10 @@ use Birgit\Component\Context\ContextInterface;
 use Birgit\Component\Handler\HandlerManager;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Task\TaskManager;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Event\TaskQueueEvent;
 use Birgit\Component\Task\TaskEvents;
-use Birgit\Model\Task\TaskStatus;
+use Birgit\Component\Task\Model\Task\TaskStatus;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**

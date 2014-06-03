@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Model\Task\Queue;
+namespace Birgit\Component\Task\Model\Task\Queue;
 
 use Birgit\Model\ModelRepositoryInterface;
 

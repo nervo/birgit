@@ -48,18 +48,4 @@ interface ModelManagerInterface
      * @return Project\Reference\Revision\ProjectReferenceRevisionRepository
      */
     public function getProjectReferenceRevisionRepository();
-
-    /**
-     * Get task repository
-     *
-     * @return Task\TaskRepository
-     */
-    public function getTaskRepository();
-
-    /**
-     * Get task queue repository
-     *
-     * @return Task\Queue\TaskQueueRepository
-     */
-    public function getTaskQueueRepository();
 }

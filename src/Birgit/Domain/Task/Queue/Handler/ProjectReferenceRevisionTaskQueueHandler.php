@@ -5,7 +5,7 @@ namespace Birgit\Domain\Task\Queue\Handler;
 use Birgit\Component\Task\Queue\Handler\TaskQueueHandler;
 use Birgit\Component\Context\ContextInterface;
 use Birgit\Domain\Task\Queue\Context\ProjectReferenceRevisionTaskQueueContext;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 class ProjectReferenceRevisionTaskQueueHandler extends TaskQueueHandler
 {

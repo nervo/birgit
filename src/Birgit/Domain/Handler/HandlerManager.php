@@ -9,8 +9,8 @@ use Birgit\Domain\Project\Environment\Handler\ProjectEnvironmentHandlerInterface
 use Birgit\Model\Project\Environment\ProjectEnvironment;
 use Birgit\Component\Task\Handler\TaskHandlerInterface;
 use Birgit\Component\Task\Queue\Handler\TaskQueueHandlerInterface;
-use Birgit\Model\Task\Task;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Task;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Domain\Exception\Exception;
 
 /**

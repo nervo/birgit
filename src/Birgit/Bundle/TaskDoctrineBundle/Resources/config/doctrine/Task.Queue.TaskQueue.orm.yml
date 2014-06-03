@@ -1,7 +1,7 @@
-Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue:
+Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue\TaskQueue:
     type:  entity
     table: birgit_task_queue
-    repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueueRepository
+    repositoryClass: Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue\TaskQueueRepository
     id:
         id:
             column:    id
@@ -26,15 +26,15 @@ Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue:
             type:      parameters
     oneToMany:
         tasks:
-            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Task\Task
+            targetEntity: Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Task
             mappedBy:     queue
             cascade:      ['persist']
         children:
-            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            targetEntity: Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue\TaskQueue
             mappedBy:     parent
     manyToOne:
         parent:
-            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            targetEntity: Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue\TaskQueue
             inversedBy:   children
             joinColumn:
                 name:      parent_id

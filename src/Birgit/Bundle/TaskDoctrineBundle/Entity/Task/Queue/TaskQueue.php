@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Bundle\DoctrineBundle\Entity\Task\Queue;
+namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 

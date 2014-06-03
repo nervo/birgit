@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Model\Task;
+namespace Birgit\Component\Task\Model\Task;
 
 use Birgit\Model\ModelRepositoryInterface;
 

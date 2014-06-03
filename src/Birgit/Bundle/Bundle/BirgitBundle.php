@@ -20,6 +20,7 @@ class BirgitBundle extends Bundle
         parent::build($container);
 
         $container
-            ->addCompilerPass(new Compiler\HandlerCompilerPass());
+            ->addCompilerPass(new Compiler\HandlerCompilerPass())
+            ->addCompilerPass(new Compiler\TaskManagerCompilerPass());
     }
 }

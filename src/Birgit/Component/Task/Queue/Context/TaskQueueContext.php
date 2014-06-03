@@ -3,7 +3,7 @@
 namespace Birgit\Component\Task\Queue\Context;
 
 use Birgit\Component\Context\ContextInterface;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
  * Task queue Context

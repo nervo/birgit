@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Bundle\DoctrineBundle\Entity\Task;
+namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task;
 
 use Birgit\Model;
 use Birgit\Component\Parameters\Parameters;

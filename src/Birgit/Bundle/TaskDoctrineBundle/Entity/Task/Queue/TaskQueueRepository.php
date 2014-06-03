@@ -1,9 +1,9 @@
 <?php
 
-namespace Birgit\Bundle\DoctrineBundle\Entity\Task\Queue;
+namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
-use Birgit\Model\Task\Queue\TaskQueueRepositoryInterface;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 

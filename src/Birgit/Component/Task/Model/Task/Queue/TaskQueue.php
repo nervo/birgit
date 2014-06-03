@@ -1,9 +1,9 @@
 <?php
 
-namespace Birgit\Model\Task\Queue;
+namespace Birgit\Component\Task\Model\Task\Queue;
 
 use Birgit\Component\Handler\Handleable;
-use Birgit\Model\Task\Task;
+use Birgit\Component\Task\Model\Task\Task;
 
 /**
  * Task queue

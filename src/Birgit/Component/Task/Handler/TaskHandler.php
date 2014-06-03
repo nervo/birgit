@@ -3,7 +3,7 @@
 namespace Birgit\Component\Task\Handler;
 
 use Birgit\Component\Handler\Handler;
-use Birgit\Model\Task\Task;
+use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Handler\HandlerManager;
 use Birgit\Model\ModelManagerInterface;
@@ -48,7 +48,7 @@ abstract class TaskHandler extends Handler implements TaskHandlerInterface
         TaskManager $taskManager
     ) {
         // Model manager
-        $this->modelManager   = $modelManager;
+        $this->modelManager = $modelManager;
 
         // Handler manager
         $this->handlerManager = $handlerManager;

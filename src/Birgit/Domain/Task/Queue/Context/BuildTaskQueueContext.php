@@ -4,7 +4,7 @@ namespace Birgit\Domain\Task\Queue\Context;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContext;
 use Birgit\Component\Context\ContextInterface;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Build\Build;
 
 /**

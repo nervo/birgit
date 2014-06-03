@@ -4,7 +4,7 @@ namespace Birgit\Domain\Task\Queue\Handler\Cron;
 
 use Birgit\Component\Context\ContextInterface;
 use Birgit\Domain\Task\Queue\Context\ProjectTaskQueueContext;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
  * Project Cron Task queue Handler

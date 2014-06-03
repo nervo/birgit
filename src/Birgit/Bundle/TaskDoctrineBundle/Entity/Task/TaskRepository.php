@@ -1,9 +1,9 @@
 <?php
 
-namespace Birgit\Bundle\DoctrineBundle\Entity\Task;
+namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
-use Birgit\Model\Task\TaskRepositoryInterface;
+use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
 use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 

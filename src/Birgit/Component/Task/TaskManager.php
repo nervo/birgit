@@ -2,22 +2,26 @@
 
 namespace Birgit\Component\Task;
 
-use Birgit\Model\ModelManagerInterface;
+use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
  * Task Manager
  */
 class TaskManager
 {
-    protected $modelManager;
+    protected $taskRepository;
+    protected $taskQueueRepository;
 
     public function __construct(
-        ModelManagerInterface $modelManager
+        TaskRepositoryInterface $taskRepository,
+        TaskQueueRepositoryInterface $taskQueueRepository
     ) {
-        $this->modelManager   = $modelManager;
+        $this->taskRepository = $taskRepository;
+        $this->taskQueueRepository = $taskQueueRepository;
     }
 
     /**
@@ -30,8 +34,7 @@ class TaskManager
     public function createTaskQueue($type, array $parameters = array(), $tasks = array())
     {
         // Create task queue
-        $taskQueue = $this->modelManager
-            ->getTaskQueueRepository()
+        $taskQueue = $this->taskQueueRepository
             ->create(
                 new HandlerDefinition(
                     (string) $type,
@@ -48,8 +51,7 @@ class TaskManager
             // Add task
             $taskQueue
                 ->addTask(
-                    $this->modelManager
-                        ->getTaskRepository()
+                    $this->taskRepository
                         ->create(
                             new HandlerDefinition(
                                 (string) $taskType,
@@ -69,8 +71,7 @@ class TaskManager
      */
     public function pushTaskQueue(TaskQueue $taskQueue)
     {
-        $this->modelManager
-            ->getTaskQueueRepository()
+        $this->taskQueueRepository
             ->save($taskQueue);
     }
 }

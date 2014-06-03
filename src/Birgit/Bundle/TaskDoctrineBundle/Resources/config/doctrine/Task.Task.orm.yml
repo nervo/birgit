@@ -1,7 +1,7 @@
-Birgit\Bundle\DoctrineBundle\Entity\Task\Task:
+Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Task:
     type:  entity
     table: birgit_task
-    repositoryClass: Birgit\Bundle\DoctrineBundle\Entity\Task\TaskRepository
+    repositoryClass: Birgit\Bundle\TaskDoctrineBundle\Entity\Task\TaskRepository
     id:
         id:
             column:    id
@@ -26,7 +26,7 @@ Birgit\Bundle\DoctrineBundle\Entity\Task\Task:
             type:      parameters
     manyToOne:
         queue:
-            targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            targetEntity: Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue\TaskQueue
             inversedBy:   tasks
             joinColumn:
                 name:      queue_id

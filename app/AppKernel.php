@@ -20,6 +20,12 @@ class AppKernel extends Kernel
             // Birgit
             new Birgit\Bundle\Bundle\BirgitBundle(),
             new Birgit\Bundle\DoctrineBundle\BirgitDoctrineBundle(),
+
+            // Birgit - Task
+            new Birgit\Bundle\TaskBundle\BirgitTaskBundle(),
+            new Birgit\Bundle\TaskDoctrineBundle\BirgitTaskDoctrineBundle(),
+
+            // Birgit - Front
             new Birgit\Bundle\FrontBundle\BirgitFrontBundle()
         );
 

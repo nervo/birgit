@@ -5,8 +5,8 @@ namespace Birgit\Domain\Worker;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Handler\HandlerManager;
 use Birgit\Component\Context\Context;
-use Birgit\Model\Task\Queue\TaskQueue;
-use Birgit\Model\Task\Queue\TaskQueueStatus;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueStatus;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
@@ -68,7 +68,7 @@ class Worker
                 }
             }
 
-            sleep(3);
+            //sleep(3);
         }
     }
 

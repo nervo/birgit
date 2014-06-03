@@ -18,9 +18,6 @@
         <!-- Project Environment Handler -->
         <parameter key="birgit.project_environment_handler.local.class">Birgit\Domain\Project\Environment\Handler\Local\LocalProjectEnvironmentHandler</parameter>
 
-        <!-- Task Manager -->
-        <parameter key="birgit.task_manager.class">Birgit\Domain\Task\TaskManager</parameter>
-
         <!-- Task Handler - Build -->
         <parameter key="birgit.task_handler.build_create.class">Birgit\Domain\Task\Handler\Build\BuildCreateTaskHandler</parameter>
         <!-- Task Handler - Host -->
@@ -65,11 +62,6 @@
         <service id="birgit.project_environment_handler.local" public="false" class="%birgit.project_environment_handler.local.class%">
             <argument>%kernel.root_dir%</argument>
             <tag name="birgit.project_environment_handler" />
-        </service>
-
-        <!-- Task Manager -->
-        <service id="birgit.task_manager" class="%birgit.task_manager.class%">
-            <argument type="service" id="birgit.model_manager" />
         </service>
 
         <!-- Task Handler - Build -->

@@ -81,22 +81,4 @@ class EntityManager implements ModelManagerInterface
         return $this->managerRegistry
             ->getRepository('BirgitDoctrineBundle:Project\Reference\Revision\ProjectReferenceRevision');
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaskRepository()
-    {
-        return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Task\Task');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaskQueueRepository()
-    {
-        return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Task\Queue\TaskQueue');
-    }
 }

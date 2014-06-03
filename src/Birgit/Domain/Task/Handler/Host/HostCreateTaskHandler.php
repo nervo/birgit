@@ -4,7 +4,7 @@ namespace Birgit\Domain\Task\Handler\Host;
 
 use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Model\Task\Task;
+use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Domain\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Context\Exception\ContextException;
 
