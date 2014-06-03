@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Domain\Handler\HandlerDefinition;
+use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Component\Parameters\Parameters;
 
 class TestFixturesCommand extends ContainerAwareCommand

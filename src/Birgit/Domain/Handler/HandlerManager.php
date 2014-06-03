@@ -2,12 +2,13 @@
 
 namespace Birgit\Domain\Handler;
 
+use Birgit\Component\Handler\HandlerManager as BaseHandlerManager;
 use Birgit\Domain\Project\Handler\ProjectHandlerInterface;
 use Birgit\Model\Project\Project;
 use Birgit\Domain\Project\Environment\Handler\ProjectEnvironmentHandlerInterface;
 use Birgit\Model\Project\Environment\ProjectEnvironment;
-use Birgit\Domain\Task\Handler\TaskHandlerInterface;
-use Birgit\Domain\Task\Queue\Handler\TaskQueueHandlerInterface;
+use Birgit\Component\Task\Handler\TaskHandlerInterface;
+use Birgit\Component\Task\Queue\Handler\TaskQueueHandlerInterface;
 use Birgit\Model\Task\Task;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Domain\Exception\Exception;
@@ -15,7 +16,7 @@ use Birgit\Domain\Exception\Exception;
 /**
  * Handler Manager
  */
-class HandlerManager
+class HandlerManager extends BaseHandlerManager
 {
     /**
      * Project handlers

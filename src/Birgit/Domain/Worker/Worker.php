@@ -3,7 +3,7 @@
 namespace Birgit\Domain\Worker;
 
 use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Handler\HandlerManager;
+use Birgit\Component\Handler\HandlerManager;
 use Birgit\Domain\Context\Context;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Task\Queue\TaskQueueStatus;

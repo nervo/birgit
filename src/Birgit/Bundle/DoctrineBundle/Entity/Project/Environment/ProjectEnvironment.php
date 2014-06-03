@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Model;
 use Birgit\Component\Parameters\Parameters;
-use Birgit\Domain\Handler\HandlerDefinition;
+use Birgit\Component\Handler\HandlerDefinition;
 
 /**
  * Project environment

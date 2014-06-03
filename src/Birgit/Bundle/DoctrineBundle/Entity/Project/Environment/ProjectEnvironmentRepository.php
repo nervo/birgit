@@ -6,7 +6,7 @@ use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Project;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
-use Birgit\Domain\Handler\HandlerDefinition;
+use Birgit\Component\Handler\HandlerDefinition;
 
 /**
  * Project environment Repository

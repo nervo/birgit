@@ -2,7 +2,7 @@
 
 namespace Birgit\Model\Task\Queue;
 
-use Birgit\Domain\Handler\Handleable;
+use Birgit\Component\Handler\Handleable;
 use Birgit\Model\Task\Task;
 
 /**

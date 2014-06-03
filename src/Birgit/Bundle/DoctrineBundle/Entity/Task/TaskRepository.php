@@ -4,7 +4,7 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Task;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Task\TaskRepositoryInterface;
-use Birgit\Domain\Handler\HandlerDefinition;
+use Birgit\Component\Handler\HandlerDefinition;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 
 /**

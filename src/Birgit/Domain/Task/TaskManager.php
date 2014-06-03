@@ -2,10 +2,7 @@
 
 namespace Birgit\Domain\Task;
 
-use Birgit\Model\ModelManagerInterface;
-use Birgit\Domain\Handler\HandlerDefinition;
-use Birgit\Component\Parameters\Parameters;
-use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\TaskManager as BaseTaskManager;
 use Birgit\Model\Host\Host;
 use Birgit\Model\Build\Build;
 use Birgit\Model\Project\Project;
@@ -15,16 +12,8 @@ use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 /**
  * Task Manager
  */
-class TaskManager
+class TaskManager extends BaseTaskManager
 {
-    protected $modelManager;
-
-    public function __construct(
-        ModelManagerInterface $modelManager
-    ) {
-        $this->modelManager   = $modelManager;
-    }
-
     /**
      * Create Host Task queue
      *
@@ -109,59 +98,5 @@ class TaskManager
             ),
             $tasks
         );
-    }
-
-    /**
-     * Create task queue
-     *
-     * @param string $type
-     * @param array  $parameters
-     * @param array  $tasks
-     */
-    public function createTaskQueue($type, array $parameters = array(), $tasks = array())
-    {
-        // Create task queue
-        $taskQueue = $this->modelManager
-            ->getTaskQueueRepository()
-            ->create(
-                new HandlerDefinition(
-                    (string) $type,
-                    new Parameters($parameters)
-                )
-            );
-
-        foreach ($tasks as $taskType => $taskParameters) {
-            // Handle task type only
-            if (is_numeric($taskType)) {
-                $taskType = $taskParameters;
-                $taskParameters = array();
-            }
-            // Add task
-            $taskQueue
-                ->addTask(
-                    $this->modelManager
-                        ->getTaskRepository()
-                        ->create(
-                            new HandlerDefinition(
-                                (string) $taskType,
-                                new Parameters((array) $taskParameters)
-                            )
-                        )
-                );
-        }
-
-        return $taskQueue;
-    }
-
-    /**
-     * Push Task queue
-     *
-     * @param TaskQueue $taskQueue
-     */
-    public function pushTaskQueue(TaskQueue $taskQueue)
-    {
-        $this->modelManager
-            ->getTaskQueueRepository()
-            ->save($taskQueue);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Project\Handler;
 
-use Birgit\Domain\Handler\Handler;
+use Birgit\Component\Handler\Handler;
 
 /**
  * Project Handler
