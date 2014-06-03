@@ -6,7 +6,7 @@ use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\Task\Task;
 use Birgit\Domain\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
-use Birgit\Domain\Exception\Context\ContextException;
+use Birgit\Component\Context\Exception\ContextException;
 
 /**
  * Host - Create Task Handler

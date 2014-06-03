@@ -7,9 +7,9 @@ use Birgit\Model\Task\Task;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Domain\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
-use Birgit\Domain\Exception\Context\ContextException;
+use Birgit\Component\Context\Exception\ContextException;
 use Birgit\Component\Task\Handler\TaskHandler;
-use Birgit\Domain\Exception\Task\Queue\SuspendTaskQueueException;
+use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
  * Project reference Task handler

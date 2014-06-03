@@ -3,7 +3,7 @@
 namespace Birgit\Component\Task\Queue\Handler;
 
 use Birgit\Component\Handler\Handler;
-use Birgit\Domain\Context\ContextInterface;
+use Birgit\Component\Context\ContextInterface;
 use Birgit\Component\Handler\HandlerManager;
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Task\TaskManager;
@@ -11,7 +11,7 @@ use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Event\TaskQueueEvent;
 use Birgit\Component\Task\TaskEvents;
 use Birgit\Model\Task\TaskStatus;
-use Birgit\Domain\Exception\Task\Queue\SuspendTaskQueueException;
+use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
  * Task queue Handler

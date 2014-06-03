@@ -8,7 +8,7 @@ use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Task\Queue\Context\ProjectTaskQueueContextInterface;
 use Birgit\Domain\Project\ProjectEvents;
 use Birgit\Domain\Project\Event\ProjectEvent;
-use Birgit\Domain\Exception\Context\ContextException;
+use Birgit\Component\Context\Exception\ContextException;
 use Birgit\Component\Task\Handler\TaskHandler;
 
 /**

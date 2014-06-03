@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Domain\Context\Context;
+use Birgit\Component\Context\Context;
 
 /**
  * Worker command

@@ -5,7 +5,7 @@ namespace Birgit\Domain\Task\Handler\Build;
 use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\Task\Task;
-use Birgit\Domain\Exception\Context\ContextException;
+use Birgit\Component\Context\Exception\ContextException;
 use Birgit\Domain\Task\Queue\Context\HostTaskQueueContextInterface;
 
 /**

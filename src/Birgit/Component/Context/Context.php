@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Domain\Context;
+namespace Birgit\Component\Context;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;

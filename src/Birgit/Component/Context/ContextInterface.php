@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Domain\Context;
+namespace Birgit\Component\Context;
 
 interface ContextInterface
 {

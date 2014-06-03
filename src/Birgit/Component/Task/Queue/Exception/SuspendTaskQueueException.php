@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Domain\Exception\Task\Queue;
+namespace Birgit\Component\Task\Queue\Exception;
 
 use Birgit\Domain\Exception\Exception;
 

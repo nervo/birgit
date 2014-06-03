@@ -8,7 +8,7 @@ use Symfony\Component\Process\ProcessBuilder;
 use Birgit\Domain\Project\Handler\ProjectHandler;
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
-use Birgit\Domain\Context\ContextInterface;
+use Birgit\Component\Context\ContextInterface;
 use Birgit\Domain\Exception\Exception;
 
 /**

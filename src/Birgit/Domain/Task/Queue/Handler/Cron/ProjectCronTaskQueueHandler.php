@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Task\Queue\Handler\Cron;
 
-use Birgit\Domain\Context\ContextInterface;
+use Birgit\Component\Context\ContextInterface;
 use Birgit\Domain\Task\Queue\Context\ProjectTaskQueueContext;
 use Birgit\Model\Task\Queue\TaskQueue;
 

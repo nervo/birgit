@@ -4,10 +4,10 @@ namespace Birgit\Domain\Worker;
 
 use Birgit\Model\ModelManagerInterface;
 use Birgit\Component\Handler\HandlerManager;
-use Birgit\Domain\Context\Context;
+use Birgit\Component\Context\Context;
 use Birgit\Model\Task\Queue\TaskQueue;
 use Birgit\Model\Task\Queue\TaskQueueStatus;
-use Birgit\Domain\Exception\Task\Queue\SuspendTaskQueueException;
+use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
  * Worker
