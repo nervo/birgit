@@ -5,6 +5,7 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Task\Queue;
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Domain\Handler\HandlerDefinition;
+use Birgit\Domain\Exception\Model\ModelNotFoundException;
 
 /**
  * Task queue Repository
@@ -24,6 +25,17 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
     public function save(TaskQueue $taskQueue)
     {
         $this->saveEntity($taskQueue);
+    }
+
+    public function get($id)
+    {
+        $taskQueue = $this->findOneById($id);
+
+        if (!$taskQueue) {
+            throw new ModelNotFoundException();
+        }
+
+        return $taskQueue;
     }
 
     public function delete(TaskQueue $taskQueue)

@@ -36,7 +36,7 @@
         <parameter key="birgit.task_queue_handler.host.class">Birgit\Domain\Host\Task\Queue\Handler\HostTaskQueueHandler</parameter>
 
         <!-- Build - Task Handlers -->
-        <parameter key="birgit.task_handler.build.class">Birgit\Domain\Build\Task\Handler\BuildTaskHandler</parameter>
+        <parameter key="birgit.task_handler.build_create.class">Birgit\Domain\Build\Task\Handler\BuildCreateTaskHandler</parameter>
         <!-- Build - Task Queue Handlers -->
         <parameter key="birgit.task_queue_handler.build.class">Birgit\Domain\Build\Task\Queue\Handler\BuildTaskQueueHandler</parameter>
 
@@ -139,7 +139,7 @@
         </service>
 
         <!-- Build - Task Handlers -->
-        <service id="birgit.task_handler.build" public="false" class="%birgit.task_handler.build.class%">
+        <service id="birgit.task_handler.build_create" public="false" class="%birgit.task_handler.build_create.class%">
             <argument type="service" id="birgit.model_manager" />
             <argument type="service" id="birgit.handler_manager" />
             <argument type="service" id="birgit.task_manager" />

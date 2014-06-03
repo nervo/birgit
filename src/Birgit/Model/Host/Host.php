@@ -12,6 +12,13 @@ use Birgit\Model\Build\Build;
 abstract class Host
 {
     /**
+     * Get id
+     *
+     * @return string
+     */
+    abstract public function getId();
+
+    /**
      * Get project reference
      *
      * @return ProjectReference

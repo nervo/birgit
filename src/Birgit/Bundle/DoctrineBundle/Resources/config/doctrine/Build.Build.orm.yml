@@ -5,8 +5,8 @@ Birgit\Bundle\DoctrineBundle\Entity\Build\Build:
     id:
         id:
             column:    id
-            type:      integer
-            generator: { strategy: AUTO }
+            type:      guid
+            generator: { strategy: UUID }
     manyToOne:
         host:
             targetEntity: Birgit\Bundle\DoctrineBundle\Entity\Host\Host

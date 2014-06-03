@@ -14,7 +14,7 @@ class Host extends Model\Host\Host
     /**
      * Id
      *
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -49,9 +49,7 @@ class Host extends Model\Host\Host
     }
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {

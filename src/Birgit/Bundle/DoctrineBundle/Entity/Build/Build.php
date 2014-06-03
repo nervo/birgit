@@ -12,7 +12,7 @@ class Build extends Model\Build\Build
     /**
      * Id
      *
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -31,9 +31,7 @@ class Build extends Model\Build\Build
     private $projectReferenceRevision;
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {

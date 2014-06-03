@@ -6,6 +6,7 @@ use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Host\HostRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment;
+use Birgit\Domain\Exception\Model\ModelNotFoundException;
 
 /**
  * Host Repository
@@ -27,11 +28,14 @@ class HostRepository extends EntityRepository implements HostRepositoryInterface
         $this->saveEntity($host);
     }
 
-    public function findOneByProjectReferenceAndProjectEnvironment(ProjectReference $projectReference, ProjectEnvironment $projectEnvironment)
+    public function get($id)
     {
-        return $this->findOneBy(array(
-            'projectReference'   => $projectReference,
-            'projectEnvironment' => $projectEnvironment
-        ));
+        $host = $this->findOneById($id);
+
+        if (!$host) {
+            throw new ModelNotFoundException();
+        }
+
+        return $host;
     }
 }

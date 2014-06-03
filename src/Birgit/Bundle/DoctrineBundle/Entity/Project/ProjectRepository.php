@@ -38,5 +38,4 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
 
         return $project;
     }
-
 }

@@ -11,6 +11,13 @@ use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
 abstract class Build
 {
     /**
+     * Get id
+     *
+     * @return string
+     */
+    abstract public function getId();
+
+    /**
      * Get host
      *
      * @return Host

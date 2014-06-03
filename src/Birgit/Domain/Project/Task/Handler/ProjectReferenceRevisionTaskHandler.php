@@ -43,19 +43,14 @@ class ProjectReferenceRevisionTaskHandler extends TaskHandler
             }
 
             if (!$buildFound) {
-                // Get build repository
-                $buildRepository =  $this->modelManager
-                    ->getBuildRepository();
+                $taskQueue = $this->taskManager
+                    ->createHostTaskQueue($host, [
+                        'build_create' => [
+                            'project_reference_revision_name' => $projectReferenceRevision->getName()
+                        ]
+                    ]);
 
-                // Create
-                $build = $buildRepository
-                    ->create(
-                        $host,
-                        $projectReferenceRevision
-                    );
-
-                // Save
-                $buildRepository->save($build);
+                $this->taskManager->pushTaskQueue($taskQueue);
             }
         }
     }

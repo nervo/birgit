@@ -6,6 +6,7 @@ use Birgit\Domain\Task\Handler\TaskHandler;
 use Birgit\Domain\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Model\Task\Task;
 use Birgit\Domain\Project\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Domain\Exception\Context\ContextException;
 
 /**
  * Host - Create Task Handler
@@ -52,5 +53,11 @@ class HostCreateTaskHandler extends TaskHandler
         $this->modelManager
             ->getHostRepository()
             ->save($host);
+
+        // Host task queue
+        $taskQueue = $this->taskManager
+            ->createHostTaskQueue($host);
+
+        $this->taskManager->pushTaskQueue($taskQueue);
     }
 }

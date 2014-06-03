@@ -19,35 +19,11 @@ class HostTaskQueueHandler extends TaskQueueHandler
 
     public function run(TaskQueue $taskQueue, ContextInterface $context)
     {
-        // Get project
-        $project = $this->modelManager
-            ->getProjectRepository()
-            ->get(
-                $taskQueue->getHandlerDefinition()->getParameters()->get('project_name')
-            );
-
-        // Get project reference
-        $projectReference = $this->modelManager
-            ->getProjectReferenceRepository()
-            ->get(
-                $taskQueue->getHandlerDefinition()->getParameters()->get('project_reference_name'),
-                $project
-            );
-
-        // Get project environment
-        $projectEnvironment = $this->modelManager
-            ->getProjectEnvironmentRepository()
-            ->get(
-                $taskQueue->getHandlerDefinition()->getParameters()->get('project_environment_name'),
-                $project
-            );
-
         // Get host
         $host = $this->modelManager
             ->getHostRepository()
             ->get(
-                $projectReference,
-                $projectEnvironment
+                $taskQueue->getHandlerDefinition()->getParameters()->get('host_id')
             );
 
         parent::run(

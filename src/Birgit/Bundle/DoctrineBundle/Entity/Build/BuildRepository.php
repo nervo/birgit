@@ -6,6 +6,7 @@ use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Model\Build\BuildRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Host\Host;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevision;
+use Birgit\Domain\Exception\Model\ModelNotFoundException;
 
 /**
  * Build Repository
@@ -26,5 +27,16 @@ class BuildRepository extends EntityRepository implements BuildRepositoryInterfa
     public function save(Build $build)
     {
         $this->saveEntity($build);
+    }
+
+    public function get($id)
+    {
+        $build = $this->findOneById($id);
+
+        if (!$build) {
+            throw new ModelNotFoundException();
+        }
+
+        return $build;
     }
 }

@@ -6,6 +6,8 @@ use Birgit\Model\ModelManagerInterface;
 use Birgit\Domain\Handler\HandlerDefinition;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Model\Task\Queue\TaskQueue;
+use Birgit\Model\Host\Host;
+use Birgit\Model\Build\Build;
 use Birgit\Model\Project\Project;
 use Birgit\Model\Project\Reference\ProjectReference;
 use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
@@ -21,6 +23,38 @@ class TaskManager
         ModelManagerInterface $modelManager
     ) {
         $this->modelManager   = $modelManager;
+    }
+
+    /**
+     * Create Host Task queue
+     *
+     * @param Host $host
+     */
+    public function createHostTaskQueue(Host $host, $tasks = array())
+    {
+        return $this->createTaskQueue(
+            'host',
+            array(
+                'host_id' => $host->getId()
+            ),
+            $tasks
+        );
+    }
+
+    /**
+     * Create Build Task queue
+     *
+     * @param Build $build
+     */
+    public function createBuildTaskQueue(Build $build, $tasks = array())
+    {
+        return $this->createTaskQueue(
+            'build',
+            array(
+                'build_id' => $build->getId()
+            ),
+            $tasks
+        );
     }
 
     /**
