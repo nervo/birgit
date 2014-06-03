@@ -2,7 +2,7 @@
 
 namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task;
 
-use Birgit\Model;
+use Birgit\Component\Task\Model;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Component\Handler\HandlerDefinition;
 

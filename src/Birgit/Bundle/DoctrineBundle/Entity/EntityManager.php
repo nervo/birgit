@@ -34,7 +34,7 @@ class EntityManager implements ModelManagerInterface
     public function getBuildRepository()
     {
         return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Build\Build');
+            ->getRepository('BirgitDoctrineBundle:Build\Build', 'birgit');
     }
 
     /**
@@ -43,7 +43,7 @@ class EntityManager implements ModelManagerInterface
     public function getHostRepository()
     {
         return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Host\Host');
+            ->getRepository('BirgitDoctrineBundle:Host\Host', 'birgit');
     }
 
     /**
@@ -52,7 +52,7 @@ class EntityManager implements ModelManagerInterface
     public function getProjectRepository()
     {
         return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Project\Project');
+            ->getRepository('BirgitDoctrineBundle:Project\Project', 'birgit');
     }
 
     /**
@@ -61,7 +61,7 @@ class EntityManager implements ModelManagerInterface
     public function getProjectEnvironmentRepository()
     {
         return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Project\Environment\ProjectEnvironment');
+            ->getRepository('BirgitDoctrineBundle:Project\Environment\ProjectEnvironment', 'birgit');
     }
 
     /**
@@ -70,7 +70,7 @@ class EntityManager implements ModelManagerInterface
     public function getProjectReferenceRepository()
     {
         return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Project\Reference\ProjectReference');
+            ->getRepository('BirgitDoctrineBundle:Project\Reference\ProjectReference', 'birgit');
     }
 
     /**
@@ -79,6 +79,6 @@ class EntityManager implements ModelManagerInterface
     public function getProjectReferenceRevisionRepository()
     {
         return $this->managerRegistry
-            ->getRepository('BirgitDoctrineBundle:Project\Reference\Revision\ProjectReferenceRevision');
+            ->getRepository('BirgitDoctrineBundle:Project\Reference\Revision\ProjectReferenceRevision', 'birgit');
     }
 }

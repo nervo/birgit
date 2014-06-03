@@ -20,7 +20,7 @@ class TaskQueueEvent extends Event
 
     /**
      * Constructor
-     * 
+     *
      * @param TaskQueue $taskQueue
      */
     public function __construct(TaskQueue $taskQueue)
@@ -31,7 +31,7 @@ class TaskQueueEvent extends Event
 
     /**
      * Get task queue
-     * 
+     *
      * @return TaskQueue
      */
     public function getTaskQueue()

@@ -20,7 +20,7 @@ class TaskEvent extends Event
 
     /**
      * Constructor
-     * 
+     *
      * @param Task $task
      */
     public function __construct(Task $task)
@@ -31,7 +31,7 @@ class TaskEvent extends Event
 
     /**
      * Get task
-     * 
+     *
      * @return Task
      */
     public function getTask()

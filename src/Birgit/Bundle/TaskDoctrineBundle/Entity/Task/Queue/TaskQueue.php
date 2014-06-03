@@ -4,7 +4,7 @@ namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Birgit\Model;
+use Birgit\Component\Task\Model;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Component\Handler\HandlerDefinition;
 
