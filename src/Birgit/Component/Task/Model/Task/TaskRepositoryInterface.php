@@ -2,7 +2,7 @@
 
 namespace Birgit\Component\Task\Model\Task;
 
-use Birgit\Model\ModelRepositoryInterface;
+use Birgit\Component\Task\Model\ModelRepositoryInterface;
 
 /**
  * Task Repository Interface

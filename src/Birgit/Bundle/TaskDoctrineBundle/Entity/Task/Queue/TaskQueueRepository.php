@@ -2,10 +2,10 @@
 
 namespace Birgit\Bundle\TaskDoctrineBundle\Entity\Task\Queue;
 
-use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
+use Birgit\Bundle\TaskDoctrineBundle\Entity\EntityRepository;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Handler\HandlerDefinition;
-use Birgit\Domain\Exception\Model\ModelNotFoundException;
+use Birgit\Component\Task\Exception\NotFoundException;
 
 /**
  * Task queue Repository
@@ -32,7 +32,7 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
         $taskQueue = $this->findOneById($id);
 
         if (!$taskQueue) {
-            throw new ModelNotFoundException();
+            throw new NotFoundException();
         }
 
         return $taskQueue;

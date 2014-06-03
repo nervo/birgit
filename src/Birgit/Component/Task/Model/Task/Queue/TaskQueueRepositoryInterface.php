@@ -2,7 +2,7 @@
 
 namespace Birgit\Component\Task\Model\Task\Queue;
 
-use Birgit\Model\ModelRepositoryInterface;
+use Birgit\Component\Task\Model\ModelRepositoryInterface;
 
 /**
  * Task Queue Repository Interface
