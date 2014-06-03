@@ -5,8 +5,8 @@ Birgit\Bundle\DoctrineBundle\Entity\Task\Task:
     id:
         id:
             column:    id
-            type:      integer
-            generator: { strategy: AUTO }
+            type:      guid
+            generator: { strategy: UUID }
     fields:
         # Status
         status:

@@ -23,6 +23,13 @@ abstract class TaskQueue implements Handleable
     }
 
     /**
+     * Get id
+     *
+     * @return string
+     */
+    abstract public function getId();
+
+    /**
      * Set status
      *
      * @param TaskQueueStatus

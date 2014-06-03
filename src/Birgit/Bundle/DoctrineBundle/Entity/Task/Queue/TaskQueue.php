@@ -16,7 +16,7 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     /**
      * Id
      *
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -84,9 +84,7 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {

@@ -14,7 +14,7 @@ class Task extends Model\Task\Task
     /**
      * Id
      *
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -54,9 +54,7 @@ class Task extends Model\Task\Task
     protected $handlerParameters;
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
