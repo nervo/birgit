@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Bundle\CoreBundle\DependencyInjection\Compiler;
+namespace Birgit\Bundle\Bundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -12,9 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class HandlerCompilerPass implements CompilerPassInterface
 {
     /**
-     * Process
-     *
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

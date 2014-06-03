@@ -1,14 +1,20 @@
 <?php
 
-namespace Birgit\Bundle\CoreBundle;
+namespace Birgit\Bundle\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use Birgit\Bundle\CoreBundle\DependencyInjection\Compiler;
+use Birgit\Bundle\Bundle\DependencyInjection\Compiler;
 
-class BirgitCoreBundle extends Bundle
+/**
+ * Birgit bundle
+ */
+class BirgitBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

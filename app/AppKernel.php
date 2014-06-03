@@ -18,7 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             // Birgit
-            new Birgit\Bundle\CoreBundle\BirgitCoreBundle(),
+            new Birgit\Bundle\Bundle\BirgitBundle(),
             new Birgit\Bundle\DoctrineBundle\BirgitDoctrineBundle(),
             new Birgit\Bundle\FrontBundle\BirgitFrontBundle()
         );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Bundle\CoreBundle\Command;
+namespace Birgit\Bundle\Bundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
