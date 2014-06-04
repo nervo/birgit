@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <parameters>
+
+        <!-- Project Environment Handler -->
+        <parameter key="birgit.project_environment_handler.local.class">Birgit\Core\Project\Environment\Handler\Local\LocalProjectEnvironmentHandler</parameter>
+
+    </parameters>
+
+    <services>
+
+        <!-- Project Environment Handler -->
+        <service id="birgit.project_environment_handler.local" public="false" class="%birgit.project_environment_handler.local.class%">
+            <argument>%kernel.root_dir%</argument>
+            <tag name="birgit.project_environment_handler" />
+        </service>
+
+    </services>
+
+</container>

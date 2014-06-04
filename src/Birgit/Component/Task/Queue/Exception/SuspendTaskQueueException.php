@@ -2,8 +2,9 @@
 
 namespace Birgit\Component\Task\Queue\Exception;
 
-use Birgit\Domain\Exception\Exception;
-
+/**
+ * Suspend Task Queue Exception
+ */
 class SuspendTaskQueueException extends Exception
 {
 }

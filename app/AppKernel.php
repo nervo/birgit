@@ -17,13 +17,18 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
-            // Birgit
-            new Birgit\Bundle\Bundle\BirgitBundle(),
-            new Birgit\Bundle\DoctrineBundle\BirgitDoctrineBundle(),
+            // Birgit - Core
+            new Birgit\Core\Bundle\Bundle\BirgitCoreBundle(),
+            new Birgit\Core\Bundle\DoctrineBundle\BirgitCoreDoctrineBundle(),
 
-            // Birgit - Task
-            new Birgit\Bundle\TaskBundle\BirgitTaskBundle(),
-            new Birgit\Bundle\TaskDoctrineBundle\BirgitTaskDoctrineBundle(),
+            // Birgit - Component
+            new Birgit\Component\Task\Bundle\Bundle\BirgitComponentTaskBundle(),
+            new Birgit\Component\Task\Bundle\DoctrineBundle\BirgitComponentTaskDoctrineBundle(),
+            new Birgit\Component\Type\Bundle\Bundle\BirgitComponentTypeBundle(),
+
+            // Birgit - Extra
+            new Birgit\Extra\Git\Bundle\Bundle\BirgitExtraGitBundle(),
+            new Birgit\Extra\Local\Bundle\Bundle\BirgitExtraLocalBundle(),
 
             // Birgit - Front
             new Birgit\Front\Bundle\Bundle\BirgitFrontBundle()

@@ -2,7 +2,9 @@
 
 namespace Birgit\Component\Task\Queue\Context;
 
-use Birgit\Component\Context\ContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
+
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
@@ -11,14 +13,17 @@ use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 class TaskQueueContext implements TaskQueueContextInterface
 {
     protected $taskQueue;
-    protected $context;
+    protected $eventDispatcher;
+    protected $logger;
 
     public function __construct(
         TaskQueue $taskQueue,
-        ContextInterface $context
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
     ) {
         $this->taskQueue = $taskQueue;
-        $this->context = $context;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
     }
 
     public function getTaskQueue()
@@ -28,11 +33,11 @@ class TaskQueueContext implements TaskQueueContextInterface
 
     public function getEventDispatcher()
     {
-        return $this->context->getEventDispatcher();
+        return $this->eventDispatcher;
     }
 
     public function getLogger()
     {
-        return $this->context->getLogger();
+        return $this->logger;
     }
 }

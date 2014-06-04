@@ -33,6 +33,9 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        var_dump($this->getContainer()
+            ->get('birgit.task_manager'));
+        die;
         // Get model manager
         $modelManager = $this->getContainer()
             ->get('birgit.model_manager');

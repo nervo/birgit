@@ -3,10 +3,10 @@
 namespace Birgit\Component\Task;
 
 use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
-use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
-use Birgit\Component\Handler\HandlerDefinition;
-use Birgit\Component\Parameters\Parameters;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
+use Birgit\Component\Type\TypeDefinition;
+use Birgit\Component\Type\TypeResolver;
 
 /**
  * Task Manager
@@ -14,14 +14,20 @@ use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 class TaskManager
 {
     protected $taskRepository;
+    protected $taskTypeResolver;
     protected $taskQueueRepository;
+    protected $taskQueueTypeResolver;
 
     public function __construct(
         TaskRepositoryInterface $taskRepository,
-        TaskQueueRepositoryInterface $taskQueueRepository
+        TypeResolver $taskTypeResolver,
+        TaskQueueRepositoryInterface $taskQueueRepository,
+        TypeResolver $taskQueueTypeResolver
     ) {
         $this->taskRepository = $taskRepository;
+        $this->taskTypeResolver = $taskTypeResolver;
         $this->taskQueueRepository = $taskQueueRepository;
+        $this->taskQueueTypeResolver = $taskQueueTypeResolver;
     }
 
     /**
@@ -36,9 +42,9 @@ class TaskManager
         // Create task queue
         $taskQueue = $this->taskQueueRepository
             ->create(
-                new HandlerDefinition(
+                new TypeDefinition(
                     (string) $type,
-                    new Parameters($parameters)
+                    $parameters
                 )
             );
 
@@ -53,9 +59,9 @@ class TaskManager
                 ->addTask(
                     $this->taskRepository
                         ->create(
-                            new HandlerDefinition(
+                            new TypeDefinition(
                                 (string) $taskType,
-                                new Parameters((array) $taskParameters)
+                                $taskParameters
                             )
                         )
                 );

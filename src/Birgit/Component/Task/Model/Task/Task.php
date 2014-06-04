@@ -2,13 +2,13 @@
 
 namespace Birgit\Component\Task\Model\Task;
 
-use Birgit\Component\Handler\Handleable;
+use Birgit\Component\Type\Typeable;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
  * Task
  */
-abstract class Task implements Handleable
+abstract class Task implements Typeable
 {
     /**
      * Constructor

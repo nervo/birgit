@@ -2,6 +2,9 @@
 
 namespace Birgit\Component\Task\Exception;
 
-class NotFoundException extends \Exception
+/**
+ * Not found exception
+ */
+class NotFoundException extends Exception
 {
 }

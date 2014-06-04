@@ -69,11 +69,11 @@ doctrine:
             birgit:
                 connection: birgit
                 mappings:
-                    BirgitDoctrineBundle: ~
+                    BirgitCoreDoctrineBundle: ~
             birgit_task:
                 connection: birgit_task
                 mappings:
-                    BirgitTaskDoctrineBundle: ~
+                    BirgitComponentTaskDoctrineBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:

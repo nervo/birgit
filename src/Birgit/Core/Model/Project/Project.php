@@ -2,14 +2,14 @@
 
 namespace Birgit\Core\Model\Project;
 
-use Birgit\Component\Handler\Handleable;
+use Birgit\Component\Type\Typeable;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
 
 /**
  * Project
  */
-abstract class Project implements Handleable
+abstract class Project implements Typeable
 {
     /**
      * Constructor

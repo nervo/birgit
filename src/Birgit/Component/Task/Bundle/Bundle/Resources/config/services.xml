@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <!-- Task Manager -->
+        <parameter key="birgit.task_manager.class">Birgit\Component\Task\TaskManager</parameter>
+
+    </parameters>
+
+    <services>
+
+        <!-- Task Type Resolver -->
+        <service id="birgit.task_type_resolver" class="%birgit.type_resolver.class%">
+            <tag name="birgit.type_resolver" type="birgit.task_type" />
+        </service>
+
+        <!-- Task Queue Type Resolver -->
+        <service id="birgit.task_queue_type_resolver" class="%birgit.type_resolver.class%">
+            <tag name="birgit.type_resolver" type="birgit.task_queue_type" />
+        </service>
+
+        <!-- Task Manager -->
+        <service id="birgit.task_manager" class="%birgit.task_manager.class%">
+            <argument type="service" id="birgit.task_repository" />
+            <argument type="service" id="birgit.task_type_resolver" />
+            <argument type="service" id="birgit.task_queue_repository" />
+            <argument type="service" id="birgit.task_queue_type_resolver" />
+        </service>
+
+    </services>
+
+</container>

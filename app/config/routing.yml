@@ -2,4 +2,3 @@ birgit_front:
     resource: "@BirgitFrontBundle/Controller/"
     type:     annotation
     prefix:   /
-

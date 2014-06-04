@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="birgit.task_repository.class">Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\TaskRepository</parameter>
+        <parameter key="birgit.task_queue_repository.class">Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueueRepository</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="birgit.task_repository" class="%birgit.task_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitComponentTaskDoctrineBundle:Task\Task</argument>
+            <argument>birgit_task</argument>
+        </service>
+        <service id="birgit.task_queue_repository" class="%birgit.task_queue_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitComponentTaskDoctrineBundle:Task\Queue\TaskQueue</argument>
+            <argument>birgit_task</argument>
+        </service>
+
+    </services>
+
+</container>

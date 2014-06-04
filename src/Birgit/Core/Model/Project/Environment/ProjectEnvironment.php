@@ -2,7 +2,7 @@
 
 namespace Birgit\Core\Model\Project\Environment;
 
-use Birgit\Component\Handler\Handleable;
+use Birgit\Component\Type\Typeable;
 use Birgit\Core\Model\Project\Project;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Core\Model\Host\Host;
@@ -10,7 +10,7 @@ use Birgit\Core\Model\Host\Host;
 /**
  * Project environment
  */
-abstract class ProjectEnvironment implements Handleable
+abstract class ProjectEnvironment implements Typeable
 {
     /**
      * Constructor

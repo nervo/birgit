@@ -1,0 +1,41 @@
+Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Project:
+    type:            entity
+    table:           birgit_project
+    repositoryClass: Birgit\Core\Bundle\DoctrineBundle\Entity\Project\ProjectRepository
+    uniqueConstraints:
+        name:
+            columns: ['name']
+    id:
+        id:
+            column:    id
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            column:    name
+            type:      string
+            length:    255
+        active:
+            column:    active
+            type:      boolean
+        # Status
+        status:
+            column:    status
+            type:      integer
+        # Type definition
+        typeAlias:
+            column:    type_alias
+            type:      string
+            length:    255
+        typeParameters:
+            column:    type_parameters
+            type:      json_array
+    oneToMany:
+        references:
+            targetEntity: Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReference
+            mappedBy:     project
+            cascade:      ['persist']
+        environments:
+            targetEntity: Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironment
+            mappedBy:     project
+            cascade:      ['persist']

@@ -1,0 +1,41 @@
+Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue:
+    type:  entity
+    table: birgit_task_queue
+    repositoryClass: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueueRepository
+    id:
+        id:
+            column:    id
+            type:      guid
+            generator: { strategy: UUID }
+    fields:
+        # Status
+        status:
+            column:    status
+            type:      integer
+        # Attempts
+        attempts:
+            column:    attempts
+            type:      integer
+        # Type definition
+        typeAlias:
+            column:    type_alias
+            type:      string
+            length:    255
+        typeParameters:
+            column:    type_parameters
+            type:      json_array
+    oneToMany:
+        tasks:
+            targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Task
+            mappedBy:     queue
+            cascade:      ['persist']
+        children:
+            targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            mappedBy:     parent
+    manyToOne:
+        parent:
+            targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            inversedBy:   children
+            joinColumn:
+                name:      parent_id
+                nullable:  true

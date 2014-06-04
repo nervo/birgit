@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Birgit\Component\Handler\HandlerDefinition;
-use Birgit\Component\Parameters\Parameters;
+use Birgit\Component\Type\TypeDefinition;
 
 class TestFixturesCommand extends ContainerAwareCommand
 {
@@ -121,9 +120,9 @@ EOF
                 ->getProjectRepository()
                 ->create(
                     $projectName,
-                    new HandlerDefinition(
+                    new TypeDefinition(
                         $projectParameters['handler']['type'],
-                        new Parameters($projectParameters['handler']['parameters'])
+                        $projectParameters['handler']['parameters']
                     )
                 )
                     ->setActive($projectParameters['active']);
@@ -140,9 +139,9 @@ EOF
                     ->create(
                         $projectEnvironmentName,
                         $projects[$projectName],
-                        new HandlerDefinition(
+                        new TypeDefinition(
                             $projectEnvironmentParameters['handler']['type'],
-                            new Parameters($projectEnvironmentParameters['handler']['parameters'])
+                            $projectEnvironmentParameters['handler']['parameters']
                         )
                     )
                         ->setReferencePattern($projectEnvironmentParameters['reference_pattern'])
