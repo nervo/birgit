@@ -6,8 +6,8 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 use Birgit\Domain\Project\Handler\ProjectHandler;
-use Birgit\Model\Project\Project;
-use Birgit\Model\Project\Reference\ProjectReference;
+use Birgit\Core\Model\Project\Project;
+use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Component\Context\ContextInterface;
 use Birgit\Domain\Exception\Exception;
 

@@ -5,7 +5,7 @@ namespace Birgit\Domain\Task\Queue\Context;
 use Birgit\Component\Task\Queue\Context\TaskQueueContext;
 use Birgit\Component\Context\ContextInterface;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
-use Birgit\Model\Host\Host;
+use Birgit\Core\Model\Host\Host;
 
 /**
  * Host Task queue Context

@@ -3,7 +3,7 @@
 namespace Birgit\Bundle\DoctrineBundle\Entity;
 
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
-use Birgit\Model\ModelRepositoryInterface;
+use Birgit\Core\Model\ModelRepositoryInterface;
 
 /**
  * Entity Repository

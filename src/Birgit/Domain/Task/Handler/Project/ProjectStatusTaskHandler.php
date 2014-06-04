@@ -3,7 +3,7 @@
 namespace Birgit\Domain\Task\Handler\Project;
 
 use Birgit\Component\Task\Model\Task\Task;
-use Birgit\Model\Project\ProjectStatus;
+use Birgit\Core\Model\Project\ProjectStatus;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Domain\Task\Queue\Context\ProjectTaskQueueContextInterface;
 use Birgit\Domain\Project\ProjectEvents;

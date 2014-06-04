@@ -4,7 +4,7 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Project\Environment;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Birgit\Model;
+use Birgit\Core\Model;
 use Birgit\Component\Parameters\Parameters;
 use Birgit\Component\Handler\HandlerDefinition;
 

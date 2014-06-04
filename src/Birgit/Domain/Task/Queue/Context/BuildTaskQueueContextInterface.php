@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Task\Queue\Context;
 
-use Birgit\Model\Build\Build;
+use Birgit\Core\Model\Build\Build;
 
 /**
  * Build Task queue Context Interface

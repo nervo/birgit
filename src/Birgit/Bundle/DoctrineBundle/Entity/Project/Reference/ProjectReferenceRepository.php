@@ -3,7 +3,7 @@
 namespace Birgit\Bundle\DoctrineBundle\Entity\Project\Reference;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
-use Birgit\Model\Project\Reference\ProjectReferenceRepositoryInterface;
+use Birgit\Core\Model\Project\Reference\ProjectReferenceRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Project;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 

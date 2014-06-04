@@ -3,7 +3,7 @@
 namespace Birgit\Bundle\DoctrineBundle\Entity\Project\Environment;
 
 use Birgit\Bundle\DoctrineBundle\Entity\EntityRepository;
-use Birgit\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
+use Birgit\Core\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Bundle\DoctrineBundle\Entity\Project\Project;
 use Birgit\Domain\Exception\Model\ModelNotFoundException;
 use Birgit\Component\Handler\HandlerDefinition;

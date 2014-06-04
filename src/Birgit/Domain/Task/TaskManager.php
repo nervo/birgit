@@ -3,11 +3,11 @@
 namespace Birgit\Domain\Task;
 
 use Birgit\Component\Task\TaskManager as BaseTaskManager;
-use Birgit\Model\Host\Host;
-use Birgit\Model\Build\Build;
-use Birgit\Model\Project\Project;
-use Birgit\Model\Project\Reference\ProjectReference;
-use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
+use Birgit\Core\Model\Host\Host;
+use Birgit\Core\Model\Build\Build;
+use Birgit\Core\Model\Project\Project;
+use Birgit\Core\Model\Project\Reference\ProjectReference;
+use Birgit\Core\Model\Project\Reference\Revision\ProjectReferenceRevision;
 
 /**
  * Task Manager

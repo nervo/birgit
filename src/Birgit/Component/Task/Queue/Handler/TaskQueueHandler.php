@@ -5,7 +5,7 @@ namespace Birgit\Component\Task\Queue\Handler;
 use Birgit\Component\Handler\Handler;
 use Birgit\Component\Context\ContextInterface;
 use Birgit\Component\Handler\HandlerManager;
-use Birgit\Model\ModelManagerInterface;
+use Birgit\Core\Model\ModelManagerInterface;
 use Birgit\Component\Task\TaskManager;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Event\TaskQueueEvent;

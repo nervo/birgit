@@ -4,7 +4,7 @@ namespace Birgit\Component\Task\Handler;
 
 use Birgit\Component\Task\Handler\TaskHandler as BaseTaskHandler;
 use Birgit\Component\Handler\HandlerManager;
-use Birgit\Model\ModelManagerInterface;
+use Birgit\Core\Model\ModelManagerInterface;
 use Birgit\Component\Task\TaskManager;
 
 /**

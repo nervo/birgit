@@ -26,7 +26,7 @@ class AppKernel extends Kernel
             new Birgit\Bundle\TaskDoctrineBundle\BirgitTaskDoctrineBundle(),
 
             // Birgit - Front
-            new Birgit\Bundle\FrontBundle\BirgitFrontBundle()
+            new Birgit\Front\Bundle\Bundle\BirgitFrontBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -34,8 +34,8 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 
-            // Birgit test
-            $bundles[] = new Birgit\Bundle\TestBundle\BirgitTestBundle();
+            // Birgit - Test
+            $bundles[] = new Birgit\Test\Bundle\Bundle\BirgitTestBundle();
         }
 
         return $bundles;

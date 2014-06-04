@@ -4,9 +4,9 @@ namespace Birgit\Domain\Handler;
 
 use Birgit\Component\Handler\HandlerManager as BaseHandlerManager;
 use Birgit\Domain\Project\Handler\ProjectHandlerInterface;
-use Birgit\Model\Project\Project;
+use Birgit\Core\Model\Project\Project;
 use Birgit\Domain\Project\Environment\Handler\ProjectEnvironmentHandlerInterface;
-use Birgit\Model\Project\Environment\ProjectEnvironment;
+use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
 use Birgit\Component\Task\Handler\TaskHandlerInterface;
 use Birgit\Component\Task\Queue\Handler\TaskQueueHandlerInterface;
 use Birgit\Component\Task\Model\Task\Task;

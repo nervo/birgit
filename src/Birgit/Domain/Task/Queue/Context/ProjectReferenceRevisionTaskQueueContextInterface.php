@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Task\Queue\Context;
 
-use Birgit\Model\Project\Reference\Revision\ProjectReferenceRevision;
+use Birgit\Core\Model\Project\Reference\Revision\ProjectReferenceRevision;
 
 /**
  * Project reference revision Task queue Context Interface

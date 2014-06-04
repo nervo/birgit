@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Task\Queue\Context;
 
-use Birgit\Model\Project\Environment\ProjectEnvironment;
+use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
 
 /**
  * Project environment Task queue Context Interface

@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Worker;
 
-use Birgit\Model\ModelManagerInterface;
+use Birgit\Core\Model\ModelManagerInterface;
 use Birgit\Component\Handler\HandlerManager;
 use Birgit\Component\Context\Context;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;

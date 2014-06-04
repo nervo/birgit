@@ -2,7 +2,7 @@
 
 namespace Birgit\Bundle\DoctrineBundle\Entity\Build;
 
-use Birgit\Model;
+use Birgit\Core\Model;
 
 /**
  * Build

@@ -2,7 +2,7 @@
 
 namespace Birgit\Domain\Task\Queue\Context;
 
-use Birgit\Model\Host\Host;
+use Birgit\Core\Model\Host\Host;
 
 /**
  * Host Task queue Context Interface

@@ -4,7 +4,7 @@ namespace Birgit\Bundle\DoctrineBundle\Entity\Host;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Birgit\Model;
+use Birgit\Core\Model;
 
 /**
  * Host

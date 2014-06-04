@@ -2,7 +2,7 @@
 
 namespace Birgit\Bundle\DoctrineBundle\Entity;
 
-use Birgit\Model\ModelManagerInterface;
+use Birgit\Core\Model\ModelManagerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**

@@ -4,7 +4,7 @@ namespace Birgit\Domain\Project\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-use Birgit\Model\Project\Project;
+use Birgit\Core\Model\Project\Project;
 
 /**
  * Project Event
