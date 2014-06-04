@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <!-- Task Queue Handler - Cron -->
+        <parameter key="birgit.task_queue_handler.cron.class">Birgit\Core\Task\Queue\Handler\Cron\CronTaskQueueHandler</parameter>
+        <parameter key="birgit.task_queue_handler.project_cron.class">Birgit\Core\Task\Queue\Handler\Cron\ProjectCronTaskQueueHandler</parameter>
+        <parameter key="birgit.task_queue_handler.project_reference_cron.class">Birgit\Core\Task\Queue\Handler\Cron\ProjectReferenceCronTaskQueueHandler</parameter>
+
+    </parameters>
+
+    <services>
+        <!-- Task Queue Handler - Cron -->
+        <service id="birgit.task_queue_handler.cron" public="false" class="%birgit.task_queue_handler.cron.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <argument type="service" id="birgit.handler_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+        <service id="birgit.task_queue_handler.project_cron" public="false" class="%birgit.task_queue_handler.project_cron.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <argument type="service" id="birgit.handler_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+        <service id="birgit.task_queue_handler.project_reference_cron" public="false" class="%birgit.task_queue_handler.project_reference_cron.class%">
+            <argument type="service" id="birgit.model_manager" />
+            <argument type="service" id="birgit.handler_manager" />
+            <argument type="service" id="birgit.task_manager" />
+            <tag name="birgit.task_queue_handler" />
+        </service>
+    </services>
+
+</container>

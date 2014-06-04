@@ -2,11 +2,13 @@
 
 namespace Birgit\Component\Task;
 
+use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Type\TypeResolver;
+use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 
 /**
  * Task Manager
@@ -30,6 +32,15 @@ class TaskManager
         $this->taskQueueTypeResolver = $taskQueueTypeResolver;
     }
 
+    public function handleTask(Task $task, TaskQueueContextInterface $context)
+    {
+        return new TaskHandler(
+            $task,
+            $this->taskTypeResolver->resolve($task),
+            $context
+        );
+    }
+    
     /**
      * Create task queue
      *

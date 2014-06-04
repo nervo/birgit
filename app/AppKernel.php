@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new Birgit\Component\Type\Bundle\Bundle\BirgitComponentTypeBundle(),
 
             // Birgit - Extra
+            new Birgit\Extra\Cron\Bundle\Bundle\BirgitExtraCronBundle(),
             new Birgit\Extra\Git\Bundle\Bundle\BirgitExtraGitBundle(),
             new Birgit\Extra\Local\Bundle\Bundle\BirgitExtraLocalBundle(),
 
