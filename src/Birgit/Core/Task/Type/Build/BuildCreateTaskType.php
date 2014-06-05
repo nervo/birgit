@@ -2,11 +2,11 @@
 
 namespace Birgit\Core\Task\Type\Build;
 
-use Birgit\Component\Task\Type\TaskType;
+use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Core\Task\Queue\Context\HostTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Host\HostTaskQueueContextInterface;
 
 /**
  * Build - Create Task Type
@@ -56,9 +56,9 @@ class BuildCreateTaskType extends TaskType
         $buildRepository->save($build);
 
         // Build task queue
-        $taskQueue = $this->taskManager
+        $taskQueue = $context->getTaskManager()
             ->createBuildTaskQueue($build);
 
-        $this->taskManager->pushTaskQueue($taskQueue);
+        $context->getTaskManager()->pushTaskQueue($taskQueue);
     }
 }

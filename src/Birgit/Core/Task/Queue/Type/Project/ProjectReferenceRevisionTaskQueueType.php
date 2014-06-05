@@ -1,10 +1,10 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Type;
+namespace Birgit\Core\Task\Queue\Type\Project;
 
-use Birgit\Component\Task\Queue\Type\TaskQueueType;
+use Birgit\Core\Task\Queue\Type\TaskQueueType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Core\Task\Queue\Context\ProjectReferenceRevisionTaskQueueContext;
+use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceRevisionTaskQueueContext;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 class ProjectReferenceRevisionTaskQueueType extends TaskQueueType
@@ -43,7 +43,6 @@ class ProjectReferenceRevisionTaskQueueType extends TaskQueueType
             $taskQueue,
             new ProjectReferenceRevisionTaskQueueContext(
                 $projectReferenceRevision,
-                $taskQueue,
                 $context
             )
         );

@@ -5,11 +5,11 @@ namespace Birgit\Core\Task\Type\Project;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Core\Model\Project\ProjectStatus;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Core\Task\Queue\Context\ProjectTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\ProjectTaskQueueContextInterface;
 use Birgit\Core\Project\ProjectEvents;
 use Birgit\Core\Project\Event\ProjectEvent;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Type\TaskType;
+use Birgit\Core\Task\Type\TaskType;
 
 /**
  * Project - Status Task type
@@ -38,7 +38,7 @@ class ProjectStatusTaskType extends TaskType
 
         // Get project handler
         $projectHandler = $this->projectManager
-            ->handle($project, $context);
+            ->handleProject($project, $context);
 
         // Is project up ?
         $isUp = $projectHandler

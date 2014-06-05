@@ -2,10 +2,17 @@
 
 namespace Birgit\Component\Task;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
+
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
+use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueStatus;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
+use Birgit\Component\Task\Queue\Handler\TaskQueueHandler;
+use Birgit\Component\Task\Queue\Context\TaskQueueContext;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Type\TypeResolver;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
@@ -40,7 +47,16 @@ class TaskManager
             $context
         );
     }
-    
+
+    public function handleTaskQueue(TaskQueue $taskQueue, TaskQueueContextInterface $context)
+    {
+        return new TaskQueueHandler(
+            $taskQueue,
+            $this->taskQueueTypeResolver->resolve($taskQueue),
+            $context
+        );
+    }
+
     /**
      * Create task queue
      *
@@ -90,5 +106,74 @@ class TaskManager
     {
         $this->taskQueueRepository
             ->save($taskQueue);
+    }
+
+    public function launch(
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
+    ) {
+        while (true) {
+            foreach ($this->taskQueueRepository as $taskQueue) {
+
+                $taskQueueFound = $this->findChildlessPendingTaskQueue($taskQueue);
+
+                if ($taskQueueFound) {
+
+                    // Update
+                    $taskQueueFound
+                        ->setStatus(new TaskQueueStatus(TaskQueueStatus::RUNNING))
+                        ->incrementAttempts();
+
+                    // Save
+                    $this->taskQueueRepository
+                        ->save($taskQueueFound);
+
+                    // Run
+                    try {
+
+                        // Create Task Queue Context
+                        $taskQueueContext = new TaskQueueContext(
+                            $taskQueueFound,
+                            $this,
+                            $eventDispatcher,
+                            $logger
+                        );
+
+                        $this->handleTaskQueue($taskQueueFound, $taskQueueContext)
+                            ->run();
+
+                        // Delete
+                        $this->taskQueueRepository
+                            ->delete($taskQueueFound);
+                    } catch (SuspendTaskQueueException $exception) {
+                        // Update
+                        $taskQueueFound
+                            ->setStatus(new TaskQueueStatus(TaskQueueStatus::PENDING));
+
+                        // Save
+                        $this->taskQueueRepository
+                            ->save($taskQueueFound);
+                    }
+                }
+            }
+
+            //sleep(3);
+        }
+    }
+
+    protected function findChildlessPendingTaskQueue(TaskQueue $taskQueue)
+    {
+        if (!$taskQueue->hasChildren() && $taskQueue->getStatus()->isPending()) {
+            return $taskQueue;
+        } else {
+            foreach ($taskQueue->getChildren() as $taskQueueChild) {
+                $taskQueueReturn = $this->findChildlessPendingTaskQueue($taskQueueChild);
+                if ($taskQueueReturn) {
+                    return $taskQueueReturn;
+                }
+            }
+        }
+
+        return null;
     }
 }

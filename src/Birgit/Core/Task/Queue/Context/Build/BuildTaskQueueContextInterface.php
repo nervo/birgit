@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Context;
+namespace Birgit\Core\Task\Queue\Context\Build;
 
 use Birgit\Core\Model\Build\Build;
 

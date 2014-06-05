@@ -2,7 +2,7 @@
 
 namespace Birgit\Core\Task\Type\Host;
 
-use Birgit\Component\Task\Type\TaskType;
+use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 

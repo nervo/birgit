@@ -3,7 +3,7 @@
 namespace Birgit\Extra\Cron\Task\Queue\Type;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContext;
+use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContext;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace Birgit\Core\Task\Type\Host;
 
-use Birgit\Component\Task\Type\TaskType;
+use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
-use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
 
 /**
@@ -55,9 +55,9 @@ class HostCreateTaskType extends TaskType
             ->save($host);
 
         // Host task queue
-        $taskQueue = $this->taskManager
+        $taskQueue = $context->getTaskManager()
             ->createHostTaskQueue($host);
 
-        $this->taskManager->pushTaskQueue($taskQueue);
+        $context->getTaskManager()->pushTaskQueue($taskQueue);
     }
 }

@@ -55,4 +55,36 @@ class TypeDefinition
     {
         return $this->parameters;
     }
+
+    /**
+     * Set parameter
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return TypeDefinition
+     */
+    public function setParameter($name, $value)
+    {
+        $this->parameters[(string) $name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get parameter value
+     *
+     * @param string $name
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getParameter($name, $default = null)
+    {
+        if (array_key_exists((string) $name, $this->parameters)) {
+            return $this->parameters[(string) $name];
+        }
+
+        return $default;
+    }
 }

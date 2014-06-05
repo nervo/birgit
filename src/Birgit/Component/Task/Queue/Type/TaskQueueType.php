@@ -4,7 +4,6 @@ namespace Birgit\Component\Task\Queue\Type;
 
 use Birgit\Component\Type\Type;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Component\Task\TaskManager;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Event\TaskQueueEvent;
 use Birgit\Component\Task\TaskEvents;
@@ -17,25 +16,6 @@ use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
 {
     /**
-     * Task Manager
-     *
-     * @var TaskManager
-     */
-    protected $taskManager;
-
-    /**
-     * Constructor
-     *
-     * @param TaskManager           $taskManager
-     */
-    public function __construct(
-        TaskManager $taskManager
-    ) {
-        // Task manager
-        $this->taskManager = $taskManager;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function run(TaskQueue $taskQueue, TaskQueueContextInterface $context)
@@ -46,7 +26,7 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
         // Dispatch event
         $context->getEventDispatcher()
             ->dispatch(
-                TaskEvents::TASK_QUEUE . '.' . $this->getType(),
+                TaskEvents::TASK_QUEUE . '.' . $this->getAlias(),
                 new TaskQueueEvent($taskQueue)
             );
 
@@ -67,7 +47,7 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
 
             try {
                 // Run
-                $this->taskManager
+                $context->getTaskManager()
                     ->handleTask($task, $context)
                         ->run();
 

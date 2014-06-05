@@ -33,11 +33,11 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get worker
-        $worker = $this->getContainer()
-            ->get('birgit.worker');
+        // Get task manager
+        $taskManager = $this->getContainer()
+            ->get('birgit.task_manager');
 
-        $worker->run(
+        $taskManager->launch(
             $this->getContainer()->get('event_dispatcher'),
             $this->getContainer()->get('logger')
         );

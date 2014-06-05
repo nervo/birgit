@@ -10,5 +10,5 @@
         <parameter key="birgit.type_resolver.class">Birgit\Component\Type\TypeResolver</parameter>
 
     </parameters>
-    
+
 </container>

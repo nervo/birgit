@@ -29,14 +29,14 @@ class TypeResolver
 
         return $this;
     }
-    
+
     /**
      * Resolve typeable type
-     * 
+     *
      * @param Typeable $typeable
-     * 
+     *
      * @return Type
-     * 
+     *
      * @throws NotFoundException
      */
     public function resolve(Typeable $typeable)

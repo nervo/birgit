@@ -12,7 +12,7 @@ interface TaskQueueTypeInterface
 {
     /**
      * Run
-     * 
+     *
      * @param TaskQueue                 $taskQueue
      * @param TaskQueueContextInterface $context
      */

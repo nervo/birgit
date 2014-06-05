@@ -6,9 +6,9 @@ use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
-use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Type\TaskType;
+use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
@@ -32,7 +32,7 @@ class ProjectReferenceTaskType extends TaskType
         foreach ($projectReference->getHosts() as $host) {
             if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
 
-                $taskQueueChild = $this->taskManager
+                $taskQueueChild = $context->getTaskManager()
                     ->createProjectReferenceTaskQueue($projectReference, [
                         'host_delete' => [
                             'project_environment_name' => $host->getProjectEnvironment()->getName()
@@ -42,7 +42,7 @@ class ProjectReferenceTaskType extends TaskType
                 $taskQueue
                     ->addChild($taskQueueChild);
 
-                $this->taskManager->pushTaskQueue($taskQueueChild);
+                $context->getTaskManager()->pushTaskQueue($taskQueueChild);
 
                 $suspend = true;
             }
@@ -60,7 +60,7 @@ class ProjectReferenceTaskType extends TaskType
 
             if (!$hostFound && $projectEnvironment->matchReference($projectReference)) {
 
-                $taskQueueChild = $this->taskManager
+                $taskQueueChild = $context->getTaskManager()
                     ->createProjectReferenceTaskQueue($projectReference, [
                         'host_create' => [
                             'project_environment_name' => $projectEnvironment->getName()
@@ -70,7 +70,7 @@ class ProjectReferenceTaskType extends TaskType
                 $taskQueue
                     ->addChild($taskQueueChild);
 
-                $this->taskManager->pushTaskQueue($taskQueueChild);
+                $context->getTaskManager()->pushTaskQueue($taskQueueChild);
 
                 $suspend = true;
             }
@@ -133,11 +133,11 @@ class ProjectReferenceTaskType extends TaskType
             $projectReferenceRevisionRepository->save($projectReferenceRevision);
         }
 
-        $taskQueue = $this->taskManager
+        $taskQueue = $context->getTaskManager()
             ->createProjectReferenceRevisionTaskQueue($projectReferenceRevision, [
                 'project_reference_revision'
             ]);
 
-        $this->taskManager->pushTaskQueue($taskQueue);
+        $context->getTaskManager()->pushTaskQueue($taskQueue);
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace Birgit\Core\Task\Type;
+namespace Birgit\Core\Task\Queue\Type;
 
-use Birgit\Component\Task\Type\TaskType as BaseTaskType;
+use Birgit\Component\Task\Queue\Type\TaskQueueType as BaseTaskQueueType;
 use Birgit\Core\Project\ProjectManager;
 use Birgit\Core\Model\ModelRepositoryManager;
 
 /**
- * Task Type
+ * Task Queue Type
  */
-abstract class TaskType extends BaseTaskType
+abstract class TaskQueueType extends BaseTaskQueueType
 {
     /**
      * Model Repository Manager

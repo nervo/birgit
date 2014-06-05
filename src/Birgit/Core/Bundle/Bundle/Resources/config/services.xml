@@ -12,9 +12,6 @@
         <!-- Project Manager -->
         <parameter key="birgit.project_manager.class">Birgit\Core\Project\ProjectManager</parameter>
 
-        <!-- Worker -->
-        <parameter key="birgit.worker.class">Birgit\Core\Worker\Worker</parameter>
-
         <!-- Task Type - Project -->
         <parameter key="birgit.task_type.project.class">Birgit\Core\Task\Type\Project\ProjectTaskType</parameter>
         <parameter key="birgit.task_type.project_status.class">Birgit\Core\Task\Type\Project\ProjectStatusTaskType</parameter>
@@ -27,13 +24,13 @@
         <parameter key="birgit.task_type.build_create.class">Birgit\Core\Task\Type\Build\BuildCreateTaskType</parameter>
 
         <!-- Task Queue Type - Project -->
-        <parameter key="birgit.task_queue_type.project.class">Birgit\Core\Task\Queue\Type\ProjectTaskQueueType</parameter>
-        <parameter key="birgit.task_queue_type.project_reference.class">Birgit\Core\Task\Queue\Type\ProjectReferenceTaskQueueType</parameter>
-        <parameter key="birgit.task_queue_type.project_reference_revision.class">Birgit\Core\Task\Queue\Type\ProjectReferenceRevisionTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project.class">Birgit\Core\Task\Queue\Type\Project\ProjectTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project_reference.class">Birgit\Core\Task\Queue\Type\Project\ProjectReferenceTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project_reference_revision.class">Birgit\Core\Task\Queue\Type\Project\ProjectReferenceRevisionTaskQueueType</parameter>
         <!-- Task Queue Type - Host -->
-        <parameter key="birgit.task_queue_type.host.class">Birgit\Core\Task\Queue\Type\HostTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.host.class">Birgit\Core\Task\Queue\Type\Host\HostTaskQueueType</parameter>
         <!-- Task Queue Type - Build -->
-        <parameter key="birgit.task_queue_type.build.class">Birgit\Core\Task\Queue\Type\BuildTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.build.class">Birgit\Core\Task\Queue\Type\Build\BuildTaskQueueType</parameter>
 
     </parameters>
 
@@ -65,11 +62,6 @@
             <argument type="service" id="birgit.project_environment_type_resolver" />
         </service>
 
-        <!-- Worker -->
-        <service id="birgit.worker" class="%birgit.worker.class%">
-            <argument type="service" id="birgit.task_manager" />
-        </service>
-
         <!-- Project Type Resolver -->
         <service id="birgit.project_type_resolver" class="%birgit.type_resolver.class%">
             <tag name="birgit.type_resolver" type="birgit.project_type" />
@@ -84,45 +76,38 @@
         <service id="birgit.task_type.project" public="false" class="%birgit.task_type.project.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
         <service id="birgit.task_type.project_status" public="false" class="%birgit.task_type.project_status.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
         <service id="birgit.task_type.project_reference" public="false" class="%birgit.task_type.project_reference.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
         <service id="birgit.task_type.project_reference_revision" public="false" class="%birgit.task_type.project_reference_revision.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
         <!-- Task Type - Host -->
         <service id="birgit.task_type.host_create" public="false" class="%birgit.task_type.host_create.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
         <service id="birgit.task_type.host_delete" public="false" class="%birgit.task_type.host_delete.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
         <!-- Task Type - Build -->
         <service id="birgit.task_type.build_create" public="false" class="%birgit.task_type.build_create.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_type" />
         </service>
 
@@ -130,33 +115,28 @@
         <service id="birgit.task_queue_type.project" public="false" class="%birgit.task_queue_type.project.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
         <service id="birgit.task_queue_type.project_reference" public="false" class="%birgit.task_queue_type.project_reference.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
         <service id="birgit.task_queue_type.project_reference_revision" public="false" class="%birgit.task_queue_type.project_reference_revision.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
         <!-- Task Queue Type - Host -->
         <service id="birgit.task_queue_type.host" public="false" class="%birgit.task_queue_type.host.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
         <!-- Task Queue Type - Build -->
         <service id="birgit.task_queue_type.build" public="false" class="%birgit.task_queue_type.build.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
 

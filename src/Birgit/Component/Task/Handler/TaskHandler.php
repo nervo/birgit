@@ -13,28 +13,28 @@ class TaskHandler
 {
     /**
      * Task
-     * 
+     *
      * @var Task
      */
     protected $task;
-    
+
     /**
      * Task Type
-     * 
-     * @var TaskTypeInterface 
+     *
+     * @var TaskTypeInterface
      */
     protected $taskType;
-    
+
     /**
      * Task Queue Context
-     * 
+     *
      * @var TaskQueueContextInterface
      */
     protected $taskQueueContext;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param Task                      $task
      * @param TaskTypeInterface         $taskType
      * @param TaskQueueContextInterface $taskQueueContext
@@ -46,14 +46,14 @@ class TaskHandler
     ) {
         // Task
         $this->task = $task;
-        
+
         // Task type
         $this->taskType = $taskType;
-        
+
         // Task queue context
         $this->taskQueueContext = $taskQueueContext;
     }
-    
+
     /**
      * Run
      */

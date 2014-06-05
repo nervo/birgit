@@ -18,19 +18,16 @@
         <service id="birgit.task_queue_type.cron" public="false" class="%birgit.task_queue_type.cron.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
         <service id="birgit.task_queue_type.project_cron" public="false" class="%birgit.task_queue_type.project_cron.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
         <service id="birgit.task_queue_type.project_reference_cron" public="false" class="%birgit.task_queue_type.project_reference_cron.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
-            <argument type="service" id="birgit.task_manager" />
             <tag name="birgit.task_queue_type" />
         </service>
     </services>

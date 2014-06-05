@@ -6,9 +6,9 @@ use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Core\Model\Project\Project;
-use Birgit\Core\Task\Queue\Context\ProjectTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\ProjectTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Type\TaskType;
+use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
@@ -26,7 +26,7 @@ class ProjectTaskType extends TaskType
 
     protected function runProjectStatus(Project $project, TaskQueue $taskQueue)
     {
-        $taskQueueChild = $this->taskManager
+        $taskQueueChild = $context->getTaskManager()
             ->createProjectTaskQueue($project, [
                 'project_status'
             ]);
@@ -34,7 +34,7 @@ class ProjectTaskType extends TaskType
         $taskQueue
             ->addChild($taskQueueChild);
 
-        $this->taskManager->pushTaskQueue($taskQueueChild);
+        $context->getTaskManager()->pushTaskQueue($taskQueueChild);
 
         throw new SuspendTaskQueueException();
     }
@@ -53,7 +53,7 @@ class ProjectTaskType extends TaskType
 
         // Get project handler
         $projectHandler = $this->projectManager
-            ->handle($project, $context);
+            ->handleProject($project, $context);
 
         if ($task->isFirstAttempt() || !$project->getStatus()->isUp()) {
             $this->runProjectStatus(
@@ -79,14 +79,14 @@ class ProjectTaskType extends TaskType
             // Delete project reference
             if (!$projectReferenceFound) {
 
-                $taskQueue = $this->taskManager
+                $taskQueue = $context->getTaskManager()
                     ->createProjectTaskQueue($project, [
                         'project_reference_delete' => [
                             'project_reference_name' => $projectReference->getName()
                         ]
                     ]);
 
-                $this->taskManager->pushTaskQueue($taskQueue);
+                $context->getTaskManager()->pushTaskQueue($taskQueue);
             }
         }
 
@@ -116,12 +116,12 @@ class ProjectTaskType extends TaskType
                 $projectReferenceRepository->save($projectReference);
             }
 
-            $taskQueue = $this->taskManager
+            $taskQueue = $context->getTaskManager()
                 ->createProjectReferenceTaskQueue($projectReference, [
                     'project_reference'
                 ]);
 
-            $this->taskManager->pushTaskQueue($taskQueue);
+            $context->getTaskManager()->pushTaskQueue($taskQueue);
         }
     }
 }

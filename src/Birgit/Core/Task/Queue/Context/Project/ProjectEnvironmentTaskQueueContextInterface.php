@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Context;
+namespace Birgit\Core\Task\Queue\Context\Project;
 
 use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
 

@@ -2,7 +2,7 @@
 
 namespace Birgit\Extra\Cron\Task\Queue\Type;
 
-use Birgit\Component\Task\Queue\Type\TaskQueueType;
+use Birgit\Core\Task\Queue\Type\TaskQueueType;
 
 /**
  * Cron Task queue Type
