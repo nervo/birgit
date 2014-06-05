@@ -3,8 +3,8 @@
 namespace Birgit\Core\Task\Type;
 
 use Birgit\Component\Task\Type\TaskType as BaseTaskType;
-use Birgit\Component\Handler\HandlerManager;
-use Birgit\Core\Model\ModelManagerInterface;
+use Birgit\Core\Project\ProjectManager;
+use Birgit\Core\Model\ModelRepositoryManager;
 use Birgit\Component\Task\TaskManager;
 
 /**
@@ -13,18 +13,18 @@ use Birgit\Component\Task\TaskManager;
 abstract class TaskType extends BaseTaskType
 {
     /**
-     * Model Manager
+     * Model Repository Manager
      *
-     * @var ModelManagerInterface
+     * @var ModelRepositoryManager
      */
-    protected $modelManager;
+    protected $modelRepositoryManager;
 
     /**
-     * Handler Manager
+     * Project Manager
      *
-     * @var HandlerManager
+     * @var ProjectManager
      */
-    protected $handlerManager;
+    protected $projectManager;
 
     /**
      * Task Manager
@@ -36,20 +36,20 @@ abstract class TaskType extends BaseTaskType
     /**
      * Constructor
      *
-     * @param ModelManagerInterface $modelManager
-     * @param HandlerManager        $handlerManager
-     * @param TaskManager           $taskManager
+     * @param ModelRepositoryManager $modelRepositoryManager
+     * @param ProjectManager         $projectManager
+     * @param TaskManager            $taskManager
      */
     public function __construct(
-        ModelManagerInterface $modelManager,
-        HandlerManager $handlerManager,
+        ModelRepositoryManager $modelRepositoryManager,
+        ProjectManager $projectManager,
         TaskManager $taskManager
     ) {
-        // Model manager
-        $this->modelManager = $modelManager;
+        // Model repository manager
+        $this->modelRepositoryManager = $modelRepositoryManager;
 
-        // Handler manager
-        $this->handlerManager = $handlerManager;
+        // Project manager
+        $this->projectManager = $projectManager;
 
         // Task manager
         $this->taskManager = $taskManager;

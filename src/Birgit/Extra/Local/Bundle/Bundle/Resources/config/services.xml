@@ -4,20 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-
     <parameters>
 
-        <!-- Project Environment Handler -->
-        <parameter key="birgit.project_environment_handler.local.class">Birgit\Core\Project\Environment\Handler\Local\LocalProjectEnvironmentHandler</parameter>
+        <!-- Project Environment Type -->
+        <parameter key="birgit.project_environment_type.local.class">Birgit\Extra\Local\Project\Environment\Type\LocalProjectEnvironmentType</parameter>
 
     </parameters>
 
     <services>
 
-        <!-- Project Environment Handler -->
-        <service id="birgit.project_environment_handler.local" public="false" class="%birgit.project_environment_handler.local.class%">
+        <!-- Project Environment Type -->
+        <service id="birgit.project_environment_type.local" public="false" class="%birgit.project_environment_type.local.class%">
             <argument>%kernel.root_dir%</argument>
-            <tag name="birgit.project_environment_handler" />
+            <tag name="birgit.project_environment_type" />
         </service>
 
     </services>

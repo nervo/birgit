@@ -14,12 +14,12 @@ class ProjectController extends Controller
      */
     public function indexAction($name)
     {
-        // Get model manager
-        $modelManager = $this->get('birgit.model_manager');
+        // Get model repository manager
+        $modelRepositoryManager = $this->get('birgit.model_repository_manager');
 
         // Get project repository
-        $projectRepository = $modelManager
-                ->getProjectRepository();
+        $projectRepository = $modelRepositoryManager
+            ->getProjectRepository();
 
         $project = $projectRepository->get($name);
 

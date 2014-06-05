@@ -6,20 +6,20 @@ use Birgit\Core\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Core\Model\Project\Environment\ProjectEnvironmentRepositoryInterface;
 use Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Project;
 use Birgit\Core\Exception\Model\ModelNotFoundException;
-use Birgit\Component\Handler\HandlerDefinition;
+use Birgit\Component\Type\TypeDefinition;
 
 /**
  * Project environment Repository
  */
 class ProjectEnvironmentRepository extends EntityRepository implements ProjectEnvironmentRepositoryInterface
 {
-    public function create($name, Project $project, HandlerDefinition $handlerDefinition)
+    public function create($name, Project $project, TypeDefinition $typeDefinition)
     {
         $projectEnvironment = $this->createEntity();
 
         $projectEnvironment
             ->setName((string) $name)
-            ->setHandlerDefinition($handlerDefinition);
+            ->setTypeDefinition($typeDefinition);
 
         $project->addEnvironment($projectEnvironment);
 

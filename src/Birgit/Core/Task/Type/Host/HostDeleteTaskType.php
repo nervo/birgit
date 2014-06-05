@@ -1,20 +1,20 @@
 <?php
 
-namespace Birgit\Core\Task\Handler\Host;
+namespace Birgit\Core\Task\Type\Host;
 
-use Birgit\Component\Task\Handler\TaskHandler;
+use Birgit\Component\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 
 /**
- * Host - Delete Task Handler
+ * Host - Delete Task Type
  */
-class HostDeleteTaskHandler extends TaskHandler
+class HostDeleteTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getAlias()
     {
         return 'host_delete';
     }

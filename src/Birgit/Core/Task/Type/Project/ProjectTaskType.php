@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Handler\Project;
+namespace Birgit\Core\Task\Type\Project;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
@@ -8,18 +8,18 @@ use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Core\Model\Project\Project;
 use Birgit\Core\Task\Queue\Context\ProjectTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Handler\TaskHandler;
+use Birgit\Component\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
- * Project Task handler
+ * Project Task type
  */
-class ProjectTaskHandler extends TaskHandler
+class ProjectTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getAlias()
     {
         return 'project';
     }
@@ -52,8 +52,8 @@ class ProjectTaskHandler extends TaskHandler
         $project = $context->getProject();
 
         // Get project handler
-        $projectHandler = $this->handlerManager
-            ->getProjectHandler($project);
+        $projectHandler = $this->projectManager
+            ->handle($project, $context);
 
         if ($task->isFirstAttempt() || !$project->getStatus()->isUp()) {
             $this->runProjectStatus(
@@ -102,7 +102,7 @@ class ProjectTaskHandler extends TaskHandler
 
             if (!$projectReferenceFound) {
                 // Get project reference repository
-                $projectReferenceRepository =  $this->modelManager
+                $projectReferenceRepository =  $this->modelRepositoryManager
                     ->getProjectReferenceRepository();
 
                 // Create

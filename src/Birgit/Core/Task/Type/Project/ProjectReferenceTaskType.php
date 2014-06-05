@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Handler\Project;
+namespace Birgit\Core\Task\Type\Project;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
@@ -8,18 +8,18 @@ use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Handler\TaskHandler;
+use Birgit\Component\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
- * Project reference Task handler
+ * Project reference Task type
  */
-class ProjectReferenceTaskHandler extends TaskHandler
+class ProjectReferenceTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getAlias()
     {
         return 'project_reference';
     }
@@ -99,10 +99,8 @@ class ProjectReferenceTaskHandler extends TaskHandler
         );
 
         // Get project handler
-        $projectHandler = $this->handlerManager
-            ->getProjectHandler(
-                $projectReference->getProject()
-            );
+        $projectHandler = $this->projectManager
+            ->handleProject($projectReference->getProject(), $context);
 
         // Get "real life" project reference revision
         $projectHandlerReferenceRevisionName = $projectHandler->getReferenceRevision(
@@ -121,7 +119,7 @@ class ProjectReferenceTaskHandler extends TaskHandler
 
         if (!$projectReferenceRevisionFound) {
             // Get project reference revision repository
-            $projectReferenceRevisionRepository =  $this->modelManager
+            $projectReferenceRevisionRepository =  $this->modelRepositoryManager
                 ->getProjectReferenceRevisionRepository();
 
             // Create

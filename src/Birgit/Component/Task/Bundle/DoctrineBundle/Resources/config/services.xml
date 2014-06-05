@@ -20,6 +20,7 @@
             <argument>BirgitComponentTaskDoctrineBundle:Task\Task</argument>
             <argument>birgit_task</argument>
         </service>
+
         <service id="birgit.task_queue_repository" class="%birgit.task_queue_repository.class%"
             factory-service="doctrine"
             factory-method="getRepository"

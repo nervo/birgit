@@ -6,32 +6,32 @@
 
     <parameters>
 
-        <!-- Task Queue Handler - Cron -->
-        <parameter key="birgit.task_queue_handler.cron.class">Birgit\Core\Task\Queue\Handler\Cron\CronTaskQueueHandler</parameter>
-        <parameter key="birgit.task_queue_handler.project_cron.class">Birgit\Core\Task\Queue\Handler\Cron\ProjectCronTaskQueueHandler</parameter>
-        <parameter key="birgit.task_queue_handler.project_reference_cron.class">Birgit\Core\Task\Queue\Handler\Cron\ProjectReferenceCronTaskQueueHandler</parameter>
+        <!-- Task Queue Type -->
+        <parameter key="birgit.task_queue_type.cron.class">Birgit\Extra\Cron\Task\Queue\Type\CronTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project_cron.class">Birgit\Extra\Cron\Task\Queue\Type\ProjectCronTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project_reference_cron.class">Birgit\Extra\Cron\Task\Queue\Type\ProjectReferenceCronTaskQueueType</parameter>
 
     </parameters>
 
     <services>
-        <!-- Task Queue Handler - Cron -->
-        <service id="birgit.task_queue_handler.cron" public="false" class="%birgit.task_queue_handler.cron.class%">
-            <argument type="service" id="birgit.model_manager" />
-            <argument type="service" id="birgit.handler_manager" />
+        <!-- Task Queue Type -->
+        <service id="birgit.task_queue_type.cron" public="false" class="%birgit.task_queue_type.cron.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
-            <tag name="birgit.task_queue_handler" />
+            <tag name="birgit.task_queue_type" />
         </service>
-        <service id="birgit.task_queue_handler.project_cron" public="false" class="%birgit.task_queue_handler.project_cron.class%">
-            <argument type="service" id="birgit.model_manager" />
-            <argument type="service" id="birgit.handler_manager" />
+        <service id="birgit.task_queue_type.project_cron" public="false" class="%birgit.task_queue_type.project_cron.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
-            <tag name="birgit.task_queue_handler" />
+            <tag name="birgit.task_queue_type" />
         </service>
-        <service id="birgit.task_queue_handler.project_reference_cron" public="false" class="%birgit.task_queue_handler.project_reference_cron.class%">
-            <argument type="service" id="birgit.model_manager" />
-            <argument type="service" id="birgit.handler_manager" />
+        <service id="birgit.task_queue_type.project_reference_cron" public="false" class="%birgit.task_queue_type.project_reference_cron.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
             <argument type="service" id="birgit.task_manager" />
-            <tag name="birgit.task_queue_handler" />
+            <tag name="birgit.task_queue_type" />
         </service>
     </services>
 

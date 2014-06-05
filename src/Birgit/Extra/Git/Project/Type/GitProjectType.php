@@ -1,22 +1,22 @@
 <?php
 
-namespace Birgit\Core\Project\Handler\Git;
+namespace Birgit\Extra\Git\Project\Type;
 
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
-use Birgit\Core\Project\Handler\ProjectHandler;
+use Birgit\Core\Project\Type\ProjectType;
 use Birgit\Core\Model\Project\Project;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Core\Exception\Exception;
 
 /**
- * Git Project handler
+ * Git Project type
  */
-class GitProjectHandler extends ProjectHandler
+class GitProjectType extends ProjectType
 {
-    public function getType()
+    public function getAlias()
     {
         return 'git';
     }

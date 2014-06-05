@@ -36,12 +36,12 @@ EOF
         var_dump($this->getContainer()
             ->get('birgit.task_manager'));
         die;
-        // Get model manager
-        $modelManager = $this->getContainer()
-            ->get('birgit.model_manager');
+        // Get model repository manager
+        $modelRepositoryManager = $this->getContainer()
+            ->get('birgit.model_repository_manager');
 
         // Get project
-        $project = $modelManager
+        $project = $modelRepositoryManager
             ->getProjectRepository()
             ->get('test');
 

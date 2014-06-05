@@ -6,18 +6,63 @@
 
     <parameters>
 
-        <!-- Model - Manager -->
-        <parameter key="birgit.model_manager.doctrine_orm.class">Birgit\Core\Bundle\DoctrineBundle\Entity\EntityManager</parameter>
+        <parameter key="birgit.project_repository.class">Birgit\Core\Bundle\DoctrineBundle\Entity\Project\ProjectRepository</parameter>
+        <parameter key="birgit.project_reference_repository.class">Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Reference\ProjectReferenceRepository</parameter>
+        <parameter key="birgit.project_reference_revision_repository.class">Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Reference\Revision\ProjectReferenceRevisionRepository</parameter>
+        <parameter key="birgit.project_environment_repository.class">Birgit\Core\Bundle\DoctrineBundle\Entity\Project\Environment\ProjectEnvironmentRepository</parameter>
+        <parameter key="birgit.host_repository.class">Birgit\Core\Bundle\DoctrineBundle\Entity\Host\HostRepository</parameter>
+        <parameter key="birgit.build_repository.class">Birgit\Core\Bundle\DoctrineBundle\Entity\Build\BuildRepository</parameter>
 
     </parameters>
 
     <services>
 
-        <!-- Model - Manager -->
-        <service id="birgit.model_manager" alias="birgit.model_manager.doctrine_orm" />
+        <service id="birgit.project_repository" class="%birgit.project_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitCoreDoctrineBundle:Project\Project</argument>
+            <argument>birgit</argument>
+        </service>
 
-        <service id="birgit.model_manager.doctrine_orm" public="false" class="%birgit.model_manager.doctrine_orm.class%">
-            <argument type="service" id="doctrine" />
+        <service id="birgit.project_reference_repository" class="%birgit.project_reference_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitCoreDoctrineBundle:Project\Reference\ProjectReference</argument>
+            <argument>birgit</argument>
+        </service>
+
+        <service id="birgit.project_reference_revision_repository" class="%birgit.project_reference_revision_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitCoreDoctrineBundle:Project\Reference\Revision\ProjectReferenceRevision</argument>
+            <argument>birgit</argument>
+        </service>
+
+        <service id="birgit.project_environment_repository" class="%birgit.project_environment_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitCoreDoctrineBundle:Project\Environment\ProjectEnvironment</argument>
+            <argument>birgit</argument>
+        </service>
+
+        <service id="birgit.host_repository" class="%birgit.host_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitCoreDoctrineBundle:Host\Host</argument>
+            <argument>birgit</argument>
+        </service>
+
+        <service id="birgit.build_repository" class="%birgit.build_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitCoreDoctrineBundle:Build\Build</argument>
+            <argument>birgit</argument>
         </service>
 
     </services>

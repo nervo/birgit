@@ -6,16 +6,16 @@
 
     <parameters>
 
-        <!-- Project Handler -->
-        <parameter key="birgit.project_handler.git.class">Birgit\Core\Project\Handler\Git\GitProjectHandler</parameter>
+        <!-- Project Type -->
+        <parameter key="birgit.project_type.git.class">Birgit\Extra\Git\Project\Type\GitProjectType</parameter>
 
     </parameters>
 
     <services>
 
-        <!-- Project Handler -->
-        <service id="birgit.project_handler.git" public="false" class="%birgit.project_handler.git.class%">
-            <tag name="birgit.project_handler" />
+        <!-- Project Type -->
+        <service id="birgit.project_type.git" public="false" class="%birgit.project_type.git.class%">
+            <tag name="birgit.project_type" />
         </service>
 
     </services>

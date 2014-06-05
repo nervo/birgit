@@ -23,7 +23,7 @@ class TypeResolver
      *
      * @return TypeResolver
      */
-    public function addProjectHandler(TypeInterface $type)
+    public function addType(TypeInterface $type)
     {
         $this->types[] = $type;
 

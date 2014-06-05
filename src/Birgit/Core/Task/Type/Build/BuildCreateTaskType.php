@@ -34,7 +34,7 @@ class BuildCreateTaskType extends TaskType
         $host = $context->getHost();
 
         // Get project reference revision
-        $projectReferenceRevision = $this->modelManager
+        $projectReferenceRevision = $this->modelRepositoryManager
             ->getProjectReferenceRevisionRepository()
             ->get(
                 $task->getTypeDefinition()->getParameter('project_reference_revision_name'),
@@ -42,7 +42,7 @@ class BuildCreateTaskType extends TaskType
             );
 
         // Get build repository
-        $buildRepository =  $this->modelManager
+        $buildRepository =  $this->modelRepositoryManager
             ->getBuildRepository();
 
         // Create build

@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Handler\Project;
+namespace Birgit\Core\Task\Type\Project;
 
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Core\Model\Project\ProjectStatus;
@@ -9,17 +9,17 @@ use Birgit\Core\Task\Queue\Context\ProjectTaskQueueContextInterface;
 use Birgit\Core\Project\ProjectEvents;
 use Birgit\Core\Project\Event\ProjectEvent;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Handler\TaskHandler;
+use Birgit\Component\Task\Type\TaskType;
 
 /**
- * Project - Status Task handler
+ * Project - Status Task type
  */
-class ProjectStatusTaskHandler extends TaskHandler
+class ProjectStatusTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getAlias()
     {
         return 'project_status';
     }
@@ -37,8 +37,8 @@ class ProjectStatusTaskHandler extends TaskHandler
         $project = $context->getProject();
 
         // Get project handler
-        $projectHandler = $this->handlerManager
-            ->getProjectHandler($project);
+        $projectHandler = $this->projectManager
+            ->handle($project, $context);
 
         // Is project up ?
         $isUp = $projectHandler
@@ -52,7 +52,7 @@ class ProjectStatusTaskHandler extends TaskHandler
 
             $project->setStatus(new ProjectStatus($status));
 
-            $this->modelManager
+            $this->modelRepositoryManager
                 ->getProjectRepository()
                 ->save($project);
 

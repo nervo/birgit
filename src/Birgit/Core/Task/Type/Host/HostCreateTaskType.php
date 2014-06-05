@@ -1,22 +1,22 @@
 <?php
 
-namespace Birgit\Core\Task\Handler\Host;
+namespace Birgit\Core\Task\Type\Host;
 
-use Birgit\Component\Task\Handler\TaskHandler;
+use Birgit\Component\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
 
 /**
- * Host - Create Task Handler
+ * Host - Create Task Type
  */
-class HostCreateTaskHandler extends TaskHandler
+class HostCreateTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getAlias()
     {
         return 'host_create';
     }
@@ -34,7 +34,7 @@ class HostCreateTaskHandler extends TaskHandler
         $projectReference = $context->getProjectReference();
 
         // Get project environment
-        $projectEnvironment = $this->modelManager
+        $projectEnvironment = $this->modelRepositoryManager
             ->getProjectEnvironmentRepository()
             ->get(
                 $task->getTypeDefinition()->getParameter('project_environment_name'),
@@ -42,7 +42,7 @@ class HostCreateTaskHandler extends TaskHandler
             );
 
         // Create host
-        $host = $this->modelManager
+        $host = $this->modelRepositoryManager
             ->getHostRepository()
             ->create(
                 $projectReference,
@@ -50,7 +50,7 @@ class HostCreateTaskHandler extends TaskHandler
             );
 
         // Save host
-        $this->modelManager
+        $this->modelRepositoryManager
             ->getHostRepository()
             ->save($host);
 

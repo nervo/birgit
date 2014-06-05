@@ -1,22 +1,22 @@
 <?php
 
-namespace Birgit\Core\Task\Handler\Project;
+namespace Birgit\Core\Task\Type\Project;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
-use Birgit\Component\Task\Handler\TaskHandler;
+use Birgit\Component\Task\Type\TaskType;
 use Birgit\Core\Task\Queue\Context\ProjectReferenceRevisionTaskQueueContextInterface;
 
 /**
- * Project reference revision Task handler
+ * Project reference revision Task type
  */
-class ProjectReferenceRevisionTaskHandler extends TaskHandler
+class ProjectReferenceRevisionTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getAlias()
     {
         return 'project_reference_revision';
     }

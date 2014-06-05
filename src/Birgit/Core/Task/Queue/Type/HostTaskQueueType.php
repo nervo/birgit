@@ -1,18 +1,18 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Handler;
+namespace Birgit\Core\Task\Queue\Type;
 
-use Birgit\Component\Task\Queue\Handler\TaskQueueHandler;
+use Birgit\Component\Task\Queue\Type\TaskQueueType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Core\Task\Queue\Context\HostTaskQueueContext;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
- * Host Task queue Handler
+ * Host Task queue Type
  */
-class HostTaskQueueHandler extends TaskQueueHandler
+class HostTaskQueueType extends TaskQueueType
 {
-    public function getType()
+    public function getAlias()
     {
         return 'host';
     }
@@ -20,7 +20,7 @@ class HostTaskQueueHandler extends TaskQueueHandler
     public function run(TaskQueue $taskQueue, TaskQueueContextInterface $context)
     {
         // Get host
-        $host = $this->modelManager
+        $host = $this->modelRepositoryManager
             ->getHostRepository()
             ->get(
                 $taskQueue->getTypeDefinition()->getParameter('host_id')

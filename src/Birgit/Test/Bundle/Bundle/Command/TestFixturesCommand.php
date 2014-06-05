@@ -109,14 +109,14 @@ EOF
             ]
         ];
 
-        // Get model manager
-        $modelManager = $this->getContainer()
-            ->get('birgit.model_manager');
+        // Get model repository manager
+        $modelRepositoryManager = $this->getContainer()
+            ->get('birgit.model_repository_manager');
 
         $projects = [];
 
         foreach ($projectsDefinitions as $projectName => $projectParameters) {
-            $projects[$projectName] = $modelManager
+            $projects[$projectName] = $modelRepositoryManager
                 ->getProjectRepository()
                 ->create(
                     $projectName,
@@ -127,14 +127,14 @@ EOF
                 )
                     ->setActive($projectParameters['active']);
 
-            $modelManager
+            $modelRepositoryManager
                 ->getProjectRepository()
                 ->save($projects[$projectName]);
 
             $projectEnvironments = [];
 
             foreach ($projectParameters['environments'] as $projectEnvironmentName => $projectEnvironmentParameters) {
-                $projectEnvironments[$projectEnvironmentName] = $modelManager
+                $projectEnvironments[$projectEnvironmentName] = $modelRepositoryManager
                     ->getProjectEnvironmentRepository()
                     ->create(
                         $projectEnvironmentName,
@@ -147,7 +147,7 @@ EOF
                         ->setReferencePattern($projectEnvironmentParameters['reference_pattern'])
                         ->setActive($projectEnvironmentParameters['active']);
 
-                $modelManager
+                $modelRepositoryManager
                     ->getProjectEnvironmentRepository()
                     ->save($projectEnvironments[$projectEnvironmentName]);
             }

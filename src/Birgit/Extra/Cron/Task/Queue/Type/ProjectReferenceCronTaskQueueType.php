@@ -1,17 +1,17 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Handler\Cron;
+namespace Birgit\Extra\Cron\Task\Queue\Type;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
- * Project reference Cron Task queue Handler
+ * Project reference Cron Task queue Type
  */
-class ProjectReferenceCronTaskQueueHandler extends CronTaskQueueHandler
+class ProjectReferenceCronTaskQueueType extends CronTaskQueueType
 {
-    public function getType()
+    public function getAlias()
     {
         return 'project_reference_cron';
     }
@@ -19,14 +19,14 @@ class ProjectReferenceCronTaskQueueHandler extends CronTaskQueueHandler
     public function run(TaskQueue $taskQueue, TaskQueueContextInterface $context)
     {
         // Get project
-        $project = $this->modelManager
+        $project = $this->modelRepositoryManager
             ->getProjectRepository()
             ->get(
                 $taskQueue->getTypeDefinition()->getParameter('project_name')
             );
 
         // Get project reference
-        $projectReference = $this->modelManager
+        $projectReference = $this->modelRepositoryManager
             ->getProjectReferenceRepository()
             ->get(
                 $taskQueue->getTypeDefinition()->getParameter('project_reference_name'),

@@ -1,18 +1,18 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Handler;
+namespace Birgit\Core\Task\Queue\Type;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Component\Task\Queue\Handler\TaskQueueHandler;
+use Birgit\Component\Task\Queue\Type\TaskQueueType;
 use Birgit\Core\Task\Queue\Context\ProjectReferenceTaskQueueContext;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
- * Project reference Task queue Handler
+ * Project reference Task queue Type
  */
-class ProjectReferenceTaskQueueHandler extends TaskQueueHandler
+class ProjectReferenceTaskQueueType extends TaskQueueType
 {
-    public function getType()
+    public function getAlias()
     {
         return 'project_reference';
     }
@@ -20,14 +20,14 @@ class ProjectReferenceTaskQueueHandler extends TaskQueueHandler
     public function run(TaskQueue $taskQueue, TaskQueueContextInterface $context)
     {
         // Get project
-        $project = $this->modelManager
+        $project = $this->modelRepositoryManager
             ->getProjectRepository()
             ->get(
                 $taskQueue->getTypeDefinition()->getParameter('project_name')
             );
 
         // Get project reference
-        $projectReference = $this->modelManager
+        $projectReference = $this->modelRepositoryManager
             ->getProjectReferenceRepository()
             ->get(
                 $taskQueue->getTypeDefinition()->getParameter('project_reference_name'),
