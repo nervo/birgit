@@ -2,6 +2,7 @@
 
 namespace Birgit\Core\Task\Queue\Context\Build;
 
+use Birgit\Core\Task\Queue\Context\Host\HostTaskQueueContextInterface;
 use Birgit\Core\Model\Build\Build;
 
 /**

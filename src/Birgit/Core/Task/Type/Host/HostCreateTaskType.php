@@ -58,6 +58,7 @@ class HostCreateTaskType extends TaskType
         $taskQueue = $context->getTaskManager()
             ->createHostTaskQueue($host);
 
-        $context->getTaskManager()->pushTaskQueue($taskQueue);
+        $context->getTaskQueue()
+            ->addSuccessor($taskQueue);
     }
 }

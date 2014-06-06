@@ -24,7 +24,7 @@ class ProjectTaskQueueContext implements ProjectTaskQueueContextInterface
     {
         return $this->project;
     }
-    
+
     public function getTaskQueue()
     {
         return $this->context->getTaskQueue();

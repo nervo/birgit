@@ -6,11 +6,12 @@ use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Task\Exception\NotFoundException;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryIterator;
 
 /**
  * Task queue Repository
  */
-class TaskQueueRepository extends EntityRepository implements TaskQueueRepositoryInterface, \IteratorAggregate
+class TaskQueueRepository extends EntityRepository implements TaskQueueRepositoryInterface
 {
     public function create(TypeDefinition $typeDefinition)
     {
@@ -43,17 +44,24 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
         $this->deleteEntity($taskQueue);
     }
 
+    public function findFirstOneWithIdNotIn(array $ids)
+    {
+        $queryBuilder = $this->createQueryBuilder('taskQueue')
+            ->setMaxResults(1);
+
+        if ($ids) {
+            $queryBuilder
+                ->where('taskQueue.id NOT IN (:ids)')
+                ->setParameter('ids', $ids);
+        }
+
+        return $queryBuilder
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function getIterator()
     {
-        $this->getEntityManager()->clear();
-
-        $query = $this
-            ->createQueryBuilder('taskQueue')
-            ->leftJoin('taskQueue.tasks', 'taskQueueTasks')
-            ->getQuery();
-
-        return new \ArrayIterator(
-            $query->getResult()
-        );
+        return new TaskQueueRepositoryIterator($this);
     }
 }

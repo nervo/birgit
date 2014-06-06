@@ -51,21 +51,17 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
                     ->handleTask($task, $context)
                         ->run();
 
-                // Delete
-                $taskRepository
-                    ->delete($task);
+                // Update status
+                $task
+                    ->setStatus(new TaskStatus(TaskStatus::FINISHED));
             } catch (SuspendTaskQueueException $exception) {
 
                 // Log
                 $context->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
 
-                // Update
+                // Update status
                 $task
                     ->setStatus(new TaskStatus(TaskStatus::PENDING));
-
-                // Save
-                $taskRepository
-                    ->save($task);
 
                 throw $exception;
             }

@@ -109,37 +109,99 @@ abstract class TaskQueue implements Typeable
     abstract public function getTasks();
 
     /**
-     * Add child
+     * Add predecessor
      *
-     * @param TaskQueue $child
-     *
-     * @return TaskQueue
-     */
-    abstract public function addChild(TaskQueue $child);
-
-    /**
-     * Remove child
-     *
-     * @param TaskQueue $child
+     * @param TaskQueue $predecessor
      *
      * @return TaskQueue
      */
-    abstract public function removeChild(TaskQueue $child);
+    abstract public function addPredecessor(TaskQueue $predecessor);
 
     /**
-     * Get children
+     * Remove predecessor
+     *
+     * @param TaskQueue $predecessor
+     *
+     * @return TaskQueue
+     */
+    abstract public function removePredecessor(TaskQueue $predecessor);
+
+    /**
+     * Get predecessors
      *
      * @return \Traversable
      */
-    abstract public function getChildren();
+    abstract public function getPredecessors();
 
     /**
-     * Has children
+     * Has predecessors
      *
      * @return bool
      */
-    public function hasChildren()
+    public function hasPredecessors()
     {
-        return (bool) count($this->getChildren());
+        return (bool) count($this->getPredecessors());
+    }
+
+    /**
+     * Get head
+     *
+     * @return TaskQueue|null
+     */
+    abstract public function getHead();
+
+    /**
+     * Has head
+     *
+     * @return bool
+     */
+    public function hasHead()
+    {
+        return (bool) $this->getHead();
+    }
+
+    /**
+     * Add successor
+     *
+     * @param TaskQueue $successor
+     *
+     * @return TaskQueue
+     */
+    abstract public function addSuccessor(TaskQueue $successor);
+
+    /**
+     * Remove successor
+     *
+     * @param TaskQueue $successor
+     *
+     * @return TaskQueue
+     */
+    abstract public function removeSuccessor(TaskQueue $successor);
+
+    /**
+     * Get successors
+     *
+     * @return \Traversable
+     */
+    abstract public function getSuccessors();
+
+    /**
+     * Has successors
+     *
+     * @return bool
+     */
+    public function hasSuccessors()
+    {
+        return (bool) count($this->getSuccessors());
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getId();
     }
 }

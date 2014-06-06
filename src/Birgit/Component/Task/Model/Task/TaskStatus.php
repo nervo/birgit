@@ -7,8 +7,9 @@ namespace Birgit\Component\Task\Model\Task;
  */
 class TaskStatus
 {
-    const PENDING = 0;
-    const RUNNING = 1;
+    const PENDING  = 0;
+    const RUNNING  = 1;
+    const FINISHED = 2;
 
     /**
      * Value

@@ -3,6 +3,7 @@
 namespace Birgit\Core\Project;
 
 use Birgit\Core\Model\Project\Project;
+use Birgit\Core\Project\Handler\ProjectHandler;
 use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Type\TypeResolver;

@@ -29,13 +29,24 @@ Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue:
             targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Task
             mappedBy:     queue
             cascade:      ['persist']
-        children:
+        predecessors:
             targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
-            mappedBy:     parent
+            mappedBy:     tail
+            cascade:      ['persist']
+        successors:
+            targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            mappedBy:     head
+            cascade:      ['persist']
     manyToOne:
-        parent:
+        tail:
             targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
-            inversedBy:   children
+            inversedBy:   predecessors
             joinColumn:
-                name:      parent_id
+                name:      tail_id
+                nullable:  true
+        head:
+            targetEntity: Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue
+            inversedBy:   successors
+            joinColumn:
+                name:      head_id
                 nullable:  true

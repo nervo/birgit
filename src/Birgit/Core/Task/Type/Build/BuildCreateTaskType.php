@@ -59,6 +59,7 @@ class BuildCreateTaskType extends TaskType
         $taskQueue = $context->getTaskManager()
             ->createBuildTaskQueue($build);
 
-        $context->getTaskManager()->pushTaskQueue($taskQueue);
+        $context->getTaskQueue()
+            ->addSuccessor($taskQueue);
     }
 }

@@ -4,7 +4,6 @@ namespace Birgit\Core\Task\Type\Project;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
-use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
@@ -24,7 +23,7 @@ class ProjectReferenceTaskType extends TaskType
         return 'project_reference';
     }
 
-    protected function runProjectReferenceHosts(ProjectReference $projectReference, TaskQueue $taskQueue)
+    protected function runProjectReferenceHosts(ProjectReference $projectReference, TaskQueueContextInterface $context)
     {
         $suspend = false;
 
@@ -32,17 +31,15 @@ class ProjectReferenceTaskType extends TaskType
         foreach ($projectReference->getHosts() as $host) {
             if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
 
-                $taskQueueChild = $context->getTaskManager()
+                $taskQueue = $context->getTaskManager()
                     ->createProjectReferenceTaskQueue($projectReference, [
                         'host_delete' => [
                             'project_environment_name' => $host->getProjectEnvironment()->getName()
                         ]
                     ]);
 
-                $taskQueue
-                    ->addChild($taskQueueChild);
-
-                $context->getTaskManager()->pushTaskQueue($taskQueueChild);
+                $context->getTaskQueue()
+                    ->addPredecessor($taskQueue);
 
                 $suspend = true;
             }
@@ -60,17 +57,15 @@ class ProjectReferenceTaskType extends TaskType
 
             if (!$hostFound && $projectEnvironment->matchReference($projectReference)) {
 
-                $taskQueueChild = $context->getTaskManager()
+                $taskQueue = $context->getTaskManager()
                     ->createProjectReferenceTaskQueue($projectReference, [
                         'host_create' => [
                             'project_environment_name' => $projectEnvironment->getName()
                         ]
                     ]);
 
-                $taskQueue
-                    ->addChild($taskQueueChild);
-
-                $context->getTaskManager()->pushTaskQueue($taskQueueChild);
+                $context->getTaskQueue()
+                    ->addPredecessor($taskQueue);
 
                 $suspend = true;
             }
@@ -95,7 +90,7 @@ class ProjectReferenceTaskType extends TaskType
 
         $this->runProjectReferenceHosts(
             $projectReference,
-            $context->getTaskQueue()
+            $context
         );
 
         // Get project handler
@@ -104,8 +99,7 @@ class ProjectReferenceTaskType extends TaskType
 
         // Get "real life" project reference revision
         $projectHandlerReferenceRevisionName = $projectHandler->getReferenceRevision(
-            $projectReference,
-            $context
+            $projectReference
         );
 
         // Find project reference revisions
@@ -138,6 +132,7 @@ class ProjectReferenceTaskType extends TaskType
                 'project_reference_revision'
             ]);
 
-        $context->getTaskManager()->pushTaskQueue($taskQueue);
+        $context->getTaskQueue()
+            ->addSuccessor($taskQueue);
     }
 }

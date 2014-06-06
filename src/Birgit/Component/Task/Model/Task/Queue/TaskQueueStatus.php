@@ -7,8 +7,9 @@ namespace Birgit\Component\Task\Model\Task\Queue;
  */
 class TaskQueueStatus
 {
-    const PENDING = 0;
-    const RUNNING = 1;
+    const PENDING  = 0;
+    const RUNNING  = 1;
+    const FINISHED = 2;
 
     /**
      * Value
@@ -56,5 +57,15 @@ class TaskQueueStatus
     public function isPending()
     {
         return $this->is(self::PENDING);
+    }
+
+    /**
+     * Is finished ?
+     *
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return $this->is(self::FINISHED);
     }
 }

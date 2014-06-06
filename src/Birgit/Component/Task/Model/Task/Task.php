@@ -89,4 +89,14 @@ abstract class Task implements Typeable
      * @return TaskQueue
      */
     abstract public function getQueue();
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getId();
+    }
 }

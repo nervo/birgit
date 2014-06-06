@@ -50,7 +50,8 @@ class ProjectReferenceRevisionTaskType extends TaskType
                         ]
                     ]);
 
-                $context->getTaskManager()->pushTaskQueue($taskQueue);
+                $context->getTaskQueue()
+                    ->addSuccessor($taskQueue);
             }
         }
     }

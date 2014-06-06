@@ -2,6 +2,8 @@
 
 namespace Birgit\Core\Task\Queue\Context\Host;
 
+use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\ProjectEnvironmentTaskQueueContextInterface;
 use Birgit\Core\Model\Host\Host;
 
 /**

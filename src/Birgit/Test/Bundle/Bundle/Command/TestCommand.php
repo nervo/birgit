@@ -46,11 +46,16 @@ EOF
         $taskManager = $this->getContainer()
             ->get('birgit.task_manager');
 
-        // Push task queue
-        $taskManager->pushTaskQueue(
-            $taskManager->createProjectTaskQueue($project, [
-                'project'
-            ])
-        );
+        // Get task queue repository
+        $taskQueueRepository = $this->getContainer()
+            ->get('birgit.task_queue_repository');
+
+        // Create task queue
+        $taskQueue = $taskManager->createProjectTaskQueue($project, [
+            'project'
+        ]);
+
+        // Save task queue
+        $taskQueueRepository->save($taskQueue);
     }
 }

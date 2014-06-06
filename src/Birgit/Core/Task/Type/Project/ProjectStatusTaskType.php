@@ -42,7 +42,7 @@ class ProjectStatusTaskType extends TaskType
 
         // Is project up ?
         $isUp = $projectHandler
-            ->isUp($project, $context);
+            ->isUp();
 
         // Compute status
         $status = $isUp ? ProjectStatus::UP : ProjectStatus::DOWN;

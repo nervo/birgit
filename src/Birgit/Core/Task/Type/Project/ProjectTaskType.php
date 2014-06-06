@@ -4,7 +4,6 @@ namespace Birgit\Core\Task\Type\Project;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
-use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Core\Model\Project\Project;
 use Birgit\Core\Task\Queue\Context\Project\ProjectTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
@@ -24,17 +23,15 @@ class ProjectTaskType extends TaskType
         return 'project';
     }
 
-    protected function runProjectStatus(Project $project, TaskQueue $taskQueue)
+    protected function runProjectStatus(Project $project, TaskQueueContextInterface $context)
     {
-        $taskQueueChild = $context->getTaskManager()
+        $taskQueue = $context->getTaskManager()
             ->createProjectTaskQueue($project, [
                 'project_status'
             ]);
 
-        $taskQueue
-            ->addChild($taskQueueChild);
-
-        $context->getTaskManager()->pushTaskQueue($taskQueueChild);
+        $context->getTaskQueue()
+            ->addPredecessor($taskQueue);
 
         throw new SuspendTaskQueueException();
     }
@@ -58,13 +55,13 @@ class ProjectTaskType extends TaskType
         if ($task->isFirstAttempt() || !$project->getStatus()->isUp()) {
             $this->runProjectStatus(
                 $project,
-                $context->getTaskQueue()
+                $context
             );
         }
 
         // Get "real life" project references
         $projectHandlerReferences = $projectHandler
-            ->getReferences($project, $context);
+            ->getReferences();
 
         // Find project references to delete
         foreach ($project->getReferences() as $projectReference) {
@@ -86,7 +83,8 @@ class ProjectTaskType extends TaskType
                         ]
                     ]);
 
-                $context->getTaskManager()->pushTaskQueue($taskQueue);
+                $context->getTaskQueue()
+                    ->addSuccessor($taskQueue);
             }
         }
 
@@ -121,7 +119,8 @@ class ProjectTaskType extends TaskType
                     'project_reference'
                 ]);
 
-            $context->getTaskManager()->pushTaskQueue($taskQueue);
+            $context->getTaskQueue()
+                ->addSuccessor($taskQueue);
         }
     }
 }

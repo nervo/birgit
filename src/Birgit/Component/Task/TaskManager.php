@@ -16,6 +16,7 @@ use Birgit\Component\Task\Queue\Context\TaskQueueContext;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Type\TypeResolver;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
+use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
  * Task Manager
@@ -98,16 +99,11 @@ class TaskManager
     }
 
     /**
-     * Push Task queue
+     * Launch
      *
-     * @param TaskQueue $taskQueue
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param LoggerInterface          $logger
      */
-    public function pushTaskQueue(TaskQueue $taskQueue)
-    {
-        $this->taskQueueRepository
-            ->save($taskQueue);
-    }
-
     public function launch(
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
@@ -115,65 +111,68 @@ class TaskManager
         while (true) {
             foreach ($this->taskQueueRepository as $taskQueue) {
 
-                $taskQueueFound = $this->findChildlessPendingTaskQueue($taskQueue);
+                // An already finished task queue must not be ran
+                if ($taskQueue->getStatus()->isFinished()) {
+                    continue;
+                }
 
-                if ($taskQueueFound) {
-
-                    // Update
-                    $taskQueueFound
-                        ->setStatus(new TaskQueueStatus(TaskQueueStatus::RUNNING))
-                        ->incrementAttempts();
-
-                    // Save
-                    $this->taskQueueRepository
-                        ->save($taskQueueFound);
-
-                    // Run
-                    try {
-
-                        // Create Task Queue Context
-                        $taskQueueContext = new TaskQueueContext(
-                            $taskQueueFound,
-                            $this,
-                            $eventDispatcher,
-                            $logger
-                        );
-
-                        $this->handleTaskQueue($taskQueueFound, $taskQueueContext)
-                            ->run();
-
-                        // Delete
-                        $this->taskQueueRepository
-                            ->delete($taskQueueFound);
-                    } catch (SuspendTaskQueueException $exception) {
-                        // Update
-                        $taskQueueFound
-                            ->setStatus(new TaskQueueStatus(TaskQueueStatus::PENDING));
-
-                        // Save
-                        $this->taskQueueRepository
-                            ->save($taskQueueFound);
+                // A task queue having unfinished predecessors must not be ran
+                if ($taskQueue->hasPredecessors()) {
+                    $finished = true;
+                    foreach ($taskQueue->getPredecessors() as $taskQueuePredecessor) {
+                        if (!$taskQueuePredecessor->getStatus()->isFinished()) {
+                            $finished = false;
+                            break;
+                        }
+                    }
+                    if (!$finished) {
+                        continue;
                     }
                 }
-            }
 
-            //sleep(3);
-        }
-    }
-
-    protected function findChildlessPendingTaskQueue(TaskQueue $taskQueue)
-    {
-        if (!$taskQueue->hasChildren() && $taskQueue->getStatus()->isPending()) {
-            return $taskQueue;
-        } else {
-            foreach ($taskQueue->getChildren() as $taskQueueChild) {
-                $taskQueueReturn = $this->findChildlessPendingTaskQueue($taskQueueChild);
-                if ($taskQueueReturn) {
-                    return $taskQueueReturn;
+                // A successor task queue having unfinished head must not be ran
+                if (
+                    $taskQueue->hasHead()
+                    && !$taskQueue->getHead()->getStatus()->isFinished()
+                ) {
+                    continue;
                 }
-            }
-        }
 
-        return null;
+                // Update
+                $taskQueue
+                    ->setStatus(new TaskQueueStatus(TaskQueueStatus::RUNNING))
+                    ->incrementAttempts();
+
+                // Run
+                try {
+
+                    // Create Task Queue Context
+                    $taskQueueContext = new TaskQueueContext(
+                        $taskQueue,
+                        $this,
+                        $eventDispatcher,
+                        $logger
+                    );
+
+                    $this->handleTaskQueue($taskQueue, $taskQueueContext)
+                        ->run();
+
+                    // Update status
+                    $taskQueue
+                        ->setStatus(new TaskQueueStatus(TaskQueueStatus::FINISHED));
+
+                } catch (SuspendTaskQueueException $exception) {
+                    // Update status
+                    $taskQueue
+                        ->setStatus(new TaskQueueStatus(TaskQueueStatus::PENDING));
+                }
+
+                // Save
+                $this->taskQueueRepository
+                    ->save($taskQueue);
+            }
+
+            sleep(3);
+        }
     }
 }
