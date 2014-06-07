@@ -3,8 +3,8 @@
 namespace Birgit\Front\Bundle\Bundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkBaseBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkBaseBundle\Configuration\Template;
 
 class ProjectController extends Controller
 {

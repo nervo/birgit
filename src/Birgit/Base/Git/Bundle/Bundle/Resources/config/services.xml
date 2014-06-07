@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <!-- Project Type -->
+        <parameter key="birgit.project_type.git.class">Birgit\Base\Git\Project\Type\GitProjectType</parameter>
+
+    </parameters>
+
+    <services>
+
+        <!-- Project Type -->
+        <service id="birgit.project_type.git" public="false" class="%birgit.project_type.git.class%">
+            <tag name="birgit.project_type" />
+        </service>
+
+    </services>
+
+</container>

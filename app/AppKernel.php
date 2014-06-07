@@ -26,10 +26,10 @@ class AppKernel extends Kernel
             new Birgit\Component\Task\Bundle\DoctrineBundle\BirgitComponentTaskDoctrineBundle(),
             new Birgit\Component\Type\Bundle\Bundle\BirgitComponentTypeBundle(),
 
-            // Birgit - Extra
-            new Birgit\Extra\Cron\Bundle\Bundle\BirgitExtraCronBundle(),
-            new Birgit\Extra\Git\Bundle\Bundle\BirgitExtraGitBundle(),
-            new Birgit\Extra\Local\Bundle\Bundle\BirgitExtraLocalBundle(),
+            // Birgit - Base
+            new Birgit\Base\Cron\Bundle\Bundle\BirgitBaseCronBundle(),
+            new Birgit\Base\Git\Bundle\Bundle\BirgitBaseGitBundle(),
+            new Birgit\Base\Local\Bundle\Bundle\BirgitBaseLocalBundle(),
 
             // Birgit - Front
             new Birgit\Front\Bundle\Bundle\BirgitFrontBundle()
