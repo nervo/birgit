@@ -3,12 +3,14 @@
 namespace Birgit\Front\Bundle\Bundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkBaseBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkBaseBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class ProjectController extends Controller
 {
     /**
+     * Index
+     * 
      * @Route("/project/{name}")
      * @Template()
      */
