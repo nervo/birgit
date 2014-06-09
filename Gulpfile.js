@@ -11,7 +11,7 @@ var
         },
         output: {
             path: __dirname + '/web/assets/js',
-            publicPath: '/assets/js',
+            publicPath: '/assets/js/',
             filename: '[name].js'
         },
         resolve: {
