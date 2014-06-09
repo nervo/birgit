@@ -5,6 +5,7 @@ namespace Birgit\Core\Project\Handler;
 use Birgit\Core\Model\Project\Project;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Core\Project\Type\ProjectTypeInterface;
+use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 
 /**
@@ -62,10 +63,11 @@ class ProjectHandler
      */
     public function isUp()
     {
-        return $this->projectType->isUp(
-            $this->project,
-            $this->taskQueueContext
-        );
+        return $this->projectType
+            ->isUp(
+                $this->project,
+                $this->taskQueueContext
+            );
     }
 
     /**
@@ -75,10 +77,11 @@ class ProjectHandler
      */
     public function getReferences()
     {
-        return $this->projectType->getReferences(
-            $this->project,
-            $this->taskQueueContext
-        );
+        return $this->projectType
+            ->getReferences(
+                $this->project,
+                $this->taskQueueContext
+            );
     }
 
     /**
@@ -90,9 +93,24 @@ class ProjectHandler
      */
     public function getReferenceRevision(ProjectReference $projectReference)
     {
-        return $this->projectType->getReferenceRevision(
-            $projectReference,
-            $this->taskQueueContext
-        );
+        return $this->projectType
+            ->getReferenceRevision(
+                $projectReference,
+                $this->taskQueueContext
+            );
+    }
+
+    /**
+     * On project task
+     * 
+     * @param Task $task
+     */
+    public function onProjectTask(Task $task)
+    {
+        $this->projectType
+            ->onProjectTask(
+                $task,
+                $this->taskQueueContext
+            );
     }
 }

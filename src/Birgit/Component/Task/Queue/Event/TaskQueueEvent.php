@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Task\Event;
+namespace Birgit\Component\Task\Queue\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

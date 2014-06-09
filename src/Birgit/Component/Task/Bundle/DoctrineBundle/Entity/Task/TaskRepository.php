@@ -6,12 +6,31 @@ use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Task\Exception\NotFoundException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Birgit\Component\Task\TaskEvents;
+use Birgit\Component\Task\Event\TaskEvent;
 
 /**
  * Task Repository
  */
-class TaskRepository extends EntityRepository implements TaskRepositoryInterface
+class TaskRepository extends EntityRepository implements TaskRepositoryInterface, EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return array(
+            TaskEvents::RUN_END => 'onTaskRunEnd'
+        );
+    }
+
+    public function onTaskRunEnd(TaskEvent $event)
+    {
+        // Get task
+        $task = $event->getTask();
+
+        // Save
+        $this->save($task);
+    }
+
     public function create(TypeDefinition $typeDefinition)
     {
         $task = $this->createEntity();

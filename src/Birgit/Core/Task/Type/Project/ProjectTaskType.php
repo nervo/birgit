@@ -52,6 +52,19 @@ class ProjectTaskType extends TaskType
         $projectHandler = $this->projectManager
             ->handleProject($project, $context);
 
+        $projectHandler->onProjectTask($task);
+
+
+
+
+        return;
+        die;
+
+
+
+
+        
+
         if ($task->isFirstAttempt() || !$project->getStatus()->isUp()) {
             $this->runProjectStatus(
                 $project,

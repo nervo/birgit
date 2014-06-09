@@ -5,7 +5,7 @@ namespace Birgit\Component\Task\Queue\Type;
 use Birgit\Component\Type\Type;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
-use Birgit\Component\Task\Event\TaskQueueEvent;
+use Birgit\Component\Task\Event\TaskEvent;
 use Birgit\Component\Task\TaskEvents;
 use Birgit\Component\Task\Model\Task\TaskStatus;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
@@ -20,16 +20,6 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
      */
     public function run(TaskQueue $taskQueue, TaskQueueContextInterface $context)
     {
-        // Log
-        $context->getLogger()->notice(sprintf('Task Queue: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
-
-        // Dispatch event
-        $context->getEventDispatcher()
-            ->dispatch(
-                TaskEvents::TASK_QUEUE . '.' . $this->getAlias(),
-                new TaskQueueEvent($taskQueue)
-            );
-
         // Get tasks
         $tasks = $taskQueue->getTasks()->toArray();
 
@@ -45,6 +35,13 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
                 ->setStatus(new TaskStatus(TaskStatus::RUNNING))
                 ->incrementAttempts();
 
+            // Start event
+            $context->getEventDispatcher()
+                ->dispatch(
+                    TaskEvents::RUN_START,
+                    new TaskEvent($task)
+                );
+
             try {
                 // Run
                 $context->getTaskManager()
@@ -56,15 +53,19 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
                     ->setStatus(new TaskStatus(TaskStatus::FINISHED));
             } catch (SuspendTaskQueueException $exception) {
 
-                // Log
-                $context->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
-
                 // Update status
                 $task
                     ->setStatus(new TaskStatus(TaskStatus::PENDING));
 
                 throw $exception;
             }
+
+            // End event
+            $context->getEventDispatcher()
+                ->dispatch(
+                    TaskEvents::RUN_END,
+                    new TaskEvent($task)
+                );
         }
     }
 }

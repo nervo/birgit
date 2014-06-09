@@ -7,6 +7,8 @@ use Psr\Log\LoggerInterface;
 
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
+use Birgit\Component\Task\Queue\Event\TaskQueueEvent;
+use Birgit\Component\Task\Queue\TaskQueueEvents;
 use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueStatus;
@@ -23,11 +25,42 @@ use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
  */
 class TaskManager
 {
+    /**
+     * Task repository
+     *
+     * @var TaskRepositoryInterface
+     */
     protected $taskRepository;
+
+    /**
+     * Task type resolver
+     *
+     * @var TypeResolver
+     */
     protected $taskTypeResolver;
+    
+    /**
+     * Task queue repository
+     * 
+     * @var TaskQueueRepositoryInterface
+     */
     protected $taskQueueRepository;
+
+    /**
+     * Task queue type resolver
+     * 
+     * @var TypeResolver
+     */
     protected $taskQueueTypeResolver;
 
+    /**
+     * Constructor
+     *
+     * @param TaskRepositoryInterface      $taskRepository
+     * @param TypeResolver                 $taskTypeResolver
+     * @param TaskQueueRepositoryInterface $taskQueueRepository
+     * @param TypeResolver                 $taskQueueTypeResolver
+     */
     public function __construct(
         TaskRepositoryInterface $taskRepository,
         TypeResolver $taskTypeResolver,
@@ -40,6 +73,14 @@ class TaskManager
         $this->taskQueueTypeResolver = $taskQueueTypeResolver;
     }
 
+    /**
+     * Handle task
+     *
+     * @param Task                      $task
+     * @param TaskQueueContextInterface $context
+     *
+     * @return \Birgit\Component\Task\Handler\TaskHandler
+     */
     public function handleTask(Task $task, TaskQueueContextInterface $context)
     {
         return new TaskHandler(
@@ -49,6 +90,14 @@ class TaskManager
         );
     }
 
+    /**
+     * Handle task queue
+     *
+     * @param TaskQueue                 $taskQueue
+     * @param TaskQueueContextInterface $context
+     *
+     * @return TaskQueueHandler
+     */
     public function handleTaskQueue(TaskQueue $taskQueue, TaskQueueContextInterface $context)
     {
         return new TaskQueueHandler(
@@ -85,17 +134,28 @@ class TaskManager
             // Add task
             $taskQueue
                 ->addTask(
-                    $this->taskRepository
-                        ->create(
-                            new TypeDefinition(
-                                (string) $taskType,
-                                $taskParameters
-                            )
-                        )
+                    $this->createTask($taskType, $taskParameters)
                 );
         }
 
         return $taskQueue;
+    }
+
+    /**
+     * Create task
+     *
+     * @param string $type
+     * @param array  $parameters
+     */
+    public function createTask($type, array $parameters = array())
+    {
+        return $this->taskRepository
+            ->create(
+                new TypeDefinition(
+                    (string) $type,
+                    $parameters
+                )
+            );
     }
 
     /**
@@ -143,6 +203,16 @@ class TaskManager
                     ->setStatus(new TaskQueueStatus(TaskQueueStatus::RUNNING))
                     ->incrementAttempts();
 
+                // Log
+                $logger->notice(sprintf('Task Queue: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
+
+                // Start event
+                $eventDispatcher
+                    ->dispatch(
+                        TaskQueueEvents::RUN_START,
+                        new TaskQueueEvent($taskQueue)
+                    );
+
                 // Run
                 try {
 
@@ -162,14 +232,21 @@ class TaskManager
                         ->setStatus(new TaskQueueStatus(TaskQueueStatus::FINISHED));
 
                 } catch (SuspendTaskQueueException $exception) {
+
+                    // Log
+                    $logger->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
+
                     // Update status
                     $taskQueue
                         ->setStatus(new TaskQueueStatus(TaskQueueStatus::PENDING));
                 }
 
-                // Save
-                $this->taskQueueRepository
-                    ->save($taskQueue);
+                // End event
+                $eventDispatcher
+                    ->dispatch(
+                        TaskQueueEvents::RUN_END,
+                        new TaskQueueEvent($taskQueue)
+                    );
             }
 
             sleep(3);

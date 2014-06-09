@@ -7,6 +7,6 @@ namespace Birgit\Component\Task;
  */
 final class TaskEvents
 {
-    const TASK       = 'birgit.task';
-    const TASK_QUEUE = 'birgit.task_queue';
+    const RUN_START = 'birgit.task.run_start';
+    const RUN_END   = 'birgit.task.run_end';
 }

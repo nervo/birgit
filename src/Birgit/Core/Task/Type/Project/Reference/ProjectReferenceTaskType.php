@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Type\Project;
+namespace Birgit\Core\Task\Type\Project\Reference;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;

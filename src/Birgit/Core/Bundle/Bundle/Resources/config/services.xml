@@ -15,8 +15,8 @@
         <!-- Task Type - Project -->
         <parameter key="birgit.task_type.project.class">Birgit\Core\Task\Type\Project\ProjectTaskType</parameter>
         <parameter key="birgit.task_type.project_status.class">Birgit\Core\Task\Type\Project\ProjectStatusTaskType</parameter>
-        <parameter key="birgit.task_type.project_reference.class">Birgit\Core\Task\Type\Project\ProjectReferenceTaskType</parameter>
-        <parameter key="birgit.task_type.project_reference_revision.class">Birgit\Core\Task\Type\Project\ProjectReferenceRevisionTaskType</parameter>
+        <parameter key="birgit.task_type.project_reference.class">Birgit\Core\Task\Type\Project\Reference\ProjectReferenceTaskType</parameter>
+        <parameter key="birgit.task_type.project_reference_revision.class">Birgit\Core\Task\Type\Project\Reference\Revision\ProjectReferenceRevisionTaskType</parameter>
         <!-- Task Type - Host -->
         <parameter key="birgit.task_type.host_create.class">Birgit\Core\Task\Type\Host\HostCreateTaskType</parameter>
         <parameter key="birgit.task_type.host_delete.class">Birgit\Core\Task\Type\Host\HostDeleteTaskType</parameter>
@@ -25,8 +25,8 @@
 
         <!-- Task Queue Type - Project -->
         <parameter key="birgit.task_queue_type.project.class">Birgit\Core\Task\Queue\Type\Project\ProjectTaskQueueType</parameter>
-        <parameter key="birgit.task_queue_type.project_reference.class">Birgit\Core\Task\Queue\Type\Project\ProjectReferenceTaskQueueType</parameter>
-        <parameter key="birgit.task_queue_type.project_reference_revision.class">Birgit\Core\Task\Queue\Type\Project\ProjectReferenceRevisionTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project_reference.class">Birgit\Core\Task\Queue\Type\Project\Reference\ProjectReferenceTaskQueueType</parameter>
+        <parameter key="birgit.task_queue_type.project_reference_revision.class">Birgit\Core\Task\Queue\Type\Project\Reference\Revision\ProjectReferenceRevisionTaskQueueType</parameter>
         <!-- Task Queue Type - Host -->
         <parameter key="birgit.task_queue_type.host.class">Birgit\Core\Task\Queue\Type\Host\HostTaskQueueType</parameter>
         <!-- Task Queue Type - Build -->

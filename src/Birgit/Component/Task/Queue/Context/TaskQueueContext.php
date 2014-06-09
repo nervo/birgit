@@ -13,11 +13,42 @@ use Birgit\Component\Task\TaskManager;
  */
 class TaskQueueContext implements TaskQueueContextInterface
 {
+    /**
+     * Task queue
+     * 
+     * @var TaskQueue 
+     */
     protected $taskQueue;
+
+    /**
+     * Task manager
+     *
+     * @var TaskManager
+     */
     protected $taskManager;
+
+    /**
+     * Event dispatcher
+     *
+     * @var EventDispatcherInterface
+     */
     protected $eventDispatcher;
+
+    /**
+     * Logger
+     *
+     * @var LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * Constructor
+     * 
+     * @param TaskQueue                $taskQueue
+     * @param TaskManager              $taskManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param LoggerInterface          $logger
+     */
     public function __construct(
         TaskQueue $taskQueue,
         TaskManager $taskManager,
@@ -30,21 +61,33 @@ class TaskQueueContext implements TaskQueueContextInterface
         $this->logger = $logger;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTaskQueue()
     {
         return $this->taskQueue;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTaskManager()
     {
         return $this->taskManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEventDispatcher()
     {
         return $this->eventDispatcher;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLogger()
     {
         return $this->logger;
