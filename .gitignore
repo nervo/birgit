@@ -12,6 +12,9 @@
 !bin/symfony_requirements
 /composer.phar
 
+# Npm
+/node_modules/
+
 # Bower
 /web/components/
 
