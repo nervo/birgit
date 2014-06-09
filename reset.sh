@@ -1,5 +1,5 @@
-app/console doctrine:database:drop --force && \
-app/console doctrine:database:create && \
-app/console doctrine:schema:create --em=birgit && \
-app/console doctrine:schema:create --em=birgit_task && \
-app/console birgit:test:fixtures
+bin/console doctrine:database:drop --force && \
+bin/console doctrine:database:create && \
+bin/console doctrine:schema:create --em=birgit && \
+bin/console doctrine:schema:create --em=birgit_task && \
+bin/console birgit:test:fixtures
