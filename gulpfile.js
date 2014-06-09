@@ -35,5 +35,12 @@ gulp.task('webpack', function() {
         });
 });
 
-gulp.task('default', ['webpack'], function() {
+gulp.task('css', function() {
+    gulp.src([
+        'bower_components/bootstrap/dist/css/bootstrap.css'
+    ])
+        .pipe(gulp.dest('web/assets/css'));
+});
+
+gulp.task('default', ['css', 'webpack'], function() {
 });
