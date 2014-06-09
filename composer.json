@@ -39,8 +39,7 @@
         ]
     },
     "config": {
-        "bin-dir": "bin",
-        "vendor-dir": "vendor/composer"
+        "bin-dir": "bin"
     },
     "extra": {
         "symfony-app-dir": "app",
