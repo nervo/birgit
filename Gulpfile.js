@@ -12,7 +12,8 @@ var
         output: {
             path: __dirname + '/web/assets/js',
             publicPath: '/assets/js/',
-            filename: '[name].js'
+            filename: '[name].js',
+            chunkFilename: '[id].js'
         },
         resolve: {
             modulesDirectories: [
@@ -34,5 +35,5 @@ gulp.task('webpack', function() {
         });
 });
 
-gulp.task('default', function() {
+gulp.task('default', ['webpack'], function() {
 });
