@@ -12,6 +12,9 @@
 !bin/symfony_requirements
 /composer.phar
 
+# Assets
+/web/assets/
+
 # Npm
 /node_modules/
 
