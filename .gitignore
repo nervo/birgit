@@ -16,7 +16,7 @@
 /node_modules/
 
 # Bower
-/web/components/
+/bower_components/
 
 # Vagrant
 /.vagrant/
