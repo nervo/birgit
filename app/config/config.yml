@@ -62,6 +62,14 @@ doctrine:
                 user:     "%database_user%"
                 password: "%database_password%"
                 charset:  UTF8
+            birgit_event:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
@@ -74,6 +82,10 @@ doctrine:
                 connection: birgit_task
                 mappings:
                     BirgitComponentTaskDoctrineBundle: ~
+            birgit_event:
+                connection: birgit_event
+                mappings:
+                    BirgitComponentEventDoctrineBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:

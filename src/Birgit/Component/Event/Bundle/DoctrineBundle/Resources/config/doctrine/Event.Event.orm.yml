@@ -1,0 +1,9 @@
+Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\Event:
+    type:  entity
+    table: birgit_event
+    repositoryClass: Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\EventRepository
+    id:
+        id:
+            column:    id
+            type:      guid
+            generator: { strategy: UUID }

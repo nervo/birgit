@@ -25,6 +25,8 @@ class AppKernel extends Kernel
             new Birgit\Component\Task\Bundle\Bundle\BirgitComponentTaskBundle(),
             new Birgit\Component\Task\Bundle\DoctrineBundle\BirgitComponentTaskDoctrineBundle(),
             new Birgit\Component\Type\Bundle\Bundle\BirgitComponentTypeBundle(),
+            new Birgit\Component\Event\Bundle\Bundle\BirgitComponentEventBundle(),
+            new Birgit\Component\Event\Bundle\DoctrineBundle\BirgitComponentEventDoctrineBundle(),
 
             // Birgit - Base
             new Birgit\Base\Cron\Bundle\Bundle\BirgitBaseCronBundle(),

@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Component\Task\Bundle\Bundle\DependencyInjection;
+namespace Birgit\Component\Event\Bundle\DoctrineBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -8,12 +8,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * Birgit Component Task Extension
+ * Birgit Component Event Doctrine Extension
  */
-class BirgitComponentTaskExtension extends Extension
+class BirgitComponentEventDoctrineExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
