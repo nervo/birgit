@@ -1,5 +1,17 @@
 require(['d3/d3'], function(d3) {
 
+    // Websocket
+    var connection = new WebSocket('ws://localhost:8080');
+
+    connection.onopen = function(event) {
+        console.log('Connection established!');
+    };
+
+    connection.onmessage = function(event) {
+        console.log(event.data);
+    };
+
+    // D3
     d3.json('task.json', function(error, links) {
 
         var nodes = {};
