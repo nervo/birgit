@@ -1,7 +1,7 @@
 require(['d3/d3'], function(d3) {
 
     // Websocket
-    var connection = new WebSocket('ws://localhost:8080');
+    var connection = new WebSocket('ws://localhost:8080/task');
 
     connection.onopen = function(event) {
         console.log('Connection established!');

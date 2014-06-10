@@ -8,9 +8,9 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
 /**
- * Websocket Server
+ * Websocket Task Server
  */
-class WebsocketServer implements MessageComponentInterface
+class WebsocketTaskServer implements MessageComponentInterface
 {
     protected $logger;
     protected $clients;

@@ -6,11 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Ratchet\Server\IoServer;
-use Ratchet\Http\HttpServer;
-use Ratchet\WebSocket\WsServer;
+use Ratchet;
 
-use Birgit\Core\Websocket\WebsocketServer;
+use Birgit\Core\Websocket\WebsocketTaskServer;
 
 /**
  * Websocket command
@@ -42,22 +40,21 @@ EOF
         // Get logger
         $logger = $this->getContainer()->get('logger');
 
+        $host = 'localhost';
         $port = 8080;
 
-        $logger->notice(sprintf('Start websocket server on port: %d', $port));
-
-        // Set server
-        $server = IoServer::factory(
-            new HttpServer(
-                new WsServer(
-                    new WebsocketServer(
-                        $logger
-                    )
-                )
-            ),
+        $logger->notice(sprintf(
+            'Start websocket server on %s:%d',
+            $host,
             $port
-        );
+        ));
 
-        $server->run();
+        $application = new Ratchet\App($host, $port);
+
+        $application->route('/task', new WebsocketTaskServer(
+            $logger
+        ));
+
+        $application->run();
     }
 }
