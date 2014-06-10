@@ -7,9 +7,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Test command
+ * Test Rask Command
  */
-class TestCommand extends ContainerAwareCommand
+class TestTaskCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class TestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('birgit:test')
-            ->setDescription('Birgit test')
+            ->setName('birgit:test:task')
+            ->setDescription('Birgit test task')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command does things:
 
@@ -33,12 +33,9 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get model repository manager
-        $modelRepositoryManager = $this->getContainer()
-            ->get('birgit.model_repository_manager');
-
         // Get project
-        $project = $modelRepositoryManager
+        $project = $this->getContainer()
+            ->get('birgit.model_repository_manager')
             ->getProjectRepository()
             ->get('test');
 
@@ -46,16 +43,13 @@ EOF
         $taskManager = $this->getContainer()
             ->get('birgit.task_manager');
 
-        // Get task queue repository
-        $taskQueueRepository = $this->getContainer()
-            ->get('birgit.task_queue_repository');
-
         // Create task queue
-        $taskQueue = $taskManager->createProjectTaskQueue($project, [
-            'project'
-        ]);
+        $taskQueue = $taskManager
+            ->createProjectTaskQueue($project, [
+                'project'
+            ]);
 
-        // Save task queue
-        $taskQueueRepository->save($taskQueue);
+        // Push task queue
+        $taskManager->pushTaskQueue($taskQueue);
     }
 }

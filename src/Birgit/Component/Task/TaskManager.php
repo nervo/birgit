@@ -159,6 +159,18 @@ class TaskManager
     }
 
     /**
+     * Push task queue
+     *
+     * @param TaskQueue $taskQueue
+     */
+    public function pushTaskQueue(TaskQueue $taskQueue)
+    {
+        // Save task queue
+        $this->taskQueueRepository
+            ->save($taskQueue);
+    }
+
+    /**
      * Launch
      *
      * @param EventDispatcherInterface $eventDispatcher

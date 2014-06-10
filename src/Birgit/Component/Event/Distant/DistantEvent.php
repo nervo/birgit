@@ -21,7 +21,7 @@ class DistantEvent extends Event
      * 
      * @param array $parameters
      */
-    public function __construct(array $parameters)
+    public function __construct(array $parameters = array())
     {
         // Parameters
         $this->parameters = $parameters;

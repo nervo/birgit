@@ -68,4 +68,16 @@ class TaskQueueStatus
     {
         return $this->is(self::FINISHED);
     }
+
+    /**
+     * Normalize
+     *
+     * @return array
+     */
+    public function normalize()
+    {
+        return array(
+            'value' => $this->value
+        );
+    }
 }

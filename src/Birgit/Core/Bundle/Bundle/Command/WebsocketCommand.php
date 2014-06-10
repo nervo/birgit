@@ -51,11 +51,18 @@ EOF
             $bind
         ));
 
+        // Server
+        $taskServer = new WebsocketTaskServer(
+            $logger
+        );
+
         // Loop
         $loop = LoopFactory::create();
 
         // Event dispatcher
         $eventDispatcher = $this->getContainer()->get('birgit.event_dispatcher');
+        $eventDispatcher
+            ->addSubscriber($taskServer);
 
         $loop->addPeriodicTimer(1, function() use ($eventDispatcher) {
             $eventDispatcher->check();
@@ -68,9 +75,7 @@ EOF
             $bind,
             $loop
         );
-        $application->route('/task', new WebsocketTaskServer(
-            $logger
-        ));
+        $application->route('/task', $taskServer);
         $application->run();
     }
 }

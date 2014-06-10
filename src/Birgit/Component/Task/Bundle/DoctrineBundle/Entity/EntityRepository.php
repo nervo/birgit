@@ -4,6 +4,8 @@ namespace Birgit\Component\Task\Bundle\DoctrineBundle\Entity;
 
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Birgit\Component\Task\Model\ModelRepositoryInterface;
 
 /**
@@ -11,6 +13,13 @@ use Birgit\Component\Task\Model\ModelRepositoryInterface;
  */
 abstract class EntityRepository extends DoctrineEntityRepository implements ModelRepositoryInterface
 {
+    /**
+     * Event dispatcher
+     * 
+     * @return EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
     public function all()
     {
         return $this->findAll();
@@ -37,5 +46,10 @@ abstract class EntityRepository extends DoctrineEntityRepository implements Mode
 
         $entityManager->remove($entity);
         $entityManager->flush();
+    }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

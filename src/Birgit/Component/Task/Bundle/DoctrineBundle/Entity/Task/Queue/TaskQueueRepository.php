@@ -56,7 +56,16 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
 
     public function save(TaskQueue $taskQueue)
     {
+        $isNew = $taskQueue->isNew();
+
         $this->saveEntity($taskQueue);
+
+        // Dispatch event
+        $this->eventDispatcher
+            ->dispatch(
+                $isNew ? TaskQueueEvents::CREATE : TaskQueueEvents::UPDATE,
+                new TaskQueueEvent($taskQueue)
+            );
     }
 
     public function get($id)

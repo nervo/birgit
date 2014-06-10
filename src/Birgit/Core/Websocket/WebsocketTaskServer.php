@@ -4,13 +4,18 @@ namespace Birgit\Core\Websocket;
 
 use Psr\Log\LoggerInterface;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+
+use Birgit\Component\Event\Distant\DistantEvent;
+use Birgit\Component\Task\Queue\TaskQueueEvents;
 
 /**
  * Websocket Task Server
  */
-class WebsocketTaskServer implements MessageComponentInterface
+class WebsocketTaskServer implements MessageComponentInterface, EventSubscriberInterface
 {
     protected $logger;
     protected $clients;
@@ -68,5 +73,38 @@ class WebsocketTaskServer implements MessageComponentInterface
         ));
 
         $connection->close();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            TaskQueueEvents::CREATE => 'onTaskQueueEvent',
+            TaskQueueEvents::UPDATE => 'onTaskQueueEvent'
+        );
+    }
+
+    /**
+     * On task queue event
+     *
+     * @param TaskQueueEvent $event
+     * @param string         $eventName
+     */
+    public function onTaskQueueEvent(DistantEvent $event, $eventName)
+    {
+        $this->logger->info(sprintf(
+            'Event: "%s"',
+            $eventName
+        ), $event->getParameters());
+
+        foreach ($this->clients as $client) {
+            $client->send(
+                $eventName .
+                ':' .
+                json_encode($event->getParameters())
+            );
+        }
     }
 }

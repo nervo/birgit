@@ -100,6 +100,16 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
+     * Is new
+     *
+     * @return bool
+     */
+    public function isNew()
+    {
+        return !(bool) $this->id;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getId()

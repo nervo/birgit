@@ -87,4 +87,17 @@ class TypeDefinition
 
         return $default;
     }
+
+    /**
+     * Normalize
+     *
+     * @return array
+     */
+    public function normalize()
+    {
+        return array(
+            'alias'      => $this->getAlias(),
+            'parameters' => $this->getParameters()
+        );
+    }
 }

@@ -6,6 +6,9 @@
 
     <parameters>
 
+        <!-- Event Subscriber -->
+        <parameter key="birgit.event_subscriber.class">Birgit\Core\Event\EventSubscriber</parameter>
+
         <!-- Model Repository Manager -->
         <parameter key="birgit.model_repository_manager.class">Birgit\Core\Model\ModelRepositoryManager</parameter>
 
@@ -35,6 +38,12 @@
     </parameters>
 
     <services>
+
+        <!-- Event Subscriber -->
+        <service id="birgit.event_subscriber" class="%birgit.event_subscriber.class%">
+            <argument type="service" id="birgit.event_dispatcher" />
+            <tag name="kernel.event_subscriber" />
+        </service>
 
         <!-- Model Repository Manager -->
         <service id="birgit.model_repository_manager" class="%birgit.model_repository_manager.class%">

@@ -196,6 +196,21 @@ abstract class TaskQueue implements Typeable
     }
 
     /**
+     * Normalize
+     *
+     * @return array
+     */
+    public function normalize()
+    {
+        return array(
+            'id'       => $this->getId(),
+            'attempts' => $this->getAttempts(),
+            'status'   => $this->getStatus()->normalize(),
+            'type'     => $this->getTypeDefinition()->normalize()
+        );
+    }
+
+    /**
      * To string
      *
      * @return string

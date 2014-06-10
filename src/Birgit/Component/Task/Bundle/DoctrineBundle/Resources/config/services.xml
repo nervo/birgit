@@ -19,6 +19,9 @@
         >
             <argument>BirgitComponentTaskDoctrineBundle:Task\Task</argument>
             <argument>birgit_task</argument>
+            <call method="setEventDispatcher">
+                 <argument type="service" id="event_dispatcher" />
+            </call>
             <tag name="kernel.event_subscriber" />
         </service>
 
@@ -28,6 +31,9 @@
         >
             <argument>BirgitComponentTaskDoctrineBundle:Task\Queue\TaskQueue</argument>
             <argument>birgit_task</argument>
+            <call method="setEventDispatcher">
+                 <argument type="service" id="event_dispatcher" />
+            </call>
             <tag name="kernel.event_subscriber" />
         </service>
 
