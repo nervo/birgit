@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Ratchet;
+use React\EventLoop\Factory as LoopFactory;
 
 use Birgit\Core\Websocket\WebsocketTaskServer;
 
@@ -37,24 +38,39 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get logger
-        $logger = $this->getContainer()->get('logger');
-
         $host = 'localhost';
         $port = 8080;
+        $bind = '127.0.0.1';
 
+        // Logger
+        $logger = $this->getContainer()->get('logger');
         $logger->notice(sprintf(
-            'Start websocket server on %s:%d',
+            'Start websocket server on %s:%d bind on %s',
             $host,
-            $port
+            $port,
+            $bind
         ));
 
-        $application = new Ratchet\App($host, $port);
+        // Loop
+        $loop = LoopFactory::create();
 
+        // Event dispatcher
+        $eventDispatcher = $this->getContainer()->get('birgit.event_dispatcher');
+
+        $loop->addPeriodicTimer(1, function() use ($eventDispatcher) {
+            $eventDispatcher->check();
+        });
+
+        // Application
+        $application = new Ratchet\App(
+            $host,
+            $port,
+            $bind,
+            $loop
+        );
         $application->route('/task', new WebsocketTaskServer(
             $logger
         ));
-
         $application->run();
     }
 }

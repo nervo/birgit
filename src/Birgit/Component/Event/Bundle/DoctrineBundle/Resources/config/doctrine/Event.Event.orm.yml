@@ -5,5 +5,13 @@ Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\Event:
     id:
         id:
             column:    id
-            type:      guid
-            generator: { strategy: UUID }
+            type:      integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            column:    name
+            type:      string
+            length:    255
+        parameters:
+            column:    parameters
+            type:      json_array

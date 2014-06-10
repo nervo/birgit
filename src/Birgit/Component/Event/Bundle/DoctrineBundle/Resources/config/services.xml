@@ -7,6 +7,7 @@
     <parameters>
 
         <parameter key="birgit.event_repository.class">Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\EventRepository</parameter>
+        <parameter key="birgit.event_dispatcher_repository.class">Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\Dispatcher\EventDispatcherRepository</parameter>
 
     </parameters>
 
@@ -17,6 +18,14 @@
             factory-method="getRepository"
         >
             <argument>BirgitComponentEventDoctrineBundle:Event\Event</argument>
+            <argument>birgit_event</argument>
+        </service>
+
+        <service id="birgit.event_dispatcher_repository" class="%birgit.event_dispatcher_repository.class%"
+            factory-service="doctrine"
+            factory-method="getRepository"
+        >
+            <argument>BirgitComponentEventDoctrineBundle:Event\Dispatcher\EventDispatcher</argument>
             <argument>birgit_event</argument>
         </service>
 

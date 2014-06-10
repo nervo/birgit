@@ -4,14 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
+
+        <!-- Event Dispatcher -->
+        <parameter key="birgit.event_dispatcher.class">Birgit\Component\Event\EventDispatcher</parameter>
 
     </parameters>
 
     <services>
 
+        <!-- Event Dispatcher -->
+        <service id="birgit.event_dispatcher" class="%birgit.event_dispatcher.class%">
+            <argument type="service" id="birgit.event_repository" />
+            <argument type="service" id="birgit.event_dispatcher_repository" />
+        </service>
+
     </services>
-    -->
 
 </container>

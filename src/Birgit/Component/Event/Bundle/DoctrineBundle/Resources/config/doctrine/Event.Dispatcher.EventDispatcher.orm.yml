@@ -1,0 +1,23 @@
+Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\Dispatcher\EventDispatcher:
+    type:  entity
+    table: birgit_event_dispatcher
+    repositoryClass: Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\Dispatcher\EventDispatcherRepository
+    id:
+        id:
+            column:    id
+            type:      integer
+            generator: { strategy: AUTO }
+    manyToMany:
+        events:
+            targetEntity: Birgit\Component\Event\Bundle\DoctrineBundle\Entity\Event\Event
+            inversedBy: dispatchers
+            joinTable:
+                name: birgit_event_dispatcher_event
+                joinColumns:
+                    dispatcher_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    event_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

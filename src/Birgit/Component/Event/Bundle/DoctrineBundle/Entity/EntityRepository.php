@@ -31,6 +31,13 @@ abstract class EntityRepository extends DoctrineEntityRepository implements Mode
         $entityManager->flush();
     }
 
+    protected function refreshEntity($entity)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $entityManager->refresh($entity);
+    }
+
     protected function deleteEntity($entity)
     {
         $entityManager = $this->getEntityManager();
