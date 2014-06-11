@@ -3,7 +3,6 @@
 namespace Birgit\Component\Task\Model\Task\Queue;
 
 use Birgit\Component\Type\Typeable;
-use Birgit\Component\Task\Model\Task\Task;
 
 /**
  * Task queue
@@ -64,7 +63,7 @@ abstract class TaskQueue implements Typeable
     /**
      * Increment attempts
      *
-     * @return Task
+     * @return TaskQueue
      */
     public function incrementAttempts()
     {
@@ -82,31 +81,6 @@ abstract class TaskQueue implements Typeable
     {
         return $this->getAttempts() <= 1;
     }
-
-    /**
-     * Add task
-     *
-     * @param Task $task
-     *
-     * @return TaskQueue
-     */
-    abstract public function addTask(Task $task);
-
-    /**
-     * Remove task
-     *
-     * @param Task $task
-     *
-     * @return TaskQueue
-     */
-    abstract public function removeTask(Task $task);
-
-    /**
-     * Get tasks
-     *
-     * @return \Traversable
-     */
-    abstract public function getTasks();
 
     /**
      * Add predecessor

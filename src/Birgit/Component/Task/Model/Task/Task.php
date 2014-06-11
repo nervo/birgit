@@ -3,7 +3,6 @@
 namespace Birgit\Component\Task\Model\Task;
 
 use Birgit\Component\Type\Typeable;
-use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 /**
  * Task
@@ -84,11 +83,19 @@ abstract class Task implements Typeable
     }
 
     /**
-     * Get queue
+     * Normalize
      *
-     * @return TaskQueue
+     * @return array
      */
-    abstract public function getQueue();
+    public function normalize()
+    {
+        return array(
+            'id'       => $this->getId(),
+            'attempts' => $this->getAttempts(),
+            'status'   => $this->getStatus()->normalize(),
+            'type'     => $this->getTypeDefinition()->normalize()
+        );
+    }
 
     /**
      * To string

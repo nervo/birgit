@@ -3,8 +3,10 @@
 namespace Birgit\Component\Task\Queue\Handler;
 
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Task\Queue\Type\TaskQueueTypeInterface;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
+use Birgit\Component\Task\Model\Task\Task;
 
 /**
  * Task Queue Handler
@@ -26,23 +28,23 @@ class TaskQueueHandler
     protected $taskQueueType;
 
     /**
-     * Task Queue Context
+     * Task queue repository
      *
-     * @var TaskQueueContextInterface
+     * @var TaskQueueRepositoryInterface
      */
-    protected $taskQueueContext;
+    protected $taskQueueRepository;
 
     /**
      * Constructor
      *
-     * @param TaskQueue                 $taskQueue
-     * @param TaskQueueTypeInterface    $taskQueueType
-     * @param TaskQueueContextInterface $taskQueueContext
+     * @param TaskQueue                    $taskQueue
+     * @param TaskQueueTypeInterface       $taskQueueType
+     * @param TaskQueueRepositoryInterface $taskQueueRepository
      */
     public function __construct(
         TaskQueue $taskQueue,
         TaskQueueTypeInterface $taskQueueType,
-        TaskQueueContextInterface $taskQueueContext
+        TaskQueueRepositoryInterface $taskQueueRepository
     ) {
         // Task queue
         $this->taskQueue = $taskQueue;
@@ -50,18 +52,34 @@ class TaskQueueHandler
         // Task queue type
         $this->taskQueueType = $taskQueueType;
 
-        // Task queue context
-        $this->taskQueueContext = $taskQueueContext;
+        // Task queue repository
+        $this->taskQueueRepository = $taskQueueRepository;
     }
 
     /**
      * Run
+     *
+     * @param TaskQueueContextInterface $context
      */
-    public function run()
+    public function run(TaskQueueContextInterface $context)
     {
         $this->taskQueueType->run(
             $this->taskQueue,
-            $this->taskQueueContext
+            $context
         );
+    }
+
+    /**
+     * Push task
+     *
+     * @param Task $task
+     */
+    public function pushTask(Task $task)
+    {
+        $this->taskQueueRepository
+            ->addTaskQueueTask(
+                $this->taskQueue,
+                $task
+            );
     }
 }

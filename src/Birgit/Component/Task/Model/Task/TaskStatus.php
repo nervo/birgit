@@ -58,4 +58,16 @@ class TaskStatus
     {
         return $this->is(self::PENDING);
     }
+
+    /**
+     * Normalize
+     *
+     * @return array
+     */
+    public function normalize()
+    {
+        return array(
+            'value' => $this->value
+        );
+    }
 }

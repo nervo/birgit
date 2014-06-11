@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Birgit\Component\Event\EventDispatcher;
 use Birgit\Component\Event\Distant\DistantEvent;
+use Birgit\Component\Task\Event\TaskEvent;
 use Birgit\Component\Task\Queue\TaskQueueEvents;
 use Birgit\Component\Task\Queue\Event\TaskQueueEvent;
 
@@ -38,8 +39,9 @@ class EventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TaskQueueEvents::CREATE => 'onTaskQueueEvent',
-            TaskQueueEvents::UPDATE => 'onTaskQueueEvent'
+            TaskQueueEvents::CREATE   => 'onTaskQueueEvent',
+            TaskQueueEvents::UPDATE   => 'onTaskQueueEvent',
+            TaskQueueEvents::TASK_ADD => 'onTaskQueueTaskEvent'
         );
     }
 
@@ -58,9 +60,31 @@ class EventSubscriber implements EventSubscriberInterface
         $this->distantEventDispatcher
             ->dispatch(
                 $eventName,
-                new DistantEvent(
-                    $taskQueue->normalize()
-                )
+                new DistantEvent(array(
+                    'taskQueue' => $taskQueue->normalize()
+                ))
+            );
+    }
+
+    /**
+     * On task queue task event
+     *
+     * @param TaskEvent $event
+     * @param string    $eventName
+     */
+    public function onTaskQueueTaskEvent(TaskEvent $event, $eventName)
+    {
+        // Get task
+        $task = $event->getTask();
+
+       // Distant dispatch
+        $this->distantEventDispatcher
+            ->dispatch(
+                $eventName,
+                new DistantEvent(array(
+                    'taskQueue' => $task->getQueue()->normalize(),
+                    'task'      => $task->normalize()
+                ))
             );
     }
 }

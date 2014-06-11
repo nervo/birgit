@@ -7,6 +7,7 @@ use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Task\Exception\NotFoundException;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryIterator;
+use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Task;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Birgit\Component\Task\TaskEvents;
 use Birgit\Component\Task\Event\TaskEvent;
@@ -52,6 +53,21 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
             ->setTypeDefinition($typeDefinition);
 
         return $taskQueue;
+    }
+
+    public function addTaskQueueTask(TaskQueue $taskQueue, Task $task)
+    {
+        $taskQueue
+            ->addTask($task);
+
+        $this->save($taskQueue);
+
+        // Dispatch event
+        $this->eventDispatcher
+            ->dispatch(
+                TaskQueueEvents::TASK_ADD,
+                new TaskEvent($task)
+            );
     }
 
     public function save(TaskQueue $taskQueue)

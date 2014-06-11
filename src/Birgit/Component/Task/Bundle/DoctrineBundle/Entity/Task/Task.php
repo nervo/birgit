@@ -5,6 +5,8 @@ namespace Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task;
 use Birgit\Component\Task\Model;
 use Birgit\Component\Type\TypeDefinition;
 
+use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue\TaskQueue;
+
 /**
  * Task
  */
@@ -34,7 +36,7 @@ class Task extends Model\Task\Task
     /**
      * Queue
      *
-     * @var Model\Task\Queue\TaskQueue
+     * @var TaskQueue
      */
     private $queue;
 
@@ -105,7 +107,7 @@ class Task extends Model\Task\Task
      *
      * @return Task
      */
-    public function setQueue(Model\Task\Queue\TaskQueue $queue)
+    public function setQueue(TaskQueue $queue)
     {
         $this->queue = $queue;
 
@@ -113,7 +115,9 @@ class Task extends Model\Task\Task
     }
 
     /**
-     * {@inheritdoc}
+     * Get queue
+     *
+     * @return TaskQueue
      */
     public function getQueue()
     {

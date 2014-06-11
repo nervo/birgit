@@ -2,10 +2,13 @@
 
 namespace Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Queue;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Birgit\Component\Task\Model;
 use Birgit\Component\Type\TypeDefinition;
+
+use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Task;
 
 /**
  * Task queue
@@ -156,9 +159,13 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Add task
+     *
+     * @param Task $task
+     *
+     * @return TaskQueue
      */
-    public function addTask(Model\Task\Task $task)
+    public function addTask(Task $task)
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks->add($task);
@@ -169,9 +176,13 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Remove task
+     *
+     * @param Task $task
+     *
+     * @return TaskQueue
      */
-    public function removeTask(Model\Task\Task $task)
+    public function removeTask(Task $task)
     {
         $this->tasks->removeElement($task);
 
@@ -179,7 +190,9 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Get tasks
+     *
+     * @return Collection
      */
     public function getTasks()
     {

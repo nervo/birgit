@@ -67,9 +67,16 @@ class TaskManager
         TaskQueueRepositoryInterface $taskQueueRepository,
         TypeResolver $taskQueueTypeResolver
     ) {
+        // Task repository
         $this->taskRepository = $taskRepository;
+
+        // Task type resolver
         $this->taskTypeResolver = $taskTypeResolver;
+
+        // Task queue repository
         $this->taskQueueRepository = $taskQueueRepository;
+
+        // Task queue type resolver
         $this->taskQueueTypeResolver = $taskQueueTypeResolver;
     }
 
@@ -93,17 +100,16 @@ class TaskManager
     /**
      * Handle task queue
      *
-     * @param TaskQueue                 $taskQueue
-     * @param TaskQueueContextInterface $context
+     * @param TaskQueue $taskQueue
      *
      * @return TaskQueueHandler
      */
-    public function handleTaskQueue(TaskQueue $taskQueue, TaskQueueContextInterface $context)
+    public function handleTaskQueue(TaskQueue $taskQueue)
     {
         return new TaskQueueHandler(
             $taskQueue,
             $this->taskQueueTypeResolver->resolve($taskQueue),
-            $context
+            $this->taskQueueRepository
         );
     }
 
@@ -126,14 +132,17 @@ class TaskManager
             );
 
         foreach ($tasks as $taskType => $taskParameters) {
+
             // Handle task type only
             if (is_numeric($taskType)) {
                 $taskType = $taskParameters;
                 $taskParameters = array();
             }
-            // Add task
-            $taskQueue
-                ->addTask(
+
+            // Push task
+            $this
+                ->handleTaskQueue($taskQueue)
+                ->pushTask(
                     $this->createTask($taskType, $taskParameters)
                 );
         }
