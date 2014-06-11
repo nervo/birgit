@@ -33,7 +33,7 @@ class ProjectTaskType extends TaskType
         // Get project
         $project = $context->getProject();
 
-        // Get project handler
+        // Handle
         $this->projectManager
             ->handleProject($project)
             ->onProjectTask($task, $context);

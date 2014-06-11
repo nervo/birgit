@@ -20,6 +20,8 @@
         <parameter key="birgit.task_type.project_status.class">Birgit\Core\Task\Type\Project\ProjectStatusTaskType</parameter>
         <parameter key="birgit.task_type.project_references.class">Birgit\Core\Task\Type\Project\ProjectReferencesTaskType</parameter>
         <parameter key="birgit.task_type.project_reference.class">Birgit\Core\Task\Type\Project\Reference\ProjectReferenceTaskType</parameter>
+        <parameter key="birgit.task_type.project_reference_revisions.class">Birgit\Core\Task\Type\Project\Reference\ProjectReferenceRevisionsTaskType</parameter>
+        <parameter key="birgit.task_type.project_reference_hosts.class">Birgit\Core\Task\Type\Project\Reference\ProjectReferenceHostsTaskType</parameter>
         <parameter key="birgit.task_type.project_reference_revision.class">Birgit\Core\Task\Type\Project\Reference\Revision\ProjectReferenceRevisionTaskType</parameter>
         <!-- Task Type - Host -->
         <parameter key="birgit.task_type.host_create.class">Birgit\Core\Task\Type\Host\HostCreateTaskType</parameter>
@@ -99,6 +101,16 @@
             <tag name="birgit.task_type" />
         </service>
         <service id="birgit.task_type.project_reference" public="false" class="%birgit.task_type.project_reference.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
+            <tag name="birgit.task_type" />
+        </service>
+        <service id="birgit.task_type.project_reference_revisions" public="false" class="%birgit.task_type.project_reference_revisions.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
+            <tag name="birgit.task_type" />
+        </service>
+        <service id="birgit.task_type.project_reference_hosts" public="false" class="%birgit.task_type.project_reference_hosts.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
             <tag name="birgit.task_type" />

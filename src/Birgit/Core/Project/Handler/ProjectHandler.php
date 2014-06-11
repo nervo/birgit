@@ -107,4 +107,19 @@ class ProjectHandler
                 $context
             );
     }
+
+    /**
+     * On project reference task
+     *
+     * @param Task                      $task
+     * @param TaskQueueContextInterface $context
+     */
+    public function onProjectReferenceTask(Task $task, TaskQueueContextInterface $context)
+    {
+        $this->projectType
+            ->onProjectReferenceTask(
+                $task,
+                $context
+            );
+    }
 }

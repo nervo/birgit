@@ -11,16 +11,16 @@ use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
- * Project reference Task type
+ * Project Reference - Hosts Task type
  */
-class ProjectReferenceTaskType extends TaskType
+class ProjectReferenceHostsTaskType extends TaskType
 {
     /**
      * {@inheritdoc}
      */
     public function getAlias()
     {
-        return 'project_reference';
+        return 'project_reference_hosts';
     }
 
     protected function runProjectReferenceHosts(ProjectReference $projectReference, TaskQueueContextInterface $context)
@@ -81,6 +81,8 @@ class ProjectReferenceTaskType extends TaskType
      */
     public function run(Task $task, TaskQueueContextInterface $context)
     {
+        return;
+
         if (!$context instanceof ProjectReferenceTaskQueueContextInterface) {
             throw new ContextTaskQueueException();
         }
@@ -88,14 +90,6 @@ class ProjectReferenceTaskType extends TaskType
         // Get project reference
         $projectReference = $context->getProjectReference();
 
-        // Handle
-        $this->projectManager
-            ->handleProject($projectReference->getProject())
-            ->onProjectReferenceTask($task, $context);
-
-        return;
-
-        
 
         $this->runProjectReferenceHosts(
             $projectReference,
