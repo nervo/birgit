@@ -2,6 +2,7 @@
 
 namespace Birgit\Core\Task\Queue\Context\Project\Reference\Revision;
 
+use Birgit\Core\Task\Queue\Context\Project\Reference\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Core\Model\Project\Reference\Revision\ProjectReferenceRevision;
 
 /**

@@ -86,4 +86,40 @@ class TaskQueueHandler
 
         return $this;
     }
+
+    /**
+     * Push predecessor
+     *
+     * @param TaskQueue $predecessor
+     *
+     * @return TaskQueueHandler
+     */
+    public function pushPredecessor(TaskQueue $predecessor)
+    {
+        $this->taskQueueRepository
+            ->addTaskQueuePredecessor(
+                $this->taskQueue,
+                $predecessor
+            );
+
+        return $this;
+    }
+
+    /**
+     * Push successor
+     *
+     * @param TaskQueue $successor
+     *
+     * @return TaskQueueHandler
+     */
+    public function pushSuccessor(TaskQueue $successor)
+    {
+        $this->taskQueueRepository
+            ->addTaskQueueSuccessor(
+                $this->taskQueue,
+                $successor
+            );
+
+        return $this;
+    }
 }

@@ -26,21 +26,6 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
         return $taskQueue;
     }
 
-    public function addTaskQueueTask(TaskQueue $taskQueue, Task $task)
-    {
-        $taskQueue
-            ->addTask($task);
-
-        $this->save($taskQueue);
-
-        // Dispatch event
-        $this->eventDispatcher
-            ->dispatch(
-                TaskQueueEvents::TASK_ADD,
-                new TaskEvent($task)
-            );
-    }
-
     public function save(TaskQueue $taskQueue)
     {
         $isNew = $taskQueue->isNew();
@@ -69,6 +54,69 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
     public function delete(TaskQueue $taskQueue)
     {
         $this->deleteEntity($taskQueue);
+    }
+
+    /**
+     * Add task queue task
+     * 
+     * @param TaskQueue $taskQueue
+     * @param Task      $task
+     */
+    public function addTaskQueueTask(TaskQueue $taskQueue, Task $task)
+    {
+        $taskQueue
+            ->addTask($task);
+
+        $this->save($taskQueue);
+
+        // Dispatch event
+        $this->eventDispatcher
+            ->dispatch(
+                TaskQueueEvents::TASK_ADD,
+                new TaskEvent($task)
+            );
+    }
+
+    /**
+     * Add task queue predecessor
+     *
+     * @param TaskQueue $taskQueue
+     * @param TaskQueue $predecessor
+     */
+    public function addTaskQueuePredecessor(TaskQueue $taskQueue, TaskQueue $predecessor)
+    {
+        $taskQueue
+            ->addSuccessor($predecessor);
+
+        $this->save($taskQueue);
+
+        // Dispatch event
+        $this->eventDispatcher
+            ->dispatch(
+                TaskQueueEvents::PREDECESSOR_ADD,
+                new TaskQueueEvent($predecessor)
+            );
+    }
+
+    /**
+     * Add task queue successor
+     *
+     * @param TaskQueue $taskQueue
+     * @param TaskQueue $successor
+     */
+    public function addTaskQueueSuccessor(TaskQueue $taskQueue, TaskQueue $successor)
+    {
+        $taskQueue
+            ->addSuccessor($successor);
+
+        $this->save($taskQueue);
+
+        // Dispatch event
+        $this->eventDispatcher
+            ->dispatch(
+                TaskQueueEvents::SUCCESSOR_ADD,
+                new TaskQueueEvent($successor)
+            );
     }
 
     /**

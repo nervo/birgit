@@ -81,9 +81,11 @@ class WebsocketTaskServer implements MessageComponentInterface, EventSubscriberI
     public static function getSubscribedEvents()
     {
         return array(
-            TaskQueueEvents::CREATE   => 'onDistantEvent',
-            TaskQueueEvents::UPDATE   => 'onDistantEvent',
-            TaskQueueEvents::TASK_ADD => 'onDistantEvent'
+            TaskQueueEvents::CREATE          => 'onDistantEvent',
+            TaskQueueEvents::UPDATE          => 'onDistantEvent',
+            TaskQueueEvents::TASK_ADD        => 'onDistantEvent',
+            TaskQueueEvents::PREDECESSOR_ADD => 'onDistantEvent',
+            TaskQueueEvents::SUCCESSOR_ADD   => 'onDistantEvent'
         );
     }
 

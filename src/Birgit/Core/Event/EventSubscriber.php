@@ -39,9 +39,11 @@ class EventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            TaskQueueEvents::CREATE   => 'onTaskQueueEvent',
-            TaskQueueEvents::UPDATE   => 'onTaskQueueEvent',
-            TaskQueueEvents::TASK_ADD => 'onTaskQueueTaskEvent'
+            TaskQueueEvents::CREATE          => 'onTaskQueueEvent',
+            TaskQueueEvents::UPDATE          => 'onTaskQueueEvent',
+            TaskQueueEvents::TASK_ADD        => 'onTaskQueueTaskEvent',
+            TaskQueueEvents::PREDECESSOR_ADD => 'onTaskQueuePredecessorEvent',
+            TaskQueueEvents::SUCCESSOR_ADD   => 'onTaskQueueSuccessorEvent'
         );
     }
 
@@ -84,6 +86,50 @@ class EventSubscriber implements EventSubscriberInterface
                 new DistantEvent(array(
                     'taskQueue' => $task->getQueue()->normalize(),
                     'task'      => $task->normalize()
+                ))
+            );
+    }
+
+    /**
+     * On task queue predecessor event
+     *
+     * @param TaskQueueEvent $event
+     * @param string         $eventName
+     */
+    public function onTaskQueuePredecessorEvent(TaskQueueEvent $event, $eventName)
+    {
+        // Get task queue
+        $taskQueue = $event->getTaskQueue();
+
+        // Distant dispatch
+        $this->distantEventDispatcher
+            ->dispatch(
+                $eventName,
+                new DistantEvent(array(
+                    'taskQueue'            => $taskQueue->getTail()->normalize(),
+                    'taskQueuePredecessor' => $taskQueue->normalize()
+                ))
+            );
+    }
+
+    /**
+     * On task queue successor event
+     *
+     * @param TaskQueueEvent $event
+     * @param string         $eventName
+     */
+    public function onTaskQueueSuccessorEvent(TaskQueueEvent $event, $eventName)
+    {
+        // Get task queue
+        $taskQueue = $event->getTaskQueue();
+
+        // Distant dispatch
+        $this->distantEventDispatcher
+            ->dispatch(
+                $eventName,
+                new DistantEvent(array(
+                    'taskQueue'          => $taskQueue->getHead()->normalize(),
+                    'taskQueueSuccessor' => $taskQueue->normalize()
                 ))
             );
     }

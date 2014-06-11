@@ -51,17 +51,17 @@ class ProjectReferencesTaskType extends TaskType
             // Delete project reference
             if (!$projectReferenceFound) {
 
-                /*
-                $taskQueue = $context->getTaskManager()
-                    ->createProjectTaskQueue($project, [
-                        'project_reference_delete' => [
-                            'project_reference_name' => $projectReference->getName()
-                        ]
-                    ]);
-
-                $context->getTaskQueue()
-                    ->addSuccessor($taskQueue);
-                */
+                // Push reference delete task as successor
+                $context->getTaskManager()
+                    ->handleTaskQueue($context->getTaskQueue())
+                    ->pushSuccessor(
+                        $context->getTaskManager()
+                            ->createProjectTaskQueue($project, [
+                                'project_reference_delete' => [
+                                    'project_reference_name' => $projectReference->getName()
+                                ]
+                            ])
+                    );
             }
         }
 
@@ -76,7 +76,6 @@ class ProjectReferencesTaskType extends TaskType
             }
 
             if (!$projectReferenceFound) {
-                /*
                 // Get project reference repository
                 $projectReferenceRepository =  $this->modelRepositoryManager
                     ->getProjectReferenceRepository();
@@ -90,19 +89,17 @@ class ProjectReferencesTaskType extends TaskType
 
                 // Save
                 $projectReferenceRepository->save($projectReference);
-                */
             }
 
-            /*
-            $taskQueue = $context->getTaskManager()
-                ->createProjectReferenceTaskQueue($projectReference, [
-                    'project_reference'
-                ]);
-
-            $context->getTaskQueue()
-                ->addSuccessor($taskQueue);
-            */
+            // Push reference task as successor
+            $context->getTaskManager()
+                ->handleTaskQueue($context->getTaskQueue())
+                ->pushSuccessor(
+                    $context->getTaskManager()
+                        ->createProjectReferenceTaskQueue($projectReference, [
+                            'project_reference'
+                        ])
+                );
         }
-
     }
 }

@@ -278,7 +278,7 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
      *
      * @return TaskQueue
      */
-    public function setTail(Model\Task\Queue\TaskQueue $tail)
+    public function setTail(TaskQueue $tail)
     {
         return $this->tail = $tail;
     }
@@ -294,9 +294,13 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Add predecessor
+     *
+     * @param TaskQueue $predecessor
+     *
+     * @return TaskQueue
      */
-    public function addPredecessor(Model\Task\Queue\TaskQueue $predecessor)
+    public function addPredecessor(TaskQueue $predecessor)
     {
         if (!$this->predecessors->contains($predecessor)) {
             $this->predecessors->add($predecessor);
@@ -307,9 +311,13 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Remove predecessor
+     *
+     * @param TaskQueue $predecessor
+     *
+     * @return TaskQueue
      */
-    public function removePredecessor(Model\Task\Queue\TaskQueue $predecessor)
+    public function removePredecessor(TaskQueue $predecessor)
     {
         $this->predecessors->removeElement($predecessor);
 
@@ -317,7 +325,9 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Get predecessors
+     *
+     * @return Collection
      */
     public function getPredecessors()
     {
@@ -329,13 +339,15 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
      *
      * @return TaskQueue
      */
-    public function setHead(Model\Task\Queue\TaskQueue $head)
+    public function setHead(TaskQueue $head)
     {
         return $this->head = $head;
     }
 
     /**
-     * {@inheritdoc}
+     * Get head
+     *
+     * @return TaskQueue|null
      */
     public function getHead()
     {
@@ -343,9 +355,13 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Add successor
+     *
+     * @param TaskQueue $successor
+     *
+     * @return TaskQueue
      */
-    public function addSuccessor(Model\Task\Queue\TaskQueue $successor)
+    public function addSuccessor(TaskQueue $successor)
     {
         if (!$this->successors->contains($successor)) {
             $this->successors->add($successor);
@@ -356,9 +372,13 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Remove successor
+     *
+     * @param TaskQueue $successor
+     *
+     * @return TaskQueue
      */
-    public function removeSuccessor(Model\Task\Queue\TaskQueue $successor)
+    public function removeSuccessor(TaskQueue $successor)
     {
         $this->successors->removeElement($successor);
 
@@ -366,7 +386,9 @@ class TaskQueue extends Model\Task\Queue\TaskQueue
     }
 
     /**
-     * {@inheritdoc}
+     * Get successors
+     *
+     * @return Collection
      */
     public function getSuccessors()
     {

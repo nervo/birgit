@@ -83,31 +83,6 @@ abstract class TaskQueue implements Typeable
     }
 
     /**
-     * Add predecessor
-     *
-     * @param TaskQueue $predecessor
-     *
-     * @return TaskQueue
-     */
-    abstract public function addPredecessor(TaskQueue $predecessor);
-
-    /**
-     * Remove predecessor
-     *
-     * @param TaskQueue $predecessor
-     *
-     * @return TaskQueue
-     */
-    abstract public function removePredecessor(TaskQueue $predecessor);
-
-    /**
-     * Get predecessors
-     *
-     * @return \Traversable
-     */
-    abstract public function getPredecessors();
-
-    /**
      * Has predecessors
      *
      * @return bool
@@ -118,13 +93,6 @@ abstract class TaskQueue implements Typeable
     }
 
     /**
-     * Get head
-     *
-     * @return TaskQueue|null
-     */
-    abstract public function getHead();
-
-    /**
      * Has head
      *
      * @return bool
@@ -133,31 +101,6 @@ abstract class TaskQueue implements Typeable
     {
         return (bool) $this->getHead();
     }
-
-    /**
-     * Add successor
-     *
-     * @param TaskQueue $successor
-     *
-     * @return TaskQueue
-     */
-    abstract public function addSuccessor(TaskQueue $successor);
-
-    /**
-     * Remove successor
-     *
-     * @param TaskQueue $successor
-     *
-     * @return TaskQueue
-     */
-    abstract public function removeSuccessor(TaskQueue $successor);
-
-    /**
-     * Get successors
-     *
-     * @return \Traversable
-     */
-    abstract public function getSuccessors();
 
     /**
      * Has successors

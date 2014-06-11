@@ -272,7 +272,7 @@ class TaskManager
             } catch (SuspendTaskQueueException $exception) {
 
                 // Log
-                $logger->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
+                $logger->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
 
                 // Update status
                 $taskQueue

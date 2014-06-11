@@ -2,6 +2,7 @@
 
 namespace Birgit\Core\Task\Queue\Context\Project\Environment;
 
+use Birgit\Core\Task\Queue\Context\Project\ProjectTaskQueueContext;
 use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 
