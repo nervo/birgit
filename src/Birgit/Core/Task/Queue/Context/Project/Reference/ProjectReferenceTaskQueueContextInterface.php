@@ -1,6 +1,6 @@
 <?php
 
-namespace Birgit\Core\Task\Queue\Context\Project;
+namespace Birgit\Core\Task\Queue\Context\Project\Reference;
 
 use Birgit\Core\Model\Project\Reference\ProjectReference;
 

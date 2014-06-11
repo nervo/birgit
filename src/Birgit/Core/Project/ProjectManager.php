@@ -24,12 +24,11 @@ class ProjectManager
         $this->projectEnvironmentTypeResolver = $projectEnvironmentTypeResolver;
     }
 
-    public function handleProject(Project $project, TaskQueueContextInterface $context)
+    public function handleProject(Project $project)
     {
         return new ProjectHandler(
             $project,
-            $this->projectTypeResolver->resolve($project),
-            $context
+            $this->projectTypeResolver->resolve($project)
         );
     }
 

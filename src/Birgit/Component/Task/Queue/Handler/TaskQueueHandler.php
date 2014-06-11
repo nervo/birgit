@@ -73,6 +73,8 @@ class TaskQueueHandler
      * Push task
      *
      * @param Task $task
+     *
+     * @return TaskQueueHandler
      */
     public function pushTask(Task $task)
     {
@@ -81,5 +83,7 @@ class TaskQueueHandler
                 $this->taskQueue,
                 $task
             );
+
+        return $this;
     }
 }

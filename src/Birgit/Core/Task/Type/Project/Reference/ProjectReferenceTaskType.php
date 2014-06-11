@@ -5,7 +5,7 @@ namespace Birgit\Core\Task\Type\Project\Reference;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Core\Model\Project\Reference\ProjectReference;
-use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\Reference\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
 use Birgit\Core\Task\Type\TaskType;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;

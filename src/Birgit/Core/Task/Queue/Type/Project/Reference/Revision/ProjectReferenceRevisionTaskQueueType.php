@@ -4,7 +4,7 @@ namespace Birgit\Core\Task\Queue\Type\Project\Reference\Revision;
 
 use Birgit\Core\Task\Queue\Type\TaskQueueType;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
-use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceRevisionTaskQueueContext;
+use Birgit\Core\Task\Queue\Context\Project\Reference\Revision\ProjectReferenceRevisionTaskQueueContext;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 
 class ProjectReferenceRevisionTaskQueueType extends TaskQueueType

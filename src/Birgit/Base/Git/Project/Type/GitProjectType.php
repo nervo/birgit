@@ -102,11 +102,12 @@ class GitProjectType extends ProjectType
         // Get task queue
         $taskQueue = $context->getTaskQueue();
 
-        $taskQueue
-            ->addTask(
+        $taskManager
+            ->handleTaskQueue($taskQueue)
+            ->pushTask(
                 $taskManager->createTask('project_status')
             )
-            ->addTask(
+            ->pushTask(
                 $taskManager->createTask('project_references')
             );
     }

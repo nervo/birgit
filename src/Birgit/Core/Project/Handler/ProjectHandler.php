@@ -28,89 +28,83 @@ class ProjectHandler
     protected $projectType;
 
     /**
-     * Task Queue Context
-     *
-     * @var TaskQueueContextInterface
-     */
-    protected $taskQueueContext;
-
-    /**
      * Constructor
      *
      * @param Project                   $project
      * @param ProjectTypeInterface      $projectType
-     * @param TaskQueueContextInterface $taskQueueContext
      */
     public function __construct(
         Project $project,
-        ProjectTypeInterface $projectType,
-        TaskQueueContextInterface $taskQueueContext
+        ProjectTypeInterface $projectType
     ) {
         // Project
         $this->project = $project;
 
         // Project type
         $this->projectType = $projectType;
-
-        // Task queue context
-        $this->taskQueueContext = $taskQueueContext;
     }
 
     /**
      * Is up
      *
+     * @param TaskQueueContextInterface $context
+     *
      * @return boolean
      */
-    public function isUp()
+    public function isUp(TaskQueueContextInterface $context)
     {
         return $this->projectType
             ->isUp(
                 $this->project,
-                $this->taskQueueContext
+                $context
             );
     }
 
     /**
      * Get references
      *
+     * @param TaskQueueContextInterface $context
+     *
      * @return array
      */
-    public function getReferences()
+    public function getReferences(TaskQueueContextInterface $context)
     {
         return $this->projectType
             ->getReferences(
                 $this->project,
-                $this->taskQueueContext
+                $context
             );
     }
 
     /**
      * Get reference revision
      *
-     * @param ProjectReference $projectReference
+     * @param ProjectReference          $projectReference
+     * @param TaskQueueContextInterface $context
      *
      * @return string
      */
-    public function getReferenceRevision(ProjectReference $projectReference)
+    public function getReferenceRevision(ProjectReference $projectReference, TaskQueueContextInterface $context)
     {
         return $this->projectType
             ->getReferenceRevision(
                 $projectReference,
-                $this->taskQueueContext
+                $context
             );
     }
 
     /**
      * On project task
      * 
-     * @param Task $task
+     * @param Task                      $task
+     * @param TaskQueueContextInterface $context
      */
-    public function onProjectTask(Task $task)
+    public function onProjectTask(Task $task, TaskQueueContextInterface $context)
     {
         $this->projectType
             ->onProjectTask(
                 $task,
-                $this->taskQueueContext
+                $context
             );
     }
 }

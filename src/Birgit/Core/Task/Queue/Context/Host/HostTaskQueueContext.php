@@ -2,7 +2,7 @@
 
 namespace Birgit\Core\Task\Queue\Context\Host;
 
-use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceTaskQueueContext;
+use Birgit\Core\Task\Queue\Context\Project\Reference\ProjectReferenceTaskQueueContext;
 use Birgit\Core\Model\Host\Host;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 

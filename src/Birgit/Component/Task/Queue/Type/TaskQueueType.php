@@ -64,6 +64,11 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
             $context->getTaskManager()
                 ->getTaskRepository()
                 ->save($task);
+
+            // Save
+            $context->getTaskManager()
+                ->getTaskQueueRepository()
+                ->save($taskQueue);
         }
     }
 }

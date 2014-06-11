@@ -6,7 +6,7 @@ use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
 use Birgit\Core\Task\Type\TaskType;
-use Birgit\Core\Task\Queue\Context\Project\ProjectReferenceRevisionTaskQueueContextInterface;
+use Birgit\Core\Task\Queue\Context\Project\Reference\Revision\ProjectReferenceRevisionTaskQueueContextInterface;
 
 /**
  * Project reference revision Task type

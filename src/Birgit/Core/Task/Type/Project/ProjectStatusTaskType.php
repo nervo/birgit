@@ -6,8 +6,6 @@ use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Core\Model\Project\ProjectStatus;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Core\Task\Queue\Context\Project\ProjectTaskQueueContextInterface;
-use Birgit\Core\Project\ProjectEvents;
-use Birgit\Core\Project\Event\ProjectEvent;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
 use Birgit\Core\Task\Type\TaskType;
 
@@ -36,13 +34,10 @@ class ProjectStatusTaskType extends TaskType
         // Get project
         $project = $context->getProject();
 
-        // Get project handler
-        $projectHandler = $this->projectManager
-            ->handleProject($project, $context);
-
         // Is project up ?
-        $isUp = $projectHandler
-            ->isUp();
+        $isUp = $this->projectManager
+            ->handleProject($project)
+            ->isUp($context);
 
         // Compute status
         $status = $isUp ? ProjectStatus::UP : ProjectStatus::DOWN;
@@ -55,13 +50,6 @@ class ProjectStatusTaskType extends TaskType
             $this->modelRepositoryManager
                 ->getProjectRepository()
                 ->save($project);
-
-            // Dispatch event
-            $context->getEventDispatcher()
-                ->dispatch(
-                    ProjectEvents::STATUS,
-                    new ProjectEvent($project)
-                );
         }
     }
 }
