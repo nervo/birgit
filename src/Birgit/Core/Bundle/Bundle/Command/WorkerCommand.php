@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use React\EventLoop\Factory as LoopFactory;
+
 /**
  * Worker command
  */
@@ -33,13 +35,27 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get task manager
-        $taskManager = $this->getContainer()
-            ->get('birgit.task_manager');
+        // Logger
+        $logger = $this->getContainer()->get('logger');
+        $logger->notice(sprintf(
+            'Start worker'
+        ));
 
-        $taskManager->launch(
-            $this->getContainer()->get('event_dispatcher'),
-            $this->getContainer()->get('logger')
-        );
+        // Loop
+        $loop = LoopFactory::create();
+
+        $loop->addPeriodicTimer(1, function() {
+            // Get task manager
+            $taskManager = $this->getContainer()
+                ->get('birgit.task_manager');
+
+            $taskManager->loop(
+                $this->getContainer()->get('event_dispatcher'),
+                $this->getContainer()->get('logger')
+            );
+        });
+
+        // Main
+        $loop->run();
     }
 }

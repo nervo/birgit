@@ -26,42 +26,32 @@ class TaskHandler
     protected $taskType;
 
     /**
-     * Task Queue Context
-     *
-     * @var TaskQueueContextInterface
-     */
-    protected $taskQueueContext;
-
-    /**
      * Constructor
      *
      * @param Task                      $task
      * @param TaskTypeInterface         $taskType
-     * @param TaskQueueContextInterface $taskQueueContext
      */
     public function __construct(
         Task $task,
-        TaskTypeInterface $taskType,
-        TaskQueueContextInterface $taskQueueContext
+        TaskTypeInterface $taskType
     ) {
         // Task
         $this->task = $task;
 
         // Task type
         $this->taskType = $taskType;
-
-        // Task queue context
-        $this->taskQueueContext = $taskQueueContext;
     }
 
     /**
      * Run
+     *
+     * @param TaskQueueContextInterface $context
      */
-    public function run()
+    public function run(TaskQueueContextInterface $context)
     {
         $this->taskType->run(
             $this->task,
-            $this->taskQueueContext
+            $context
         );
     }
 }

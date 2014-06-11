@@ -6,10 +6,7 @@ use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\EntityRepository;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryInterface;
 use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Task\Exception\NotFoundException;
-use Birgit\Component\Task\Model\Task\Queue\TaskQueueRepositoryIterator;
 use Birgit\Component\Task\Bundle\DoctrineBundle\Entity\Task\Task;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Birgit\Component\Task\TaskEvents;
 use Birgit\Component\Task\Event\TaskEvent;
 use Birgit\Component\Task\Queue\TaskQueueEvents;
 use Birgit\Component\Task\Queue\Event\TaskQueueEvent;
@@ -17,34 +14,8 @@ use Birgit\Component\Task\Queue\Event\TaskQueueEvent;
 /**
  * Task queue Repository
  */
-class TaskQueueRepository extends EntityRepository implements TaskQueueRepositoryInterface, EventSubscriberInterface
+class TaskQueueRepository extends EntityRepository implements TaskQueueRepositoryInterface
 {
-    public static function getSubscribedEvents()
-    {
-        return array(
-            TaskEvents::RUN_END      => 'onTaskRunEnd',
-            TaskQueueEvents::RUN_END => 'onTaskQueueRunEnd'
-        );
-    }
-
-    public function onTaskRunEnd(TaskEvent $event)
-    {
-        // Get task queue
-        $taskQueue = $event->getTask()->getQueue();
-
-        // Save
-        $this->save($taskQueue);
-    }
-
-    public function onTaskQueueRunEnd(TaskQueueEvent $event)
-    {
-        // Get task queue
-        $taskQueue = $event->getTaskQueue();
-
-        // Save
-        $this->save($taskQueue);
-    }
-
     public function create(TypeDefinition $typeDefinition)
     {
         $taskQueue = $this->createEntity();
@@ -100,6 +71,13 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
         $this->deleteEntity($taskQueue);
     }
 
+    /**
+     * Find first one with id not in ids
+     *
+     * @param array $ids
+     *
+     * @return TaskQueue|null
+     */
     public function findFirstOneWithIdNotIn(array $ids)
     {
         $queryBuilder = $this->createQueryBuilder('taskQueue')
@@ -114,10 +92,5 @@ class TaskQueueRepository extends EntityRepository implements TaskQueueRepositor
         return $queryBuilder
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    public function getIterator()
-    {
-        return new TaskQueueRepositoryIterator($this);
     }
 }

@@ -9,6 +9,7 @@ use Birgit\Component\Task\Event\TaskEvent;
 use Birgit\Component\Task\TaskEvents;
 use Birgit\Component\Task\Model\Task\TaskStatus;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
+use Birgit\Component\Task\Model\Task\TasksIterator;
 
 /**
  * Task Queue Type
@@ -20,33 +21,32 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
      */
     public function run(TaskQueue $taskQueue, TaskQueueContextInterface $context)
     {
-        // Get tasks
-        $tasks = $taskQueue->getTasks()->toArray();
+        // Create tasks iterator
+        $tasks = new TasksIterator(
+            $context->getTaskManager()->getTaskRepository(),
+            $taskQueue
+        );
 
-        while ($tasks) {
-            // Get task
-            $task = array_pop($tasks);
-
-            // Log
-            $context->getLogger()->notice(sprintf('> Task: "%s"', $task->getTypeDefinition()->getAlias()), $task->getTypeDefinition()->getParameters());
+        foreach ($tasks as $task) {
 
             // Update
             $task
                 ->setStatus(new TaskStatus(TaskStatus::RUNNING))
                 ->incrementAttempts();
 
-            // Start event
-            $context->getEventDispatcher()
-                ->dispatch(
-                    TaskEvents::RUN_START,
-                    new TaskEvent($task)
-                );
+            // Save
+            $context->getTaskManager()
+                ->getTaskRepository()
+                ->save($task);
+
+            // Log
+            $context->getLogger()->notice(sprintf('> Task: "%s"', $task->getTypeDefinition()->getAlias()), $task->getTypeDefinition()->getParameters());
 
             try {
                 // Run
                 $context->getTaskManager()
-                    ->handleTask($task, $context)
-                        ->run();
+                    ->handleTask($task)
+                        ->run($context);
 
                 // Update status
                 $task
@@ -60,12 +60,10 @@ abstract class TaskQueueType extends Type implements TaskQueueTypeInterface
                 throw $exception;
             }
 
-            // End event
-            $context->getEventDispatcher()
-                ->dispatch(
-                    TaskEvents::RUN_END,
-                    new TaskEvent($task)
-                );
+            // Save
+            $context->getTaskManager()
+                ->getTaskRepository()
+                ->save($task);
         }
     }
 }

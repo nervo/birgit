@@ -3,14 +3,14 @@
 namespace Birgit\Component\Task\Model\Task\Queue;
 
 /**
- * Task Queue Repository Iterator
+ * Task Queues Iterator
  */
-class TaskQueueRepositoryIterator implements \Iterator
+class TaskQueuesIterator implements \Iterator
 {
     /**
      * Task Queue Repository
      * 
-     * @var type 
+     * @var TaskQueueRepositoryInterface
      */
     protected $taskQueueRepository;
 
@@ -24,7 +24,7 @@ class TaskQueueRepositoryIterator implements \Iterator
     /**
      * Ids
      * 
-     * @var type 
+     * @var array
      */
     protected $ids = array();
 
@@ -33,32 +33,49 @@ class TaskQueueRepositoryIterator implements \Iterator
      * 
      * @param TaskQueueRepositoryInterface $taskQueueRepository
      */
-    public function __construct(TaskQueueRepositoryInterface $taskQueueRepository)
-    {
+    public function __construct(
+        TaskQueueRepositoryInterface $taskQueueRepository
+    ) {
         // Task queue repository
         $this->taskQueueRepository = $taskQueueRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rewind()
     {
+        $this->ids = array();
         $this->next();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function valid()
     {
         return (bool) $this->current;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function current()
     {
         return $this->current;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function key()
     {
         return $this->current->getId();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function next()
     {
         $this->current = $this->taskQueueRepository

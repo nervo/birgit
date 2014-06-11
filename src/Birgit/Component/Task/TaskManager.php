@@ -7,8 +7,6 @@ use Psr\Log\LoggerInterface;
 
 use Birgit\Component\Task\Model\Task\Task;
 use Birgit\Component\Task\Model\Task\TaskRepositoryInterface;
-use Birgit\Component\Task\Queue\Event\TaskQueueEvent;
-use Birgit\Component\Task\Queue\TaskQueueEvents;
 use Birgit\Component\Task\Handler\TaskHandler;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueue;
 use Birgit\Component\Task\Model\Task\Queue\TaskQueueStatus;
@@ -19,6 +17,7 @@ use Birgit\Component\Type\TypeDefinition;
 use Birgit\Component\Type\TypeResolver;
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
+use Birgit\Component\Task\Model\Task\Queue\TaskQueuesIterator;
 
 /**
  * Task Manager
@@ -81,19 +80,37 @@ class TaskManager
     }
 
     /**
+     * Get task repository
+     * 
+     * @return TaskRepositoryInterface
+     */
+    public function getTaskRepository()
+    {
+        return $this->taskRepository;
+    }
+
+    /**
+     * Get task queue repository
+     *
+     * @return TaskQueueRepositoryInterface
+     */
+    public function getTaskQueueRepository()
+    {
+        return $this->taskQueueRepository;
+    }
+
+    /**
      * Handle task
      *
-     * @param Task                      $task
-     * @param TaskQueueContextInterface $context
+     * @param Task $task
      *
-     * @return \Birgit\Component\Task\Handler\TaskHandler
+     * @return TaskHandler
      */
-    public function handleTask(Task $task, TaskQueueContextInterface $context)
+    public function handleTask(Task $task)
     {
         return new TaskHandler(
             $task,
-            $this->taskTypeResolver->resolve($task),
-            $context
+            $this->taskTypeResolver->resolve($task)
         );
     }
 
@@ -180,97 +197,91 @@ class TaskManager
     }
 
     /**
-     * Launch
+     * Loop
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param LoggerInterface          $logger
      */
-    public function launch(
+    public function loop(
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
-        while (true) {
-            foreach ($this->taskQueueRepository as $taskQueue) {
+        // Create task queues iterator
+        $taskQueues = new TaskQueuesIterator(
+            $this->taskQueueRepository
+        );
 
-                // An already finished task queue must not be ran
-                if ($taskQueue->getStatus()->isFinished()) {
-                    continue;
-                }
+        foreach ($taskQueues as $taskQueue) {
 
-                // A task queue having unfinished predecessors must not be ran
-                if ($taskQueue->hasPredecessors()) {
-                    $finished = true;
-                    foreach ($taskQueue->getPredecessors() as $taskQueuePredecessor) {
-                        if (!$taskQueuePredecessor->getStatus()->isFinished()) {
-                            $finished = false;
-                            break;
-                        }
-                    }
-                    if (!$finished) {
-                        continue;
-                    }
-                }
-
-                // A successor task queue having unfinished head must not be ran
-                if (
-                    $taskQueue->hasHead()
-                    && !$taskQueue->getHead()->getStatus()->isFinished()
-                ) {
-                    continue;
-                }
-
-                // Update
-                $taskQueue
-                    ->setStatus(new TaskQueueStatus(TaskQueueStatus::RUNNING))
-                    ->incrementAttempts();
-
-                // Log
-                $logger->notice(sprintf('Task Queue: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
-
-                // Start event
-                $eventDispatcher
-                    ->dispatch(
-                        TaskQueueEvents::RUN_START,
-                        new TaskQueueEvent($taskQueue)
-                    );
-
-                // Run
-                try {
-
-                    // Create Task Queue Context
-                    $taskQueueContext = new TaskQueueContext(
-                        $taskQueue,
-                        $this,
-                        $eventDispatcher,
-                        $logger
-                    );
-
-                    $this->handleTaskQueue($taskQueue, $taskQueueContext)
-                        ->run();
-
-                    // Update status
-                    $taskQueue
-                        ->setStatus(new TaskQueueStatus(TaskQueueStatus::FINISHED));
-
-                } catch (SuspendTaskQueueException $exception) {
-
-                    // Log
-                    $logger->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
-
-                    // Update status
-                    $taskQueue
-                        ->setStatus(new TaskQueueStatus(TaskQueueStatus::PENDING));
-                }
-
-                // End event
-                $eventDispatcher
-                    ->dispatch(
-                        TaskQueueEvents::RUN_END,
-                        new TaskQueueEvent($taskQueue)
-                    );
+            // An already finished task queue must not be ran
+            if ($taskQueue->getStatus()->isFinished()) {
+                continue;
             }
 
-            sleep(3);
+            // A task queue having unfinished predecessors must not be ran
+            if ($taskQueue->hasPredecessors()) {
+                $finished = true;
+                foreach ($taskQueue->getPredecessors() as $taskQueuePredecessor) {
+                    if (!$taskQueuePredecessor->getStatus()->isFinished()) {
+                        $finished = false;
+                        break;
+                    }
+                }
+                if (!$finished) {
+                    continue;
+                }
+            }
+
+            // A successor task queue having unfinished head must not be ran
+            if (
+                $taskQueue->hasHead()
+                && !$taskQueue->getHead()->getStatus()->isFinished()
+            ) {
+                continue;
+            }
+
+            // Update
+            $taskQueue
+                ->setStatus(new TaskQueueStatus(TaskQueueStatus::RUNNING))
+                ->incrementAttempts();
+
+            // Save
+            $this->taskQueueRepository
+                ->save($taskQueue);
+
+            // Log
+            $logger->notice(sprintf('Task Queue: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
+
+            // Run
+            try {
+
+                $this->handleTaskQueue($taskQueue)
+                    ->run(
+                        new TaskQueueContext(
+                            $taskQueue,
+                            $this,
+                            $eventDispatcher,
+                            $logger
+                        )
+                    );
+
+                // Update status
+                $taskQueue
+                    ->setStatus(new TaskQueueStatus(TaskQueueStatus::FINISHED));
+
+            } catch (SuspendTaskQueueException $exception) {
+
+                // Log
+                $logger->getLogger()->notice(sprintf('! Task Queue Suspended: "%s"', $taskQueue->getTypeDefinition()->getAlias()), $taskQueue->getTypeDefinition()->getParameters());
+
+                // Update status
+                $taskQueue
+                    ->setStatus(new TaskQueueStatus(TaskQueueStatus::PENDING));
+            }
+
+            // Save
+            $this->taskQueueRepository
+                ->save($taskQueue);
         }
     }
 }

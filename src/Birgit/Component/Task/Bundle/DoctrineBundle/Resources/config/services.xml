@@ -22,7 +22,6 @@
             <call method="setEventDispatcher">
                  <argument type="service" id="event_dispatcher" />
             </call>
-            <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="birgit.task_queue_repository" class="%birgit.task_queue_repository.class%"
@@ -34,7 +33,6 @@
             <call method="setEventDispatcher">
                  <argument type="service" id="event_dispatcher" />
             </call>
-            <tag name="kernel.event_subscriber" />
         </service>
 
     </services>

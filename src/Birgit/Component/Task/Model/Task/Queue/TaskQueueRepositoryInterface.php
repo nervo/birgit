@@ -7,6 +7,6 @@ use Birgit\Component\Task\Model\ModelRepositoryInterface;
 /**
  * Task Queue Repository Interface
  */
-interface TaskQueueRepositoryInterface extends ModelRepositoryInterface, \IteratorAggregate
+interface TaskQueueRepositoryInterface extends ModelRepositoryInterface
 {
 }

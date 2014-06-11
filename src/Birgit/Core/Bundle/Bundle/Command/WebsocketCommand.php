@@ -76,6 +76,8 @@ EOF
             $loop
         );
         $application->route('/task', $taskServer);
-        $application->run();
+
+        // Main
+        $loop->run();
     }
 }
