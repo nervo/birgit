@@ -2,7 +2,6 @@
     "name": "birgit",
     "dependencies": {
     	"bootstrap": "3.1.*",
-        "autobahnjs": "0.9.*",
         "d3": "3.4.*"
     }
 }
