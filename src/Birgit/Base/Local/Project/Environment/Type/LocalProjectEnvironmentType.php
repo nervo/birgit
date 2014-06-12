@@ -53,6 +53,9 @@ class LocalProjectEnvironmentType extends ProjectEnvironmentType
             ->handleTaskQueue($taskQueue)
             ->pushTask(
                 $taskManager->createTask('host_workspace_local')
+            )
+            ->pushTask(
+                $taskManager->createTask('host_build')
             );
     }
 

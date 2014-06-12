@@ -26,6 +26,7 @@
         <!-- Task Type - Host -->
         <parameter key="birgit.task_type.host.class">Birgit\Core\Task\Type\Host\HostTaskType</parameter>
         <parameter key="birgit.task_type.host_delete.class">Birgit\Core\Task\Type\Host\HostDeleteTaskType</parameter>
+        <parameter key="birgit.task_type.host_build.class">Birgit\Core\Task\Type\Host\HostBuildTaskType</parameter>
         <!-- Task Type - Build -->
         <parameter key="birgit.task_type.build_create.class">Birgit\Core\Task\Type\Build\BuildCreateTaskType</parameter>
 
@@ -127,6 +128,11 @@
             <tag name="birgit.task_type" />
         </service>
         <service id="birgit.task_type.host_delete" public="false" class="%birgit.task_type.host_delete.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
+            <tag name="birgit.task_type" />
+        </service>
+        <service id="birgit.task_type.host_build" public="false" class="%birgit.task_type.host_build.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
             <tag name="birgit.task_type" />
