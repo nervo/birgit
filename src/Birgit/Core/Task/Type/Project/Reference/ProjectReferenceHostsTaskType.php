@@ -4,11 +4,9 @@ namespace Birgit\Core\Task\Type\Project\Reference;
 
 use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Task\Model\Task\Task;
-use Birgit\Core\Model\Project\Reference\ProjectReference;
 use Birgit\Core\Task\Queue\Context\Project\Reference\ProjectReferenceTaskQueueContextInterface;
 use Birgit\Component\Task\Queue\Exception\ContextTaskQueueException;
 use Birgit\Core\Task\Type\TaskType;
-use Birgit\Component\Task\Queue\Exception\SuspendTaskQueueException;
 
 /**
  * Project Reference - Hosts Task type
@@ -23,25 +21,33 @@ class ProjectReferenceHostsTaskType extends TaskType
         return 'project_reference_hosts';
     }
 
-    protected function runProjectReferenceHosts(ProjectReference $projectReference, TaskQueueContextInterface $context)
+    /**
+     * {@inheritdoc}
+     */
+    public function run(Task $task, TaskQueueContextInterface $context)
     {
-        $suspend = false;
+        if (!$context instanceof ProjectReferenceTaskQueueContextInterface) {
+            throw new ContextTaskQueueException();
+        }
+
+        // Get project reference
+        $projectReference = $context->getProjectReference();
 
         // Find hosts to delete
         foreach ($projectReference->getHosts() as $host) {
             if (!$host->getProjectEnvironment()->matchReference($projectReference)) {
 
-                $taskQueue = $context->getTaskManager()
-                    ->createProjectReferenceTaskQueue($projectReference, [
-                        'host_delete' => [
-                            'project_environment_name' => $host->getProjectEnvironment()->getName()
-                        ]
-                    ]);
-
-                $context->getTaskQueue()
-                    ->addPredecessor($taskQueue);
-
-                $suspend = true;
+                // Push delete task as successor
+                $context->getTaskManager()
+                    ->handleTaskQueue($context->getTaskQueue())
+                    ->pushSuccessor(
+                        $context->getTaskManager()
+                            ->createProjectReferenceTaskQueue($projectReference, [
+                                'host_delete' => [
+                                    'project_environment_name' => $host->getProjectEnvironment()->getName()
+                                ]
+                            ])
+                    );
             }
         }
 
@@ -56,86 +62,34 @@ class ProjectReferenceHostsTaskType extends TaskType
             }
 
             if (!$hostFound && $projectEnvironment->matchReference($projectReference)) {
+                // Get host repository
+                $hostRepository = $this->modelRepositoryManager
+                    ->getHostRepository();
 
-                $taskQueue = $context->getTaskManager()
-                    ->createProjectReferenceTaskQueue($projectReference, [
-                        'host_create' => [
-                            'project_environment_name' => $projectEnvironment->getName()
-                        ]
-                    ]);
+                // Create
+                $host = $hostRepository
+                    ->create(
+                        $projectReference,
+                        $projectEnvironment
+                    );
 
-                $context->getTaskQueue()
-                    ->addPredecessor($taskQueue);
+                // Save
+                $hostRepository->save($host);
 
-                $suspend = true;
+                $hostFound = true;
+            }
+
+            if ($hostFound) {
+                // Push host task as successor
+                $context->getTaskManager()
+                    ->handleTaskQueue($context->getTaskQueue())
+                    ->pushSuccessor(
+                        $context->getTaskManager()
+                            ->createHostTaskQueue($host, [
+                                'host'
+                            ])
+                    );
             }
         }
-
-        if ($suspend) {
-            throw new SuspendTaskQueueException();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function run(Task $task, TaskQueueContextInterface $context)
-    {
-        return;
-
-        if (!$context instanceof ProjectReferenceTaskQueueContextInterface) {
-            throw new ContextTaskQueueException();
-        }
-
-        // Get project reference
-        $projectReference = $context->getProjectReference();
-
-
-        $this->runProjectReferenceHosts(
-            $projectReference,
-            $context
-        );
-
-        // Get project handler
-        $projectHandler = $this->projectManager
-            ->handleProject($projectReference->getProject(), $context);
-
-        // Get "real life" project reference revision
-        $projectHandlerReferenceRevisionName = $projectHandler->getReferenceRevision(
-            $projectReference
-        );
-
-        // Find project reference revisions
-        $projectReferenceRevisionFound = false;
-        foreach ($projectReference->getRevisions() as $projectReferenceRevision) {
-            if ($projectReferenceRevision->getName() === $projectHandlerReferenceRevisionName) {
-                $projectReferenceRevisionFound = true;
-                break;
-            }
-        }
-
-        if (!$projectReferenceRevisionFound) {
-            // Get project reference revision repository
-            $projectReferenceRevisionRepository =  $this->modelRepositoryManager
-                ->getProjectReferenceRevisionRepository();
-
-            // Create
-            $projectReferenceRevision = $projectReferenceRevisionRepository
-                ->create(
-                    $projectHandlerReferenceRevisionName,
-                    $projectReference
-                );
-
-            // Save
-            $projectReferenceRevisionRepository->save($projectReferenceRevision);
-        }
-
-        $taskQueue = $context->getTaskManager()
-            ->createProjectReferenceRevisionTaskQueue($projectReferenceRevision, [
-                'project_reference_revision'
-            ]);
-
-        $context->getTaskQueue()
-            ->addSuccessor($taskQueue);
     }
 }

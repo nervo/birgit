@@ -38,8 +38,8 @@ EOF
                 'handler'      => [
                     'type'       => 'git',
                     'parameters' => [
-                        //'path' => 'git@github.com:nervo/birgit-test.git'
-                        'path' => '~/workspace/birgit-test'
+                        //'path' => '~/workspace/birgit-test'
+                        'path' => 'git@github.com:nervo/birgit-test.git'
                     ]
                 ],
                 'environments' => [
@@ -70,8 +70,8 @@ EOF
                 'handler'      => [
                     'type'       => 'git',
                     'parameters' => [
-                        //'path' => 'git@github.com:Elao/adele.git'
-                        'path' => '~/workspace/elao/adele'
+                        //'path' => '~/workspace/elao/adele'
+                        'path' => 'git@github.com:Elao/adele.git'
                     ]
                 ],
                 'environments' => [

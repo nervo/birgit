@@ -132,4 +132,11 @@ class GitProjectType extends ProjectType
                 $taskManager->createTask('project_reference_hosts')
             );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onProjectReferenceRevisionTask(Task $task, TaskQueueContextInterface $context)
+    {
+    }
 }

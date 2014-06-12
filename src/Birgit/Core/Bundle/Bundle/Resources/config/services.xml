@@ -24,7 +24,7 @@
         <parameter key="birgit.task_type.project_reference_hosts.class">Birgit\Core\Task\Type\Project\Reference\ProjectReferenceHostsTaskType</parameter>
         <parameter key="birgit.task_type.project_reference_revision.class">Birgit\Core\Task\Type\Project\Reference\Revision\ProjectReferenceRevisionTaskType</parameter>
         <!-- Task Type - Host -->
-        <parameter key="birgit.task_type.host_create.class">Birgit\Core\Task\Type\Host\HostCreateTaskType</parameter>
+        <parameter key="birgit.task_type.host.class">Birgit\Core\Task\Type\Host\HostTaskType</parameter>
         <parameter key="birgit.task_type.host_delete.class">Birgit\Core\Task\Type\Host\HostDeleteTaskType</parameter>
         <!-- Task Type - Build -->
         <parameter key="birgit.task_type.build_create.class">Birgit\Core\Task\Type\Build\BuildCreateTaskType</parameter>
@@ -121,7 +121,7 @@
             <tag name="birgit.task_type" />
         </service>
         <!-- Task Type - Host -->
-        <service id="birgit.task_type.host_create" public="false" class="%birgit.task_type.host_create.class%">
+        <service id="birgit.task_type.host" public="false" class="%birgit.task_type.host.class%">
             <argument type="service" id="birgit.model_repository_manager" />
             <argument type="service" id="birgit.project_manager" />
             <tag name="birgit.task_type" />

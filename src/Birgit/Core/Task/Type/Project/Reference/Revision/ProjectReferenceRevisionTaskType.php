@@ -33,26 +33,9 @@ class ProjectReferenceRevisionTaskType extends TaskType
         // Get project reference revision
         $projectReferenceRevision = $context->getProjectReferenceRevision();
 
-        foreach ($projectReferenceRevision->getReference()->getHosts() as $host) {
-            $buildFound = false;
-            foreach ($host->getBuilds() as $build) {
-                if ($build->getProjectReferenceRevision() === $projectReferenceRevision) {
-                    $buildFound = true;
-                    break;
-                }
-            }
-
-            if (!$buildFound) {
-                $taskQueue = $context->getTaskManager()
-                    ->createHostTaskQueue($host, [
-                        'build_create' => [
-                            'project_reference_revision_name' => $projectReferenceRevision->getName()
-                        ]
-                    ]);
-
-                $context->getTaskQueue()
-                    ->addSuccessor($taskQueue);
-            }
-        }
+        // Handle
+        $this->projectManager
+            ->handleProject($projectReferenceRevision->getReference()->getProject())
+            ->onProjectReferenceRevisionTask($task, $context);
     }
 }

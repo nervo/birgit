@@ -4,8 +4,8 @@ namespace Birgit\Core\Project;
 
 use Birgit\Core\Model\Project\Project;
 use Birgit\Core\Project\Handler\ProjectHandler;
+use Birgit\Core\Project\Environment\Handler\ProjectEnvironmentHandler;
 use Birgit\Core\Model\Project\Environment\ProjectEnvironment;
-use Birgit\Component\Task\Queue\Context\TaskQueueContextInterface;
 use Birgit\Component\Type\TypeResolver;
 
 /**
@@ -32,12 +32,11 @@ class ProjectManager
         );
     }
 
-    public function handleProjectEnvironment(ProjectEnvironment $projectEnvironment, TaskQueueContextInterface $context)
+    public function handleProjectEnvironment(ProjectEnvironment $projectEnvironment)
     {
         return new ProjectEnvironmentHandler(
             $projectEnvironment,
-            $this->projectEnvironmentTypeResolver->resolve($projectEnvironment),
-            $context
+            $this->projectEnvironmentTypeResolver->resolve($projectEnvironment)
         );
     }
 }

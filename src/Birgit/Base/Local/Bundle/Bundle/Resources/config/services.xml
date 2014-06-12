@@ -9,6 +9,9 @@
         <!-- Project Environment Type -->
         <parameter key="birgit.project_environment_type.local.class">Birgit\Base\Local\Project\Environment\Type\LocalProjectEnvironmentType</parameter>
 
+        <!-- Task Type - Host -->
+        <parameter key="birgit.task_type.host_workspace_local.class">Birgit\Base\Local\Task\Type\Host\WorkspaceHostTaskType</parameter>
+
     </parameters>
 
     <services>
@@ -17,6 +20,13 @@
         <service id="birgit.project_environment_type.local" public="false" class="%birgit.project_environment_type.local.class%">
             <argument>%kernel.root_dir%</argument>
             <tag name="birgit.project_environment_type" />
+        </service>
+
+        <!-- Task Type - Host -->
+        <service id="birgit.task_type.host_workspace_local" public="false" class="%birgit.task_type.host_workspace_local.class%">
+            <argument type="service" id="birgit.model_repository_manager" />
+            <argument type="service" id="birgit.project_manager" />
+            <tag name="birgit.task_type" />
         </service>
 
     </services>
