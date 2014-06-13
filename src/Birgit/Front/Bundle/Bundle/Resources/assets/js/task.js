@@ -1,4 +1,4 @@
-require(['d3/d3'], function(d3) {
+require(['angular', 'd3'], function(angular, d3) {
 
     // Websocket
     var connection = new WebSocket('ws://localhost:8080/task');

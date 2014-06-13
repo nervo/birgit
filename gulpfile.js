@@ -1,7 +1,11 @@
+// Gulp
 var
     gulp = require('gulp'),
     gulpUtil = require('gulp-util'),
-    gulpPlugins = require('gulp-load-plugins')(),
+    gulpPlugins = require('gulp-load-plugins')();
+
+// Webpack
+var
     webpack = require('webpack'),
     webpackConfig = {
         cache: true,
@@ -14,12 +18,23 @@ var
             path: __dirname + '/web/assets/js',
             publicPath: '/assets/js/',
             filename: '[name].js',
-            chunkFilename: '[id].js'
+            chunkFilename: 'chunk.[id].js'
         },
         resolve: {
             modulesDirectories: [
                 'node_modules',
                 'bower_components'
+            ],
+            alias: {
+                jquery:  'jquery/dist/jquery',
+                angular: 'angular/angular',
+                d3:      'd3/d3'
+            }
+        },
+        module: {
+            loaders: [
+                // Exports Angular
+                {test: /[\/]angular\.js$/, loader: 'exports?angular'}
             ]
         }
     };
