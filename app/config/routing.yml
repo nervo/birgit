@@ -1,3 +1,8 @@
+birgit_api:
+    resource: "@BirgitApiBundle/Controller/"
+    type:     annotation
+    prefix:   /api
+
 birgit_front:
     resource: "@BirgitFrontBundle/Controller/"
     type:     annotation

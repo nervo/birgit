@@ -17,10 +17,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
-            // Birgit - Core
-            new Birgit\Core\Bundle\Bundle\BirgitCoreBundle(),
-            new Birgit\Core\Bundle\DoctrineBundle\BirgitCoreDoctrineBundle(),
-
             // Birgit - Component
             new Birgit\Component\Task\Bundle\Bundle\BirgitComponentTaskBundle(),
             new Birgit\Component\Task\Bundle\DoctrineBundle\BirgitComponentTaskDoctrineBundle(),
@@ -28,10 +24,17 @@ class AppKernel extends Kernel
             new Birgit\Component\Event\Bundle\Bundle\BirgitComponentEventBundle(),
             new Birgit\Component\Event\Bundle\DoctrineBundle\BirgitComponentEventDoctrineBundle(),
 
+            // Birgit - Core
+            new Birgit\Core\Bundle\Bundle\BirgitCoreBundle(),
+            new Birgit\Core\Bundle\DoctrineBundle\BirgitCoreDoctrineBundle(),
+
             // Birgit - Base
             new Birgit\Base\Cron\Bundle\Bundle\BirgitBaseCronBundle(),
             new Birgit\Base\Git\Bundle\Bundle\BirgitBaseGitBundle(),
             new Birgit\Base\Local\Bundle\Bundle\BirgitBaseLocalBundle(),
+
+            // Birgit - Api
+            new Birgit\Api\Bundle\Bundle\BirgitApiBundle(),
 
             // Birgit - Front
             new Birgit\Front\Bundle\Bundle\BirgitFrontBundle()
