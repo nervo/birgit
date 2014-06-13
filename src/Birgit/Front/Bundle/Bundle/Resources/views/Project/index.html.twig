@@ -1,8 +1,17 @@
 {% extends 'BirgitFrontBundle::layout.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/project.js') }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block body %}
 
-    <h1>{{ project.name }}</h1>
+    <h1>
+        <a href="{{ path('api_task_project', {name: project.name}) }}" class="api">
+            {{ project.name }}
+        </a>
+    </h1>
 
     <table class="table table-bordered">
         <tr>
@@ -18,12 +27,18 @@
         {% for projectReference in project.references %}
             {% if projectReference.hosts|length %}
                 <tr>
-                    <th colspan="2">{{ projectReference.name }}</th>
+                    <th colspan="2">
+                        <a href="{{ path('api_task_project_reference', {name: projectReference.name, projectName: projectReference.project.name}) }}" class="api">
+                            {{ projectReference.name }}
+                        </a>
+                    </th>
                     {% for projectEnvironment in project.environments %}
                         <td colspan="2">
                             {% for host in projectReference.hosts %}
                                 {% if host.projectEnvironment == projectEnvironment %}
-                                    Host...
+                                    <a href="{{ path('api_task_host', {id: host.id}) }}" class="api">
+                                        Host
+                                    </a>
                                 {% endif %}
                             {% endfor %}
                         </td>
