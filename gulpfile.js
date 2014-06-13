@@ -18,19 +18,19 @@ var
             path: __dirname + '/web/assets/js',
             publicPath: '/assets/js/',
             filename: '[name].js',
-            chunkFilename: 'chunk.[id].js'
+            chunkFilename: 'chunk/[id].js'
         },
         resolve: {
             modulesDirectories: [
                 'node_modules',
                 'bower_components'
-            ],
-            alias: {
-                jquery:  'jquery/dist/jquery',
-                angular: 'angular/angular',
-                d3:      'd3/d3'
-            }
+            ]
         },
+        plugins: [
+            new webpack.ResolverPlugin([
+                new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
+            ])
+        ],
         module: {
             loaders: [
                 // Exports Angular
