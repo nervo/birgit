@@ -49,7 +49,7 @@ EOF
                         'handler'           => [
                             'type'       => 'local',
                             'parameters' => [
-                                'workspace' => 'workspace'
+                                'workspace' => '../var/workspace'
                             ]
                         ]
                     ],
@@ -59,7 +59,7 @@ EOF
                         'handler'           => [
                             'type'       => 'local',
                             'parameters' => [
-                                'workspace' => 'workspace'
+                                'workspace' => '../var/workspace'
                             ]
                         ]
                     ]
