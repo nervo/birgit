@@ -24,12 +24,5 @@
 # Vagrant
 /.vagrant/
 
-# Supervisor
-/var/supervisor/*
-!var/supervisor/.gitkeep
-!var/supervisor/server/.gitkeep
-!var/supervisor/websocket/.gitkeep
-!var/supervisor/worker/.gitkeep
-
 # Netbeans
 /nbproject/
