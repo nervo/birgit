@@ -1,7 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-ENV['VAGRANT_DEFAULT_PROVIDER'] ||= 'docker'
+Vagrant.require_version ">= 1.6.3"
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
 
 Vagrant.configure('2') do |config|
 
@@ -22,8 +24,9 @@ Vagrant.configure('2') do |config|
             override.ssh.password = "root"
         end
 
-        #password
-        #config.ssh.private_key_path = "phusion.key"
+        #container.vm.synced_folder '.',
+        #    '/var/www', type: 'rsync',
+        #    rsync__exclude: '.git/'
     end
 
     #config.vm.synced_folder '.', '/var/www'
