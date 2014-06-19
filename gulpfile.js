@@ -1,3 +1,7 @@
+// Todo :
+// gulp-jshint
+// gulp-jscpd
+
 // Gulp
 var
     gulp = require('gulp'),
