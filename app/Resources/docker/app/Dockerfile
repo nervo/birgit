@@ -15,14 +15,6 @@ RUN apt-get upgrade -y
 
 RUN apt-get install -y php5-cli php5-intl php5-mysqlnd
 
-#############
-# Php - Fpm #
-#############
-
-RUN apt-get install -y php5-fpm
-
-ADD services/php5-fpm /srv/services/php5-fpm
-
 ##################
 # Php - Composer #
 ##################
@@ -40,6 +32,14 @@ RUN apt-get install -y daemontools
 RUN mkdir /srv/services
 
 CMD ["/usr/bin/svscan", "/srv/services"]
+
+#############
+# Php - Fpm #
+#############
+
+#RUN apt-get install -y php5-fpm
+
+#ADD services/php5-fpm /srv/services/php5-fpm
 
 #######
 # Ssh #
