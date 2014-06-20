@@ -26,6 +26,13 @@ abstract class ProjectReference
     abstract public function getProject();
 
     /**
+     * Get current revision
+     *
+     * @return ProjectReferenceRevision
+     */
+    abstract public function getRevision();
+
+    /**
      * Add revision
      *
      * @param ProjectReferenceRevision $revision

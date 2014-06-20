@@ -115,6 +115,14 @@ class ProjectReference extends Model\Project\Reference\ProjectReference
     /**
      * {@inheritdoc}
      */
+    public function getRevision()
+    {
+        return $this->revisions->last();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addRevision(Model\Project\Reference\Revision\ProjectReferenceRevision $revision)
     {
         if (!$this->revisions->contains($revision)) {
