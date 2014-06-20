@@ -7,29 +7,27 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
 
 Vagrant.configure('2') do |config|
 
-    config.vm.define 'mysql' do |container|
-        container.vm.provider 'docker' do |docker|
-            docker.build_dir = 'app/Resources/docker/mysql'
-            docker.name = 'mysql'
-        end
-    end
+    #config.vm.define 'mysql' do |container|
+    #    container.vm.provider 'docker' do |docker|
+    #        docker.build_dir = 'app/Resources/docker/mysql'
+    #        docker.name = 'mysql'
+    #    end
+    #end
 
     config.vm.define 'app' do |container|
         container.vm.provider 'docker' do |docker, override|
             docker.build_dir = 'app/Resources/docker/app'
             docker.name = 'app'
             docker.has_ssh = true
-
-            override.ssh.username = "root"
-            override.ssh.password = "root"
         end
 
-        #container.vm.synced_folder '.',
-        #    '/var/www', type: 'rsync',
-        #    rsync__exclude: '.git/'
-    end
+        container.ssh.username = "root"
+        container.ssh.password = "root"
 
-    #config.vm.synced_folder '.', '/var/www'
+        container.vm.synced_folder '.', '/var/www',
+            type: 'rsync',
+            rsync__exclude: '.git/'
+    end
 
     #config.vm.provider 'docker' do |docker|
     #    docker.build_dir = 'app/Resources/docker'
