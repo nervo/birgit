@@ -21,6 +21,9 @@
 # Bower
 /bower_components/
 
+# Sass
+/.sass-cache/
+
 # Vagrant
 /.vagrant/
 
