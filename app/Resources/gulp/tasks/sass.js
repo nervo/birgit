@@ -36,18 +36,17 @@ _.forEach(
                         message: '<%= error.message %>'})
                 }))
                 .pipe(gulpScssLint({
-                    config: 'app/Resources/sass/scss-lint.yml',
-                    _customReport: function(file, stream) {
-                        //console.log(file.scsslint);
-                        if (!file.scsslint.success) {
-                            console.log('error');
-                            /*
-                            stream.emit(
-                                'error',
-                                new gutil.PluginError("scss-lint", "some error"));
-                            */
-                        }
+                    config: 'app/Resources/sass/scss-lint.yml'
+                }))
+                .pipe(gulpNotify(function (file) {
+                    if (file.scsslint.success) {
+                        return false;
                     }
+                    var issues = file.scsslint.issues.map(function(issue) {
+                        return '(' + issue.line + ':' + issue.column + ') ' + issue.severity + ':' + issue.reason;
+                    }).join("\n");
+
+                    return "\n" + file.relative + "\n" + issues;
                 }))
                 .pipe(gulpSass({
                     sourcemap: global.dev,
