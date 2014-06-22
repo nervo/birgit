@@ -82,6 +82,8 @@ gulp.task('service:worker', function() {
 
 gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
-gulp.task('build', ['bootstrap', 'js', 'images']);
+gulp.task('assets', ['sass', 'images']);
 
-gulp.task('default', ['build', 'watch']);
+gulp.task('watch', ['watch:sass', 'watch:images']);
+
+gulp.task('default', ['assets', 'watch']);

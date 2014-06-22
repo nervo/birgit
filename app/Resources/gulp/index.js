@@ -1,11 +1,30 @@
 var
+    _        = require('lodash'),
     fs       = require('fs'),
     path     = require('path'),
-    glob     = require('glob')
+    glob     = require('glob'),
     gulpUtil = require('gulp-util');
 
-// Assets
-global.assets = glob.sync('src/**/*Bundle/Resources/assets');
+// Bundles
+global.bundles = {};
+_.forEach(
+    glob.sync('src/**/*Bundle/Resources/assets'),
+    function(dir) {
+        name = dir
+            .replace('src/', '')
+            .replace('/Resources/assets', '')
+            .replace(/Bundle/g, '')
+            .replace(/\//g, '');
+        global.bundles[name] = dir;
+
+        gulpUtil.log(
+            'Found',
+            "'" + gulpUtil.colors.cyan(name) + "'",
+            'bundle assets at',
+            gulpUtil.colors.magenta(dir)
+        );
+    }
+);
 
 // Dev
 global.dev = gulpUtil.env.dev ? true : false;
