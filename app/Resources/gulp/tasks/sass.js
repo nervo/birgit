@@ -5,6 +5,7 @@ var
     gulpUtil      = require('gulp-util'),
     gulpIf        = require('gulp-if'),
     gulpPlumber   = require('gulp-plumber'),
+    gulpFilter    = require('gulp-filter'),
     gulpSass      = require('gulp-ruby-sass'),
     gulpScssLint  = require('gulp-scss-lint'),
     gulpMinifyCss = require('gulp-minify-css'),
@@ -48,23 +49,18 @@ _.forEach(
 
                     return "\n" + file.relative + "\n" + issues;
                 }))
+                .pipe(gulpFilter('**/!(_)'))
                 .pipe(gulpSass({
                     sourcemap: global.dev,
                     debugInfo: global.dev,
                     lineNumbers: global.dev,
-                    style: 'nested',
+                    style: global.dev ? 'nested' : 'compressed',
                     precision: 10,
                     loadPath: [
                         bundleDir + 'sass',
                         'bower_components'
                     ]
                 }))
-                .pipe(gulpIf(
-                    !global.dev,
-                    gulpMinifyCss({
-                        keepSpecialComments: 0
-                    })
-                ))
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
