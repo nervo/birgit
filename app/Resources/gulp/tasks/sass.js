@@ -18,6 +18,7 @@ _.forEach(
     global.bundles,
     function(bundleDir, bundleName) {
 
+        // Don't treat bundles without sass assets
         if (!fs.existsSync(bundleDir + '/sass')) {
             return;
         }
