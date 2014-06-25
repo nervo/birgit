@@ -1,5 +1,10 @@
 {% extends 'BirgitFrontBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/front/project/project.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/project.js') }}" type="text/javascript"></script>
