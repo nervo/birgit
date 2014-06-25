@@ -52,7 +52,6 @@ _.forEach(
                 .pipe(gulpFilter('**/!(_)'))
                 .pipe(gulpSass({
                     sourcemap: global.dev,
-                    debugInfo: global.dev,
                     lineNumbers: global.dev,
                     style: global.dev ? 'nested' : 'compressed',
                     precision: 10,
