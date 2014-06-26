@@ -6,7 +6,7 @@ var
     gulpIf        = require('gulp-if'),
     gulpPlumber   = require('gulp-plumber'),
     gulpFilter    = require('gulp-filter'),
-    gulpSass      = require('gulp-ruby-sass'),
+    gulpSass      = require('gulp-sass'),
     gulpScssLint  = require('gulp-scss-lint'),
     gulpMinifyCss = require('gulp-minify-css'),
     gulpSize      = require('gulp-size'),
@@ -53,14 +53,13 @@ _.forEach(
                 }))
                 .pipe(gulpFilter('**/!(_)'))
                 .pipe(gulpSass({
-                    sourcemap: global.dev,
-                    lineNumbers: global.dev,
-                    style: global.dev ? 'nested' : 'compressed',
-                    precision: 10,
-                    loadPath: [
-                        bundleDir + 'sass',
+                    errLogToConsole: true,
+                    includePaths: [
                         'bower_components'
-                    ]
+                    ],
+                    outputStyle: global.dev ? 'nested' : 'compressed',
+                    precision: 10,
+                    sourceComments: global.dev ? 'map' : 'none'
                 }))
                 .pipe(gulpSize({
                     title: bundleName,

@@ -21,7 +21,7 @@
         "vinyl-source-stream": "0.1.*",
         "gulp-streamify": "0.0.*",
         "debowerify": "0.7.*",
-        "gulp-ruby-sass": "0.5.*",
+        "gulp-sass": "0.7.1",
         "gulp-scss-lint": "0.1.*",
         "async": "0.9.*",
         "forever-monitor": "1.2.*"
