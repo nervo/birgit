@@ -1,14 +1,15 @@
 var
-    _             = require('lodash'),
-    fs            = require('fs'),
-    gulp          = require('gulp'),
-    gulpUtil      = require('gulp-util'),
-    gulpIf        = require('gulp-if'),
-    gulpPlumber   = require('gulp-plumber'),
-    gulpFilter    = require('gulp-filter'),
-    gulpJsHint    = require('gulp-jshint'),
-    gulpNotify    = require('gulp-notify'),
-    bundleNames   = [];
+    _                 = require('lodash'),
+    fs                = require('fs'),
+    gulp              = require('gulp'),
+    gulpUtil          = require('gulp-util'),
+    gulpIf            = require('gulp-if'),
+    gulpPlumber       = require('gulp-plumber'),
+    gulpFilter        = require('gulp-filter'),
+    gulpJsHint        = require('gulp-jshint'),
+    gulpJsCodeSniffer = require('gulp-jscodesniffer'),
+    gulpNotify        = require('gulp-notify'),
+    bundleNames       = [];
 
 gulpNotify.logLevel(0);
 
@@ -48,6 +49,9 @@ _.forEach(
                     }).join("\n");
 
                     return "\n" + file.relative + "\n" + errors;
+                }))
+                .pipe(gulpJsCodeSniffer({
+                    rc : 'app/Resources/js/.jscsrc'
                 }))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
