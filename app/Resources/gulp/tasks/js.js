@@ -7,7 +7,6 @@ var
     gulpPlumber   = require('gulp-plumber'),
     gulpFilter    = require('gulp-filter'),
     gulpJsHint    = require('gulp-jshint'),
-    gulpMinifyCss = require('gulp-minify-css'),
     gulpNotify    = require('gulp-notify'),
     bundleNames   = [];
 
@@ -96,7 +95,6 @@ gulp.task('watch:js', _.map(
 var
 	_           = require('lodash'),
 	gulp        = require('gulp'),
-	gulpPlugins = require('gulp-load-plugins')(),
     browserify  = require('browserify'),
     debowerify  = require('debowerify'),
     source      = require('vinyl-source-stream');

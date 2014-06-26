@@ -8,7 +8,6 @@ var
     gulpFilter    = require('gulp-filter'),
     gulpSass      = require('gulp-sass'),
     gulpScssLint  = require('gulp-scss-lint'),
-    gulpMinifyCss = require('gulp-minify-css'),
     gulpSize      = require('gulp-size'),
     gulpNotify    = require('gulp-notify'),
     bundleNames   = [];
