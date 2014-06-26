@@ -1,11 +1,17 @@
 var
     _                 = require('lodash'),
     fs                = require('fs'),
+    path              = require('path'),
+    eventStream       = require('event-stream'),
+    browserify        = require('browserify'),
+    debowerify        = require('debowerify'),
+    source            = require('vinyl-source-stream'),    
     gulp              = require('gulp'),
     gulpUtil          = require('gulp-util'),
     gulpIf            = require('gulp-if'),
     gulpPlumber       = require('gulp-plumber'),
-    gulpFilter        = require('gulp-filter'),
+    streamify         = require('gulp-streamify'),
+    gulpUglify        = require('gulp-uglify'),
     gulpJsHint        = require('gulp-jshint'),
     gulpJsCodeSniffer = require('gulp-jscodesniffer'),
     gulpNotify        = require('gulp-notify'),
@@ -22,7 +28,44 @@ _.forEach(
             return;
         }
 
+        if (!global.js[bundleName]) {
+            return;
+        }
+
         bundleNames.push(bundleName);
+
+        gulp.task('js:' + bundleName, function(bundleName, bundleDir) {
+
+            var
+                dest    = 'web/assets/js',
+                streams = [];
+
+            _.forEach(global.js[bundleName], function(options, file) {
+                streams.push(
+                    browserify()
+                        .add('./' + path.join(bundleDir, 'js',file))
+                        .transform(debowerify)
+                        .bundle({
+                            debug: global.dev
+                        })
+                        .pipe(source(file))
+                        .pipe(gulpIf(
+                            !global.dev,
+                            streamify(gulpUglify())
+                        ))
+                        .pipe(gulp.dest(dest))
+                );
+            });
+
+            return eventStream.readArray(streams);
+
+        }.bind(this, bundleName, bundleDir));
+
+
+
+
+
+        return;
 
         // Js
         gulp.task('js:' + bundleName, function(bundleName, bundleDir) {
@@ -93,30 +136,3 @@ gulp.task('watch:js', _.map(
     bundleNames,
     function(name) {return 'watch:js:' + name;})
 );
-
-
-/*
-var
-	_           = require('lodash'),
-	gulp        = require('gulp'),
-    browserify  = require('browserify'),
-    debowerify  = require('debowerify'),
-    source      = require('vinyl-source-stream');
-
-// Js
-gulp.task('js', function() {
-
-	var
-		dest = 'web/assets/js';
-
-    return browserify('./src/Birgit/Front/Bundle/Bundle/Resources/assets/js/task.js')
-        .transform(debowerify)
-        .bundle()
-        .pipe(source('task.js'))
-        .pipe(gulpPlugins.if(
-            !global.dev,
-            gulpPlugins.streamify(gulpPlugins.uglify())
-        ))
-        .pipe(gulp.dest(dest));
-});
-*/

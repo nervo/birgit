@@ -1,10 +1,19 @@
+// Js
+global.js = {
+    BirgitFront: {
+        'front/front.js': {},
+        'front/project/project.js': {},
+        'front/task/task.js': {}
+    }
+};
+
+// Tasks
 require('./app/Resources/gulp');
 
 // Gulp
 var
     gulp = require('gulp'),
-    gulpUtil = require('gulp-util'),
-    gulpPlugins = require('gulp-load-plugins')();
+    gulpUtil = require('gulp-util');
 
 gulp.task('reset', function(callback) {
     var
