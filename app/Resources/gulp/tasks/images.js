@@ -6,6 +6,7 @@ var
     gulpPlumber  = require('gulp-plumber'),
     gulpChanged  = require('gulp-changed'),
     gulpImagemin = require('gulp-imagemin'),
+    gulpSize     = require('gulp-size'),
     gulpNotify   = require('gulp-notify'),
     bundleNames  = [];
 
@@ -35,6 +36,10 @@ _.forEach(
                 }))
                 .pipe(gulpChanged(dest))
                 .pipe(gulpImagemin())
+                .pipe(gulpSize({
+                    title: bundleName,
+                    showFiles: true
+                }))
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',

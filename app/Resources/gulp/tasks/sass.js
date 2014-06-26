@@ -9,6 +9,7 @@ var
     gulpSass      = require('gulp-ruby-sass'),
     gulpScssLint  = require('gulp-scss-lint'),
     gulpMinifyCss = require('gulp-minify-css'),
+    gulpSize      = require('gulp-size'),
     gulpNotify    = require('gulp-notify'),
     bundleNames   = [];
 
@@ -60,6 +61,10 @@ _.forEach(
                         bundleDir + 'sass',
                         'bower_components'
                     ]
+                }))
+                .pipe(gulpSize({
+                    title: bundleName,
+                    showFiles: true
                 }))
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
