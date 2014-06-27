@@ -15,6 +15,9 @@
 # Assets
 /web/assets/
 
+# Robots
+/web/robots.txt
+
 # Npm
 /node_modules/
 
