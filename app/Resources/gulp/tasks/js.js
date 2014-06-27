@@ -4,6 +4,7 @@ var
     rimraf            = require('rimraf'),
     path              = require('path'),
     eventStream       = require('event-stream'),
+    prettyHrtime      = require('pretty-hrtime'),
     browserify        = require('browserify'),
     watchify          = require('watchify'),
     debowerify        = require('debowerify'),
@@ -79,12 +80,26 @@ _.forEach(
                 var
                     bundler  = watch ? watchify() : browserify(),
                     rebundle = function() {
+                        var
+                            startTime = process.hrtime();
                         if (watch) {
                             gulp.start('check:js:' + bundleName);
                         }
+                        gulpUtil.log('Running', gulpUtil.colors.green("'build:js:" + bundleName + "'"), gulpUtil.colors.magenta(file), '...');
                         return bundler
                             .bundle({
                                 debug: global.dev
+                            })
+                            .on('error', function() {
+                                var
+                                    args = Array.prototype.slice.call(arguments);
+
+                                gulpNotify.onError({
+                                    title: 'Gulp - Error',
+                                    message: '<%= error.message %>'
+                                }).apply(this, args);
+
+                                this.emit('end');
                             })
                             .pipe(source(file))
                             .pipe(gulpIf(
@@ -92,6 +107,12 @@ _.forEach(
                                 streamify(gulpUglify())
                             ))
                             .pipe(gulp.dest(dest))
+                            .on('end', function() {
+                                var
+                                    taskTime = process.hrtime(startTime);
+                                    prettyTime = prettyHrtime(taskTime);
+                                gulpUtil.log('Finished', gulpUtil.colors.green("'build:js:" + bundleName + "'"), gulpUtil.colors.magenta(file), 'in', gulpUtil.colors.magenta(prettyTime));
+                            })
                             .pipe(gulpNotify({
                                 title   : 'Gulp - Success',
                                 message : "\n" + 'build:js:' + bundleName,
@@ -104,7 +125,9 @@ _.forEach(
                     .add('./' + path.join(bundleDir, 'js',file))
                     .transform(debowerify);
 
-                bundler.on('update', rebundle);
+                if (watch) {
+                    bundler.on('update', rebundle);
+                }
 
                 streams.push(rebundle());
             });
