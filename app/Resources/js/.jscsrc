@@ -8,11 +8,11 @@
         "allowLineTrailingSpaces": false
     },
     "LineLength": {
-        "allowMaxLength": 100,
+        "allowMaxLength": 120,
         "allowMinLength": 0
     },
     "CommaPunctuatorSpacing": {
-        "disallowPrecedingSpaces": true
+        "disallowPrecedingSpaces": false
     },
     "SemicolonPunctuatorSpacing": {
         "disallowPrecedingSpaces": false
@@ -39,7 +39,12 @@
         "allowConsequentPrecedingWhitespaces": 1,
         "allowConsequentTrailingWhitespaces": 1,
         "allowAlternatePrecedingWhitespaces": 1,
-        "ifNesting": false
+        "ifNesting": {
+            "allowTestTrailingWhitespaces": 1,
+            "allowConsequentPrecedingWhitespaces": 1,
+            "allowConsequentTrailingWhitespaces": 1,
+            "allowAlternatePrecedingWhitespaces": 1
+      }
     },
     "EmptyConstructsSpacing": {
         "for": [
@@ -52,24 +57,24 @@
     "ObjectLiteralSpacing": {
         "allowKeyPrecedingWhitespaces": 0,
         "allowKeyTrailingWhitespaces": 0,
-        "allowValuePrecedingWhitespaces": 0,
+        "allowValuePrecedingWhitespaces": 1,
         "allowValueTrailingWhitespaces": 0
     },
     "ArrayLiteralSpacing": {
-        "allowElementPrecedingWhitespaces": 0,
+        "allowElementPrecedingWhitespaces": 1,
         "allowElementTrailingWhitespaces": 0,
         "exceptions": {
             "singleElement": {
-                "for": [ "Literal" ],
+                "for": [ "Literal", "Identifier" ],
                 "allowElementPrecedingWhitespaces": 0,
                 "allowElementTrailingWhitespaces": 0
             },
             "firstElement": {
-                "for": [ "Literal" ],
+                "for": [ "Literal", "Identifier" ],
                 "allowElementPrecedingWhitespaces": 0
             },
             "lastElement": {
-                "for": [ "Literal" ],
+                "for": [ "Literal", "Identifier" ],
                 "allowElementTrailingWhitespaces": 0
             }
         }
@@ -79,12 +84,12 @@
         "allowSingleQuotes": true
     },
     "VariableNamingConventions": {
-        "allowCase": ["camel"],
+        "allowCase": [ "camel" ],
         "allowRepeating": true,
         "allowNumbers": true
     },
     "FunctionNamingConventions": {
-        "allowCase": ["camel","pascal"],
+        "allowCase": [ "camel" ],
         "allowRepeating": true,
         "allowNumbers": true
     },
@@ -94,7 +99,7 @@
         "allowNumbers": true
     },
     "ArgumentsSpacing": {
-        "allowArgPrecedingWhitespaces": 0,
+        "allowArgPrecedingWhitespaces": 1,
         "allowArgTrailingWhitespaces": 0,
         "exceptions": {
             "singleArg" : {
@@ -117,7 +122,7 @@
         }
     },
     "ParametersSpacing": {
-        "allowParamPrecedingWhitespaces": 0,
+        "allowParamPrecedingWhitespaces": 1,
         "allowParamTrailingWhitespaces": 0,
         "exceptions": {
             "singleParam": {
@@ -146,8 +151,8 @@
         "allowOperatorTrailingWhitespaces": 1
     },
     "VariableDeclarationPerScopeConventions" : {
-        "disallowMultiplePerBlockScope": false,
-        "requireInTheBeginning": false
+        "disallowMultiplePerBlockScope": true,
+        "requireInTheBeginning": true
     },
     "ObjectLiteralConventions": {
         "requireOnePerLineWhenMultiline": true
