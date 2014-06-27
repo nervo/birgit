@@ -7,6 +7,12 @@ global.js = {
     }
 };
 
+// Robots
+global.robots = {
+    useragent: '*',
+    url      : 'http://birgit.dev/'
+};
+
 // Tasks
 require('./app/Resources/gulp');
 
@@ -92,7 +98,7 @@ gulp.task('clean', ['clean:images', 'clean:js', 'clean:sass']);
 
 gulp.task('check', ['check:images', 'check:js', 'check:sass']);
 
-gulp.task('build', ['build:images', 'build:js', 'build:sass']);
+gulp.task('build', ['robots', 'build:images', 'build:js', 'build:sass']);
 
 gulp.task('watch', ['watch:images', 'watch:js', 'watch:sass']);
 

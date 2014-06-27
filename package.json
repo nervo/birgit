@@ -26,6 +26,8 @@
         "jshint-stylish": "0.2.*",
         "gulp-jscodesniffer": "0.0.*",
 
+        "robots-generator": "1.1.*",
+
         "gulp-sass": "0.7.1",
         "gulp-scss-lint": "0.1.*",
 
