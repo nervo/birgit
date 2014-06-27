@@ -28,6 +28,9 @@ _.forEach(
 
         bundleNames.push(bundleName);
 
+        // Check - Images
+        gulp.task('check:images:' + bundleName);
+
         // Build - Images
         gulp.task('build:images:' + bundleName, function(bundleName, bundleDir) {
 
@@ -63,7 +66,7 @@ _.forEach(
 
             return gulp.watch(
                 bundleDir + '/images/**',
-                ['build:images:' + bundleName]
+                ['check:images:' + bundleName, 'build:images:' + bundleName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -85,7 +88,10 @@ gulp.task('clean:images', function(callback) {
 });
 
 // Global Check - Images
-gulp.task('check:images');
+gulp.task('check:images', _.map(
+    bundleNames,
+    function(name) {return 'check:images:' + name;}
+));
 
 // Global Build - Images
 gulp.task('build:images',
