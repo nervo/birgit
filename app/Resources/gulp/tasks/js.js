@@ -76,8 +76,6 @@ _.forEach(
 
             _.forEach(global.js[bundleName], function(options, file) {
 
-                console.log(file);
-
                 var
                     bundler  = watch ? watchify() : browserify(),
                     rebundle = function() {
