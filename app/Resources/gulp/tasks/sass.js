@@ -29,15 +29,10 @@ _.forEach(
 
         bundleNames.push(bundleName);
 
-        // Build - Sass
-        gulp.task('build:sass:' + bundleName, function(bundleName, bundleDir) {
+        // Check - Sass
+        gulp.task('check:sass:' + bundleName, function(bundleName, bundleDir) {
 
             return gulp.src(bundleDir + '/sass/**/*.scss')
-                .pipe(gulpPlumber({
-                    errorHandler: gulpNotify.onError({
-                        title:  'Gulp - Error',
-                        message: '<%= error.message %>'})
-                }))
                 .pipe(gulpScssLint({
                     config: 'app/Resources/sass/scss-lint.yml'
                 }))
@@ -50,6 +45,18 @@ _.forEach(
                     }).join("\n");
 
                     return "\n" + file.relative + "\n" + issues;
+                }));
+
+        }.bind(this, bundleName, bundleDir));
+
+        // Build - Sass
+        gulp.task('build:sass:' + bundleName, function(bundleName, bundleDir) {
+
+            return gulp.src(bundleDir + '/sass/**/*.scss')
+                .pipe(gulpPlumber({
+                    errorHandler: gulpNotify.onError({
+                        title:  'Gulp - Error',
+                        message: '<%= error.message %>'})
                 }))
                 .pipe(gulpFilter('**/!(_)'))
                 .pipe(gulpSass({
@@ -68,7 +75,7 @@ _.forEach(
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
-                    message : "\n" + 'sass:' + bundleName,
+                    message : "\n" + 'build:sass:' + bundleName,
                     onLast  : true
                 }));
 
@@ -79,7 +86,7 @@ _.forEach(
 
             return gulp.watch(
                 bundleDir + '/sass/**',
-                ['sass:' + bundleName]
+                ['check:sass:' + bundleName, 'build:sass:' + bundleName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -100,8 +107,14 @@ gulp.task('clean:sass', function(callback) {
     rimraf(dest, callback);
 });
 
-// Global Build - Images
-gulp.task('build:sass', 
+// Global Check - Sass
+gulp.task('check:sass', _.map(
+    bundleNames,
+    function(name) {return 'check:sass:' + name;}
+));
+
+// Global Build - Sass
+gulp.task('build:sass',
     ['clean:sass']
         .concat(
             _.map(

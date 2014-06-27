@@ -102,7 +102,7 @@ _.forEach(
                 }))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
-                    message : "\n" + 'js:' + bundleName,
+                    message : "\n" + 'build:js:' + bundleName,
                     onLast  : true
                 }));
 
@@ -113,7 +113,7 @@ _.forEach(
 
             return gulp.watch(
                 bundleDir + '/js/**',
-                ['js:' + bundleName]
+                ['build:js:' + bundleName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -134,8 +134,11 @@ gulp.task('clean:js', function(callback) {
     rimraf(dest, callback);
 });
 
+// Global Check - Js
+gulp.task('check:js');
+
 // Global Build - Js
-gulp.task('build:js', 
+gulp.task('build:js',
     ['clean:js']
         .concat(
             _.map(

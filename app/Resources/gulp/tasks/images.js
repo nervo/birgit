@@ -52,7 +52,7 @@ _.forEach(
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
-                    message : "\n" + 'images:' + bundleName,
+                    message : "\n" + 'build:images:' + bundleName,
                     onLast  : true
                 }));
 
@@ -63,7 +63,7 @@ _.forEach(
 
             return gulp.watch(
                 bundleDir + '/images/**',
-                ['images:' + bundleName]
+                ['build:images:' + bundleName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -84,8 +84,11 @@ gulp.task('clean:images', function(callback) {
     rimraf(dest, callback);
 });
 
+// Global Check - Images
+gulp.task('check:images');
+
 // Global Build - Images
-gulp.task('build:images', 
+gulp.task('build:images',
     ['clean:images']
         .concat(
             _.map(

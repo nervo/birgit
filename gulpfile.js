@@ -90,6 +90,8 @@ gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
 gulp.task('clean', ['clean:images', 'clean:js', 'clean:sass']);
 
+gulp.task('check', ['check:images', 'check:js', 'check:sass']);
+
 gulp.task('build', ['build:images', 'build:js', 'build:sass']);
 
 gulp.task('watch', ['watch:images', 'watch:js', 'watch:sass']);
