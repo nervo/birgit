@@ -2,16 +2,18 @@ require('angular');
 
 var
     // D3
-    d3 = require('d3');
+    d3 = require('d3'),
     // Websocket
     connection = new WebSocket('ws://localhost:8080/task');
 
 connection.onopen = function(event) {
-    console.log('Connection established!');
+    console.log('Connection open');
+    console.log(event);
 };
 
 connection.onmessage = function(event) {
-    console.log(event.data);
+    console.log('Connection message');
+    console.log(event);
 };
 
 // D3
