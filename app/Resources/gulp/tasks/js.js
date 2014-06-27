@@ -5,6 +5,7 @@ var
     path              = require('path'),
     eventStream       = require('event-stream'),
     browserify        = require('browserify'),
+    watchify          = require('watchify'),
     debowerify        = require('debowerify'),
     source            = require('vinyl-source-stream'),    
     gulp              = require('gulp'),
@@ -39,43 +40,8 @@ _.forEach(
 
         bundleNames.push(bundleName);
 
-        gulp.task('build:js:' + bundleName, function(bundleName, bundleDir) {
-
-            var
-                streams = [];
-
-            _.forEach(global.js[bundleName], function(options, file) {
-                streams.push(
-                    browserify()
-                        .add('./' + path.join(bundleDir, 'js',file))
-                        .transform(debowerify)
-                        .bundle({
-                            debug: global.dev
-                        })
-                        .pipe(source(file))
-                        .pipe(gulpIf(
-                            !global.dev,
-                            streamify(gulpUglify())
-                        ))
-                        .pipe(gulp.dest(dest))
-                );
-            });
-
-            return eventStream.readArray(streams);
-
-        }.bind(this, bundleName, bundleDir));
-
-
-
-
-
-        return;
-
-        // Build - Js
-        gulp.task('build:js:' + bundleName, function(bundleName, bundleDir) {
-
-            var
-                dest = 'web/assets/js';
+        // Check - Js
+        gulp.task('check:js:' + bundleName, function(bundleName, bundleDir) {
 
             return gulp.src(bundleDir + '/js/**/*.js')
                 .pipe(gulpPlumber({
@@ -99,33 +65,68 @@ _.forEach(
                 }))
                 .pipe(gulpJsCodeSniffer({
                     rc : 'app/Resources/js/.jscsrc'
-                }))
-                .pipe(gulpNotify({
-                    title   : 'Gulp - Success',
-                    message : "\n" + 'build:js:' + bundleName,
-                    onLast  : true
                 }));
+
+        }.bind(this, bundleName, bundleDir));
+
+        // Proxy
+        function proxy(bundleName, bundleDir, watch) {
+            var
+                streams = [];
+
+            _.forEach(global.js[bundleName], function(options, file) {
+
+                console.log(file);
+
+                var
+                    bundler  = watch ? watchify() : browserify(),
+                    rebundle = function() {
+                        if (watch) {
+                            gulp.start('check:js:' + bundleName);
+                        }
+                        return bundler
+                            .bundle({
+                                debug: global.dev
+                            })
+                            .pipe(source(file))
+                            .pipe(gulpIf(
+                                !global.dev,
+                                streamify(gulpUglify())
+                            ))
+                            .pipe(gulp.dest(dest))
+                            .pipe(gulpNotify({
+                                title   : 'Gulp - Success',
+                                message : "\n" + 'build:js:' + bundleName,
+                                onLast  : true
+                            }));
+                    };
+
+
+                bundler
+                    .add('./' + path.join(bundleDir, 'js',file))
+                    .transform(debowerify);
+
+                bundler.on('update', rebundle);
+
+                streams.push(rebundle());
+            });
+
+            return eventStream.readArray(streams);
+        }
+
+        // Build - Js
+        gulp.task('build:js:' + bundleName, function(bundleName, bundleDir) {
+
+            return proxy(bundleName, bundleDir, false);
 
         }.bind(this, bundleName, bundleDir));
 
         // Watch - Js
         gulp.task('watch:js:' + bundleName, function(bundleName, bundleDir) {
 
-            return gulp.watch(
-                bundleDir + '/js/**',
-                ['build:js:' + bundleName]
-            )
-            .on('change', function(event) {
-                gulpUtil.log(
-                    'Watch',
-                    "'" + gulpUtil.colors.cyan(event.path) + "'",
-                    'has',
-                    gulpUtil.colors.magenta(event.type)
-                );
-            });
+            return proxy(bundleName, bundleDir, true);
 
         }.bind(this, bundleName, bundleDir));
-
     }
 );
 
@@ -135,7 +136,10 @@ gulp.task('clean:js', function(callback) {
 });
 
 // Global Check - Js
-gulp.task('check:js');
+gulp.task('check:js', _.map(
+    bundleNames,
+    function(name) {return 'check:js:' + name;}
+));
 
 // Global Build - Js
 gulp.task('build:js',
@@ -149,4 +153,7 @@ gulp.task('build:js',
 );
 
 // Global Watch - Js
-gulp.task('watch:js');
+gulp.task('watch:js', _.map(
+    bundleNames,
+    function(name) {return 'watch:js:' + name;})
+);
