@@ -1,10 +1,10 @@
-require('angular');
-
 var
     // D3
     d3 = require('d3'),
     // Websocket
     connection = new WebSocket('ws://localhost:8080/task');
+
+require('angular');
 
 connection.onopen = function(event) {
     console.log('Connection open');
@@ -28,7 +28,7 @@ d3.json('task.json', function(error, links) {
     });
 
     var
-        width  = 960,
+        width = 960,
         height = 640;
 
     var
@@ -50,8 +50,10 @@ d3.json('task.json', function(error, links) {
 
     // Per-type markers, as they don't inherit styles.
     svg
-        .append('defs').selectAll('marker')
-            .data(['successor', 'predecessor']).enter()
+        .append('defs')
+        .selectAll('marker')
+            .data(['successor', 'predecessor'])
+            .enter()
                 .append('marker')
                     .attr('id', function(d) { return d; })
                     .attr('viewBox', '0 -5 10 10')
@@ -64,22 +66,28 @@ d3.json('task.json', function(error, links) {
                     .attr('d', 'M0,-5L10,0L0,5');
 
     var
-        path = svg.append('g').selectAll('path')
-            .data(force.links()).enter()
+        path = svg.append('g')
+            .selectAll('path')
+            .data(force.links())
+            .enter()
                 .append('path')
                     .attr('class', function(d) { return 'link ' + d.type; })
                     .attr('marker-end', function(d) { return 'url(#' + d.type + ')'; });
 
     var
-        circle = svg.append('g').selectAll('circle')
-            .data(force.nodes()).enter()
+        circle = svg.append('g')
+            .selectAll('circle')
+            .data(force.nodes())
+            .enter()
                 .append('circle')
                     .attr('r', 6)
-                    .call(force.drag);
+                        .call(force.drag);
 
     var
-        text = svg.append('g').selectAll('text')
-            .data(force.nodes()).enter()
+        text = svg.append('g')
+            .selectAll('text')
+            .data(force.nodes())
+            .enter()
                 .append('text')
                     .attr('x', 8)
                     .attr('y', '.31em')
