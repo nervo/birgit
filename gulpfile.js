@@ -94,12 +94,29 @@ gulp.task('service:worker', function() {
 gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
 
-gulp.task('clean', ['clean:images', 'clean:js', 'clean:sass']);
+// Clean
+gulp.task('clean', [
+    'clean:favicon', 'clean:robots',
+    'clean:images', 'clean:js', 'clean:sass'
+]);
 
-gulp.task('check', ['check:images', 'check:js', 'check:sass']);
+// Check
+gulp.task('check', [
+    'check:images', 'check:js', 'check:sass'
+]);
 
-gulp.task('build', ['robots', 'build:images', 'build:js', 'build:sass']);
+// Build
+gulp.task('build', [
+    'build:favicon', 'build:robots',
+    'build:images', 'build:js', 'build:sass'
+]);
 
-gulp.task('watch', ['watch:images', 'watch:js', 'watch:sass']);
+// Watch
+gulp.task('watch', [
+    'watch:images', 'watch:js', 'watch:sass'
+]);
 
-gulp.task('default', ['build', 'watch']);
+// Default
+gulp.task('default', [
+    'build', 'watch'
+]);

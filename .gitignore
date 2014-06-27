@@ -18,6 +18,9 @@
 # Robots
 /web/robots.txt
 
+# Favicon
+/web/favicon.ico
+
 # Npm
 /node_modules/
 
