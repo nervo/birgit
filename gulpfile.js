@@ -87,8 +87,11 @@ gulp.task('service:worker', function() {
 
 gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
-gulp.task('assets', ['sass', 'images']);
 
-gulp.task('watch', ['watch:sass', 'watch:images']);
+gulp.task('clean', ['clean:images', 'clean:js', 'clean:sass']);
 
-gulp.task('default', ['assets', 'watch']);
+gulp.task('build', ['build:images', 'build:js', 'build:sass']);
+
+gulp.task('watch', ['watch:images', 'watch:js', 'watch:sass']);
+
+gulp.task('default', ['build', 'watch']);

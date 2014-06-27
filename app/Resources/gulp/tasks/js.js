@@ -1,6 +1,7 @@
 var
     _                 = require('lodash'),
     fs                = require('fs'),
+    rimraf            = require('rimraf'),
     path              = require('path'),
     eventStream       = require('event-stream'),
     browserify        = require('browserify'),
@@ -17,6 +18,10 @@ var
     gulpNotify        = require('gulp-notify'),
     bundleNames       = [];
 
+var
+    dest = 'web/assets/js';
+
+// Notify log level
 gulpNotify.logLevel(0);
 
 _.forEach(
@@ -34,10 +39,9 @@ _.forEach(
 
         bundleNames.push(bundleName);
 
-        gulp.task('js:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('build:js:' + bundleName, function(bundleName, bundleDir) {
 
             var
-                dest    = 'web/assets/js',
                 streams = [];
 
             _.forEach(global.js[bundleName], function(options, file) {
@@ -67,8 +71,8 @@ _.forEach(
 
         return;
 
-        // Js
-        gulp.task('js:' + bundleName, function(bundleName, bundleDir) {
+        // Build - Js
+        gulp.task('build:js:' + bundleName, function(bundleName, bundleDir) {
 
             var
                 dest = 'web/assets/js';
@@ -125,14 +129,21 @@ _.forEach(
     }
 );
 
-// Global Js
-gulp.task('js', _.map(
-    bundleNames,
-    function(name) {return 'js:' + name;})
+// Global Clean - Js
+gulp.task('clean:js', function(callback) {
+    rimraf(dest, callback);
+});
+
+// Global Build - Js
+gulp.task('build:js', 
+    ['clean:js']
+        .concat(
+            _.map(
+                bundleNames,
+                function(name) {return 'build:js:' + name;}
+            )
+        )
 );
 
 // Global Watch - Js
-gulp.task('watch:js', _.map(
-    bundleNames,
-    function(name) {return 'watch:js:' + name;})
-);
+gulp.task('watch:js');

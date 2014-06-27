@@ -1,8 +1,10 @@
 var
     _            = require('lodash'),
     fs           = require('fs'),
+    rimraf       = require('rimraf'),
     gulp         = require('gulp'),
     gulpUtil     = require('gulp-util'),
+    gulpIf       = require('gulp-if'),
     gulpPlumber  = require('gulp-plumber'),
     gulpChanged  = require('gulp-changed'),
     gulpImagemin = require('gulp-imagemin'),
@@ -10,6 +12,10 @@ var
     gulpNotify   = require('gulp-notify'),
     bundleNames  = [];
 
+var
+    dest = 'web/assets/images';
+
+// Notify log level
 gulpNotify.logLevel(0);
 
 _.forEach(
@@ -22,11 +28,8 @@ _.forEach(
 
         bundleNames.push(bundleName);
 
-        // Images
-        gulp.task('images:' + bundleName, function(bundleName, bundleDir) {
-
-            var
-                dest = 'web/assets/images';
+        // Build - Images
+        gulp.task('build:images:' + bundleName, function(bundleName, bundleDir) {
 
             return gulp.src(bundleDir + '/images/**')
                 .pipe(gulpPlumber({
@@ -34,8 +37,14 @@ _.forEach(
                         title:  'Gulp - Error',
                         message: '<%= error.message %>'})
                 }))
-                .pipe(gulpChanged(dest))
-                .pipe(gulpImagemin())
+                .pipe(gulpIf(
+                    global.dev,
+                    gulpChanged(dest)
+                ))
+                .pipe(gulpIf(
+                    !global.dev,
+                    gulpImagemin()
+                ))
                 .pipe(gulpSize({
                     title: bundleName,
                     showFiles: true
@@ -70,10 +79,20 @@ _.forEach(
     }
 );
 
-// Global Images
-gulp.task('images', _.map(
-    bundleNames,
-    function(name) {return 'images:' + name;})
+// Global Clean - Images
+gulp.task('clean:images', function(callback) {
+    rimraf(dest, callback);
+});
+
+// Global Build - Images
+gulp.task('build:images', 
+    ['clean:images']
+        .concat(
+            _.map(
+                bundleNames,
+                function(name) {return 'build:images:' + name;}
+            )
+        )
 );
 
 // Global Watch - Images

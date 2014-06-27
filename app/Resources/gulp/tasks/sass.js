@@ -1,9 +1,9 @@
 var
     _             = require('lodash'),
     fs            = require('fs'),
+    rimraf        = require('rimraf'),
 	gulp          = require('gulp'),
     gulpUtil      = require('gulp-util'),
-    gulpIf        = require('gulp-if'),
     gulpPlumber   = require('gulp-plumber'),
     gulpFilter    = require('gulp-filter'),
     gulpSass      = require('gulp-sass'),
@@ -12,6 +12,10 @@ var
     gulpNotify    = require('gulp-notify'),
     bundleNames   = [];
 
+var
+    dest = 'web/assets/css';
+
+// Notify log level
 gulpNotify.logLevel(0);
 
 _.forEach(
@@ -25,11 +29,8 @@ _.forEach(
 
         bundleNames.push(bundleName);
 
-        // Sass
-        gulp.task('sass:' + bundleName, function(bundleName, bundleDir) {
-
-            var
-                dest = 'web/assets/css';
+        // Build - Sass
+        gulp.task('build:sass:' + bundleName, function(bundleName, bundleDir) {
 
             return gulp.src(bundleDir + '/sass/**/*.scss')
                 .pipe(gulpPlumber({
@@ -94,10 +95,20 @@ _.forEach(
     }
 );
 
-// Global Sass
-gulp.task('sass', _.map(
-    bundleNames,
-    function(name) {return 'sass:' + name;})
+// Global Clean - Sass
+gulp.task('clean:sass', function(callback) {
+    rimraf(dest, callback);
+});
+
+// Global Build - Images
+gulp.task('build:sass', 
+    ['clean:sass']
+        .concat(
+            _.map(
+                bundleNames,
+                function(name) {return 'build:sass:' + name;}
+            )
+        )
 );
 
 // Global Watch - Sass
