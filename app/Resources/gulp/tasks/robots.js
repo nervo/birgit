@@ -14,14 +14,15 @@ gulp.task('clean:robots', function() {
 });
 
 // Global Build - Robots
-gulp.task('build:robots', ['clean:robots'], function() {
+gulp.task('build:robots', ['clean:robots'], function(callback) {
     robotsGenerator(
         _.extend({
             useragent: '*',
             allow: null,
             disallow: null,
             url: null,
-            out: dest + '/robots.txt'
+            out: dest + '/robots.txt',
+            callback: callback
         }, global.robots)
     );
 });

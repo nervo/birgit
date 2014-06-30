@@ -21,13 +21,14 @@ _.forEach(
         bundleNames.push(bundleName);
 
         // Build - Favicon
-        gulp.task('build:favicon:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('build:favicon:' + bundleName, function(bundleName, bundleDir, callback) {
 
             faviconGenerator({
                 source: bundleDir + '/favicon/favicon.png',
                 sizes: [16, 32, 48, 64],
                 out: dest + '/favicon.ico',
-                upscale: false
+                upscale: false,
+                callback: callback
             });
 
         }.bind(this, bundleName, bundleDir));
