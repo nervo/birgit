@@ -21,6 +21,12 @@
 # Favicon
 /web/favicon.ico
 
+# Meta Images
+/web/apple-touch-icon.png
+/web/android-touch-icon.png
+/web/open-graph.png
+/web/windows-touch-icon.png
+
 # Npm
 /node_modules/
 

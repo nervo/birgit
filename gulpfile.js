@@ -95,7 +95,7 @@ gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
 // Clean
 gulp.task('clean', [
-    'clean:favicon', 'clean:robots',
+    'clean:favicon', 'clean:metaimage', 'clean:robots',
     'clean:images', 'clean:js', 'clean:sass'
 ]);
 
@@ -106,7 +106,7 @@ gulp.task('check', [
 
 // Build
 gulp.task('build', [
-    'build:favicon', 'build:robots',
+    'build:favicon', 'build:metaimage', 'build:robots',
     'build:images', 'build:js', 'build:sass'
 ]);
 

@@ -20,6 +20,8 @@
 
         "favicon-generator": "1.1.*",
 
+        "metaimage-generator": "1.2.*",
+
         "gulp-imagemin": "0.6.*",
 
         "browserify": "4.1.*",
