@@ -93,6 +93,11 @@ gulp.task('service:worker', function() {
 gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
 
+// Install
+gulp.task('install', [
+    'install:bower'
+]);
+
 // Clean
 gulp.task('clean', [
     'clean:favicon', 'clean:metaimage', 'clean:robots',
