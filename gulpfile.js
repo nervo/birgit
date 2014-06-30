@@ -9,8 +9,7 @@ global.js = {
 
 // Robots
 global.robots = {
-    useragent: '*',
-    url      : 'http://birgit.dev/'
+    useragent: '*'
 };
 
 // Tasks
