@@ -32,7 +32,8 @@ _.forEach(
       				'windows'
   				],
                 out: dest,
-                upscale: false
+                upscale: false,
+                callback: callback
             });
 
         }.bind(this, bundleName, bundleDir));
