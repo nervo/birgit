@@ -16,7 +16,7 @@ var
     streamify         = require('gulp-streamify'),
     gulpUglify        = require('gulp-uglify'),
     gulpJsHint        = require('gulp-jshint'),
-    gulpJsCodeSniffer = require('gulp-jscodesniffer'),
+    gulpJsCs          = require('gulp-jscs'),
     gulpNotify        = require('gulp-notify'),
     bundleNames       = [];
 
@@ -64,9 +64,7 @@ _.forEach(
 
                     return "\n" + file.relative + "\n" + errors;
                 }))
-                .pipe(gulpJsCodeSniffer({
-                    rc : 'app/Resources/js/.jscsrc'
-                }));
+                .pipe(gulpJsCs('app/Resources/js/.jscsrc'));
 
         }.bind(this, bundleName, bundleDir));
 
