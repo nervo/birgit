@@ -31,6 +31,7 @@
         "gulp-jshint": "1.6.*",
         "jshint-stylish": "0.2.*",
         "gulp-jscs": "0.6.*",
+        "gulp-logwarn": "0.0.*",
 
         "robots-generator": "1.1.*",
 

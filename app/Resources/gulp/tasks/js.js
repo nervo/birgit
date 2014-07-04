@@ -17,6 +17,7 @@ var
     gulpUglify        = require('gulp-uglify'),
     gulpJsHint        = require('gulp-jshint'),
     gulpJsCs          = require('gulp-jscs'),
+    gulpLogWarn       = require('gulp-logwarn'),
     gulpNotify        = require('gulp-notify'),
     bundleNames       = [];
 
@@ -64,7 +65,8 @@ _.forEach(
 
                     return "\n" + file.relative + "\n" + errors;
                 }))
-                .pipe(gulpJsCs('app/Resources/js/.jscsrc'));
+                .pipe(gulpJsCs('app/Resources/js/.jscsrc'))
+                .pipe(gulpLogWarn([]));
 
         }.bind(this, bundleName, bundleDir));
 
