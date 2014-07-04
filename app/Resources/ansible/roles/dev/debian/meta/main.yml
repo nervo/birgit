@@ -1,0 +1,7 @@
+---
+
+dependencies:
+
+    - { role: gulp/debian }
+    - { role: sass/debian }
+    - { role: bower/debian }
