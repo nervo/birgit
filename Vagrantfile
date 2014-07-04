@@ -1,53 +1,68 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.require_version ">= 1.6.3"
+VAGRANTFILE_API_VERSION = '2'
 
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+options = {
+    :name    => 'birgit',
+    :memory  => 512,
+    :box     => 'debian-7-amd64',
+    :debug   => false
+}
 
-Vagrant.configure('2') do |config|
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-    #config.vm.define 'mysql' do |container|
-    #    container.vm.provider 'docker' do |docker|
-    #        docker.build_dir = 'app/Resources/docker/mysql'
-    #        docker.name = 'mysql'
-    #    end
-    #end
+    # Box
+    config.vm.box = options[:box]
+    config.vm.box_url = 'https://boxes.elao.com/boxes/' + options[:box] + '.box'
 
-    config.vm.define 'app' do |container|
-        container.vm.provider 'docker' do |docker, override|
-            docker.build_dir = 'app/Resources/docker/app'
-            docker.name = 'app'
-            docker.has_ssh = true
-        end
+    # Hostname
+    config.vm.hostname = options[:name] + '.dev'
 
-        container.ssh.username = "root"
-        container.ssh.password = "root"
+    # Dns
+    config.landrush.enabled = true
+    config.landrush.tld = 'dev'
+    config.landrush.guest_redirect_dns = false
 
-        container.vm.synced_folder '.', '/var/www',
-            type: 'rsync',
-            rsync__exclude: '.git/'
+    # Network
+    config.vm.network 'private_network',
+        type: 'dhcp'
+
+    # Ssh
+    config.ssh.forward_agent = true
+
+    # Folders
+    config.vm.synced_folder '.', '/var/www',
+        type:           'rsync',
+        rsync__exclude: '.git/'
+
+    # Providers
+    config.vm.provider :virtualbox do |vb|
+        vb.name   = options[:name]
+        vb.memory = options[:memory]
+        vb.gui    = options[:debug]
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     end
 
-    #config.vm.provider 'docker' do |docker|
-    #    docker.build_dir = 'app/Resources/docker'
-    #    docker.ports << '8080:80'
-    #    #docker.has_ssh = true
-    #end
+    # Git Config
+    if File.exists?(File.join(Dir.home, '.gitconfig')) then
+        config.vm.provision 'shell',
+            inline: "echo -e \"#{File.read("#{Dir.home}/.gitconfig")}\" > /home/vagrant/.gitconfig"
+    end
 
-  #config.vm.define 'app' do |app|
-  #  app.vm.provider "docker" do |d|
-  #    d.build_dir = "."
-  #    d.link "db"
-  #  end
-  #end
+    # Cache
+    if Vagrant.has_plugin?('vagrant-cachier')
+        config.cache.scope = :box
+    end
 
-  #config.vm.define 'mysql' do |container|
-  #  container.vm.provider 'docker' do |docker|
-  #    docker.image = 'tutum/mysql'
-  #    #docker.image = 'mysql'
-  #    docker.name = 'mysql'
-  #  end
-  #end
+    # Provisioners
+    config.vm.provision 'ansible' do |ansible|
+        ansible.playbook   = 'app/Resources/ansible/playbook.yml'
+        ansible.extra_vars = {
+            user: 'vagrant',
+            host: options[:name] + '.dev'
+        }
+        ansible.verbose    = options[:debug] ? 'vvvv' : false
+    end
 
 end
