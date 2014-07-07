@@ -42,24 +42,6 @@
         - php5 fpm restart
     sudo: yes
 
-  - name: php5 fpm nginx permissions
-    template: >
-        src=templates/nginx/permissions.conf.j2
-        dest=/etc/php5/fpm/pool.d/permissions.conf
-    notify:
-        - php5 fpm restart
-        - nginx restart
-    sudo: yes
-
-  - name: php5 fpm nginx timeout
-    template: >
-        src=templates/nginx/timeout.conf.j2
-        dest=/etc/php5/fpm/pool.d/timeout.conf
-    notify:
-        - php5 fpm restart
-        - nginx restart
-    sudo: yes
-
   - name: php5 config memory fpm
     template: >
         src=templates/php/memory.ini.j2
