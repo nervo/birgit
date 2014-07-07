@@ -10,7 +10,7 @@
 
 - name: service template
   template: >
-      src=service.j2
+      src=xvfbd.j2
       dest=/etc/init.d/xvfbd
   sudo: yes
 
