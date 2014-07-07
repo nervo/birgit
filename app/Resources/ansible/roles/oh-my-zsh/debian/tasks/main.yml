@@ -19,11 +19,15 @@
     cp /home/{{ user }}/.oh-my-zsh/templates/zshrc.zsh-template /home/{{ user }}/.zshrc
     creates=/home/{{ user }}/.zshrc
 
-- name: plugins
-  lineinfile: >
-    dest=/home/{{ user }}/.zshrc
-    line="plugins=(composer symfony2 history history-substring-search)"
-    regexp="plugins=\(.*\)"
+- name: plugins config
+  template: >
+    src=plugins.zsh.j2
+    dest=/home/{{ user }}/.oh-my-zsh/custom/plugins.zsh
+
+- name: chdir config
+  template: >
+    src=chdir.zsh.j2
+    dest=/home/{{ user }}/.oh-my-zsh/custom/chdir.zsh
 
 - name: prompt
   lineinfile: >
