@@ -146,12 +146,14 @@
     sudo: yes
 
   # Project
-  #- name: project root
-  #  file: >
-  #    path=/home/{{ user }}
-  #    state=directory
-  #    group=www-data
-  #    mode=0710
+  - name: project root
+    file: >
+        path=/var/www/var
+        state=directory
+        group=www-data
+        mode=0775
+        recurse=yes
+    sudo: yes
 
   # Acl (Should be simplified with ansible 1.4)
   - name: acl package
