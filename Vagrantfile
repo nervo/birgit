@@ -4,17 +4,16 @@
 VAGRANTFILE_API_VERSION = '2'
 
 options = {
-    :name    => 'birgit',
-    :memory  => 512,
-    :box     => 'debian-7-amd64',
-    :debug   => false
+    :name   => 'birgit',
+    :memory => 512,
+    :box    => 'elao/debian-7-amd64',
+    :debug  => false
 }
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Box
     config.vm.box = options[:box]
-    config.vm.box_url = 'https://boxes.elao.com/boxes/' + options[:box] + '.box'
 
     # Hostname
     config.vm.hostname = options[:name] + '.dev'
