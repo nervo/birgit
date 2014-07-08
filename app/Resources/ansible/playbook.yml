@@ -156,12 +156,6 @@
     sudo: yes
 
   # Acl (Should be simplified with ansible 1.4)
-  - name: acl package
-    apt: >
-        pkg=acl
-        state=present
-    sudo: yes
-
   - name: acl dir
     shell: >
         setfacl -R -m u:www-data:rwX -m u:{{ user }}:rwX /var/www/var && setfacl -dR -m u:www-data:rwx -m u:{{ user }}:rwx /var/www/var
