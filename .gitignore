@@ -6,13 +6,10 @@
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 /vendor/
-/bin/
+/bin/*
 !bin/console
 !bin/symfony_requirements
 /composer.phar
-
-# Assets
-/web/assets/
 
 # Npm
 /node_modules/
@@ -34,6 +31,8 @@
 /web/android-touch-icon.png
 /web/open-graph.png
 /web/windows-touch-icon.png
+# Assets
+/web/assets/
 
 # Vagrant
 /.vagrant/
