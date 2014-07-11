@@ -27,5 +27,7 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS off;
         fastcgi_read_timeout 300;
+
+        fastcgi_param SYMFONY__VAGRANT 1;
     }
 }

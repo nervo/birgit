@@ -31,6 +31,10 @@
         dest=~/.zshrc
         line="PROMPT='%{$fg[cyan]%}%n%{$fg[red]%}@%{$fg[cyan]%}%m %{$fg_bold[red]%} %{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'"
         regexp="^PROMPT="
+    - name: oh-my-zsh config project
+      template: >
+        src=templates/oh-my-zsh/project.zsh.j2
+        dest=~/.oh-my-zsh/custom/project.zsh
 
     # Php
     - name: php config custom fpm
@@ -68,18 +72,17 @@
       sudo: yes
 
     # Project
-    - name: project
+    - name: project cache
       file: >
-        path=/home/{{ user }}/var
+        path=/home/{{ user }}/cache
         state=directory
-        owner={{ user }}
-        group=www-data
-        mode=0710
-      sudo: yes
+    - name: project logs
+      file: >
+        path=/home/{{ user }}/logs
+        state=directory
     - name: project acl
       shell: >
-        setfacl -R -m u:www-data:rwX -m u:{{ user }}:rwX /home/{{ user }}/var && setfacl -dR -m u:www-data:rwx -m u:{{ user }}:rwx /home/{{ user }}/var
-      sudo: yes
+        setfacl -R -m u:www-data:rwX -m u:{{ user }}:rwX /home/{{ user }}/cache /home/{{ user }}/logs && setfacl -dR -m u:www-data:rwx -m u:{{ user }}:rwx /home/{{ user }}/cache /home/{{ user }}/logs
 
   handlers:
 
