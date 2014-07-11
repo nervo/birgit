@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = '2'
 options = {
     :name   => 'birgit',
     :memory => 512,
-    :box    => 'symfony-standard-debian',
+    :box    => 'elao/symfony-standard-debian',
     :debug  => false
 }
 
