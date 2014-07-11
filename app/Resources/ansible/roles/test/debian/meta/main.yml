@@ -1,7 +1,0 @@
----
-
-dependencies:
-
-    - { role: selenium/debian }
-    - { role: xvfb/debian }
-    - { role: firefox/debian }

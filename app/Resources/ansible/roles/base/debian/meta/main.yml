@@ -1,6 +1,0 @@
----
-
-dependencies:
-
-    - { role: vim/debian }
-    - { role: curl/debian }

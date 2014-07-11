@@ -2,7 +2,7 @@ server {
     listen 80;
 
     server_name {{ host }};
-    root /var/www/web;
+    root /home/{{ user }}/www/web;
 
     # strip app.php/ prefix if it is present
     rewrite ^/app\.php/?(.*)$ /$1 permanent;

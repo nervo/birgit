@@ -3,168 +3,96 @@
 - hosts: all
 
   roles:
-
-      - base/debian
-      - git/debian
-      - ssh/debian
-      - repository/debian/dotdeb
-      #- test/debian
-      - dev/debian
-      - nginx/debian
-      - mysql/debian
-      - oh-my-zsh/debian
+    - { role: mysql }
+    #- { role: postgresql }
+    - { role: php/phpunit }
+    - { role: php/php-cs-fixer }
+    - { role: php/pdepend }
+    - { role: php/phpmd }
+    - { role: php/phpcpd }
+    - { role: php/phpcs }
+    - { role: php/phploc }
+    - { role: php/phpdoc }
+    - { role: php/phpcb }
+    - { role: bower }
+    - { role: gulp }
+    - { role: sass }
+    - { role: sass/scss-lint }
 
   tasks:
 
-  # Php 5
-  - name: php5 packages
-    apt: >
-        pkg={{ item }}
-        state=present
-    with_items:
-        - php5-fpm
-        - php5-cli
-    notify:
+    # Oh My Zsh
+    - name: oh-my-zsh config plugins
+      template: >
+        src=templates/oh-my-zsh/plugins.zsh.j2
+        dest=~/.oh-my-zsh/custom/plugins.zsh
+    - name: oh-my-zsh config prompt
+      lineinfile: >
+        dest=~/.zshrc
+        line="PROMPT='%{$fg[cyan]%}%n%{$fg[red]%}@%{$fg[cyan]%}%m %{$fg_bold[red]%} %{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'"
+        regexp="^PROMPT="
+
+    # Php
+    - name: php config custom fpm
+      template: >
+        src=templates/php/custom.ini.j2
+        dest=/etc/php5/fpm/conf.d/100_custom.ini
+      notify:
+        - php restart
+      sudo: yes
+    - name: php config custom cli
+      template: >
+        src=templates/php/custom.ini.j2
+        dest=/etc/php5/cli/conf.d/100_custom.ini
+      sudo: yes
+
+    # Nginx
+    - name: nginx disable default
+      shell: >
+        ngxdissite default
+        removes=/etc/nginx/sites-enabled/default
+      notify:
         - nginx restart
-    sudo: yes
-
-  - name: php5 extra packages
-    apt: >
-        pkg={{ item }}
-        state=present
-    with_items:
-        - php5-intl
-        - php5-mysqlnd
-        - php5-gd
-        - php5-xsl
-        - php5-curl
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config memory fpm
-    template: >
-        src=templates/php/memory.ini.j2
-        dest=/etc/php5/fpm/conf.d/100_memory.ini
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config memory cli
-    template: >
-        src=templates/php/memory.ini.j2
-        dest=/etc/php5/cli/conf.d/100_memory.ini
-    sudo: yes
-
-  - name: php5 config date fpm
-    template: >
-        src=templates/php/date.ini.j2
-        dest=/etc/php5/fpm/conf.d/100_date.ini
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config date cli
-    template: >
-        src=templates/php/date.ini.j2
-        dest=/etc/php5/cli/conf.d/100_date.ini
-    sudo: yes
-
-  - name: php5 config short_open_tag fpm
-    template: >
-        src=templates/php/short_open_tag.ini.j2
-        dest=/etc/php5/fpm/conf.d/100_short_open_tag.ini
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config short_open_tag cli
-    template: >
-        src=templates/php/short_open_tag.ini.j2
-        dest=/etc/php5/cli/conf.d/100_short_open_tag.ini
-    sudo: yes
-
-  # Nginx Virtual Host
-  - name: nginx virtual host conf
-    template: >
+      sudo: yes
+    - name: nginx config vhost
+      template: >
         src=templates/nginx/vhost.conf.j2
         dest=/etc/nginx/sites-available/vhost
-    sudo: yes
-
-  - name: nginx enable virtual host conf
-    shell: >
+      sudo: yes
+    - name: nginx enable vhost
+      shell: >
         ngxensite vhost
         creates=/etc/nginx/sites-enabled/vhost
-    notify:
+      notify:
         - nginx restart
-    sudo: yes
+      sudo: yes
 
-  # Php 5 Dev
-  - name: php5 extra packages dev
-    apt: >
-        pkg={{ item }}
-        state=present
-    with_items:
-        - php5-xdebug
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config xdebug fpm
-    template: >
-        src=templates/php/xdebug.ini.j2
-        dest=/etc/php5/fpm/conf.d/100_xdebug.ini
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config xdebug cli
-    template: >
-        src=templates/php/xdebug.ini.j2
-        dest=/etc/php5/cli/conf.d/100_xdebug.ini
-    sudo: yes
-
-  - name: php5 config errors fpm
-    template: >
-        src=templates/php/errors.ini.j2
-        dest=/etc/php5/fpm/conf.d/100_errors.ini
-    notify:
-        - php5 fpm restart
-    sudo: yes
-
-  - name: php5 config errors cli
-    template: >
-        src=templates/php/errors.ini.j2
-        dest=/etc/php5/cli/conf.d/100_errors.ini
-    sudo: yes
-
-  # Composer
-  - name: composer install
-    shell: >
-        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-        creates=/usr/local/bin/composer
-    sudo: yes
-
-  # Project
-  - name: project root
-    file: >
-        path=/var/www/var
+    # Project
+    - name: project
+      file: >
+        path=/home/{{ user }}/var
         state=directory
+        owner={{ user }}
         group=www-data
-        mode=0775
-        recurse=yes
-    sudo: yes
-
-  # Acl (Should be simplified with ansible 1.4)
-  - name: acl dir
-    shell: >
-        setfacl -R -m u:www-data:rwX -m u:{{ user }}:rwX /var/www/var && setfacl -dR -m u:www-data:rwx -m u:{{ user }}:rwx /var/www/var
-    sudo: yes
+        mode=0710
+      sudo: yes
+    - name: project acl
+      shell: >
+        setfacl -R -m u:www-data:rwX -m u:{{ user }}:rwX /home/{{ user }}/var && setfacl -dR -m u:www-data:rwx -m u:{{ user }}:rwx /home/{{ user }}/var
+      sudo: yes
 
   handlers:
 
-    # Php 5 Fpm
-    - name: php5 fpm restart
+    # Php
+    - name: php restart
       service: >
-          name=php5-fpm
-          state=restarted
+        name=php5-fpm
+        state=restarted
+      sudo: yes
+
+    # Nginx
+    - name: nginx restart
+      service: >
+        name=nginx
+        state=restarted
+      sudo: yes
