@@ -26,10 +26,10 @@
 
         "browserify": "4.2.*",
         "watchify": "0.10.*",
-        "debowerify": "0.7.*",
+        "debowerify": "0.8.*",
         "gulp-uglify": "0.3.*",
-        "gulp-jshint": "1.6.*",
-        "jshint-stylish": "0.2.*",
+        "gulp-jshint": "1.7.*",
+        "jshint-stylish": "0.3.*",
         "gulp-jscs": "0.6.*",
         "gulp-logwarn": "0.0.*",
 
