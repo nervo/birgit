@@ -1,29 +1,29 @@
 var
-    _           = require('lodash'),
-    fs          = require('fs'),
-    gulp        = require('gulp'),
-    favicons    = require('favicons'),
-    bundleNames = [];
+    _             = require('lodash'),
+    fs            = require('fs'),
+    gulp          = require('gulp'),
+    favicons      = require('favicons'),
+    resourceNames = [];
 
 var
     dest = 'web';
 
 _.forEach(
-    global.bundles,
-    function(bundleDir, bundleName) {
+    global.resources,
+    function(resourceDir, resourceName) {
 
-        if (!fs.existsSync(bundleDir + '/favicon/favicon.png')) {
+        if (!fs.existsSync(resourceDir + '/favicon/favicon.png')) {
             return;
         }
 
-        bundleNames.push(bundleName);
+        resourceNames.push(resourceName);
 
         // Favicon
-        gulp.task('favicon:' + bundleName, function(bundleName, bundleDir, callback) {
+        gulp.task('favicon:' + resourceName, function(resourceName, resourceDir, callback) {
 
             favicons({
                 // I/O
-                source: bundleDir + '/favicon/favicon.png',
+                source: resourceDir + '/favicon/favicon.png',
                 dest: dest,
 
                 // Icon Types
@@ -44,7 +44,7 @@ _.forEach(
                 callback: null
             });
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
     }
 );
@@ -52,7 +52,7 @@ _.forEach(
 // Global - Favicon
 gulp.task('favicon',
     _.map(
-        bundleNames,
+        resourceNames,
         function(name) {return 'favicon:' + name;}
     )
 );

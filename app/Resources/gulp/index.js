@@ -5,22 +5,23 @@ var
     glob     = require('glob'),
     gulpUtil = require('gulp-util');
 
-// Bundles
-global.bundles = {};
+// Resources
+global.resources = {};
 _.forEach(
-    glob.sync('src/**/*Bundle/Resources/assets'),
+    glob.sync('src/**/*Bundle/Resources/assets')
+        .concat(glob.sync('app/Resources/assets')),
     function(dir) {
         name = dir
             .replace('src/', '')
             .replace('/Resources/assets', '')
             .replace(/Bundle/g, '')
             .replace(/\//g, '');
-        global.bundles[name] = dir;
+        global.resources[name] = dir;
 
         gulpUtil.log(
             'Found',
             "'" + gulpUtil.colors.cyan(name) + "'",
-            'bundle assets at',
+            'resource assets at',
             gulpUtil.colors.magenta(dir)
         );
     }

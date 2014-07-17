@@ -1,25 +1,25 @@
 var
-    _                 = require('lodash'),
-    fs                = require('fs'),
-    rimraf            = require('rimraf'),
-    path              = require('path'),
-    eventStream       = require('event-stream'),
-    prettyHrtime      = require('pretty-hrtime'),
-    browserify        = require('browserify'),
-    watchify          = require('watchify'),
-    debowerify        = require('debowerify'),
-    source            = require('vinyl-source-stream'),    
-    gulp              = require('gulp'),
-    gulpUtil          = require('gulp-util'),
-    gulpIf            = require('gulp-if'),
-    gulpPlumber       = require('gulp-plumber'),
-    streamify         = require('gulp-streamify'),
-    gulpUglify        = require('gulp-uglify'),
-    gulpJsHint        = require('gulp-jshint'),
-    gulpJsCs          = require('gulp-jscs'),
-    gulpLogWarn       = require('gulp-logwarn'),
-    gulpNotify        = require('gulp-notify'),
-    bundleNames       = [];
+    _             = require('lodash'),
+    fs            = require('fs'),
+    rimraf        = require('rimraf'),
+    path          = require('path'),
+    eventStream   = require('event-stream'),
+    prettyHrtime  = require('pretty-hrtime'),
+    browserify    = require('browserify'),
+    watchify      = require('watchify'),
+    debowerify    = require('debowerify'),
+    source        = require('vinyl-source-stream'),    
+    gulp          = require('gulp'),
+    gulpUtil      = require('gulp-util'),
+    gulpIf        = require('gulp-if'),
+    gulpPlumber   = require('gulp-plumber'),
+    streamify     = require('gulp-streamify'),
+    gulpUglify    = require('gulp-uglify'),
+    gulpJsHint    = require('gulp-jshint'),
+    gulpJsCs      = require('gulp-jscs'),
+    gulpLogWarn   = require('gulp-logwarn'),
+    gulpNotify    = require('gulp-notify'),
+    resourceNames = [];
 
 var
     dest = 'web/assets/js';
@@ -28,24 +28,24 @@ var
 gulpNotify.logLevel(0);
 
 _.forEach(
-    global.bundles,
-    function(bundleDir, bundleName) {
+    global.resources,
+    function(resourceDir, resourceName) {
 
-        // Don't treat bundles without js assets
-        if (!fs.existsSync(bundleDir + '/js')) {
+        // Don't treat resources without js assets
+        if (!fs.existsSync(resourceDir + '/js')) {
             return;
         }
 
-        if (!global.js[bundleName]) {
+        if (!global.js[resourceName]) {
             return;
         }
 
-        bundleNames.push(bundleName);
+        resourceNames.push(resourceName);
 
         // Check - Js
-        gulp.task('check:js:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('check:js:' + resourceName, function(resourceName, resourceDir) {
 
-            return gulp.src(bundleDir + '/js/**/*.js')
+            return gulp.src(resourceDir + '/js/**/*.js')
                 .pipe(gulpPlumber({
                     errorHandler: gulpNotify.onError({
                         title:  'Gulp - Error',
@@ -68,14 +68,14 @@ _.forEach(
                 .pipe(gulpJsCs('app/Resources/js/.jscsrc'))
                 .pipe(gulpLogWarn([]));
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
         // Proxy
-        function proxy(bundleName, bundleDir, watch) {
+        function proxy(resourceName, resourceDir, watch) {
             var
                 streams = [];
 
-            _.forEach(global.js[bundleName], function(options, file) {
+            _.forEach(global.js[resourceName], function(options, file) {
 
                 var
                     bundler  = watch ? watchify() : browserify(),
@@ -83,9 +83,9 @@ _.forEach(
                         var
                             startTime = process.hrtime();
                         if (watch) {
-                            gulp.start('check:js:' + bundleName);
+                            gulp.start('check:js:' + resourceName);
                         }
-                        gulpUtil.log('Running', gulpUtil.colors.green("'build:js:" + bundleName + "'"), gulpUtil.colors.magenta(file), '...');
+                        gulpUtil.log('Running', gulpUtil.colors.green("'build:js:" + resourceName + "'"), gulpUtil.colors.magenta(file), '...');
                         return bundler
                             .bundle({
                                 debug: global.dev
@@ -111,18 +111,18 @@ _.forEach(
                                 var
                                     taskTime = process.hrtime(startTime);
                                     prettyTime = prettyHrtime(taskTime);
-                                gulpUtil.log('Finished', gulpUtil.colors.green("'build:js:" + bundleName + "'"), gulpUtil.colors.magenta(file), 'in', gulpUtil.colors.magenta(prettyTime));
+                                gulpUtil.log('Finished', gulpUtil.colors.green("'build:js:" + resourceName + "'"), gulpUtil.colors.magenta(file), 'in', gulpUtil.colors.magenta(prettyTime));
                             })
                             .pipe(gulpNotify({
                                 title   : 'Gulp - Success',
-                                message : "\n" + 'build:js:' + bundleName,
+                                message : "\n" + 'build:js:' + resourceName,
                                 onLast  : true
                             }));
                     };
 
 
                 bundler
-                    .add('./' + path.join(bundleDir, 'js',file))
+                    .add('./' + path.join(resourceDir, 'js',file))
                     .transform(debowerify);
 
                 if (watch) {
@@ -136,18 +136,18 @@ _.forEach(
         }
 
         // Build - Js
-        gulp.task('build:js:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('build:js:' + resourceName, function(resourceName, resourceDir) {
 
-            return proxy(bundleName, bundleDir, false);
+            return proxy(resourceName, resourceDir, false);
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
         // Watch - Js
-        gulp.task('watch:js:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('watch:js:' + resourceName, function(resourceName, resourceDir) {
 
-            return proxy(bundleName, bundleDir, true);
+            return proxy(resourceName, resourceDir, true);
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
     }
 );
 
@@ -158,7 +158,7 @@ gulp.task('clean:js', function(callback) {
 
 // Global Check - Js
 gulp.task('check:js', _.map(
-    bundleNames,
+    resourceNames,
     function(name) {return 'check:js:' + name;}
 ));
 
@@ -167,7 +167,7 @@ gulp.task('build:js',
     ['clean:js']
         .concat(
             _.map(
-                bundleNames,
+                resourceNames,
                 function(name) {return 'build:js:' + name;}
             )
         )
@@ -175,6 +175,6 @@ gulp.task('build:js',
 
 // Global Watch - Js
 gulp.task('watch:js', _.map(
-    bundleNames,
+    resourceNames,
     function(name) {return 'watch:js:' + name;})
 );

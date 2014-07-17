@@ -1,16 +1,16 @@
 var
-    _            = require('lodash'),
-    fs           = require('fs'),
-    rimraf       = require('rimraf'),
-    gulp         = require('gulp'),
-    gulpUtil     = require('gulp-util'),
-    gulpIf       = require('gulp-if'),
-    gulpPlumber  = require('gulp-plumber'),
-    gulpChanged  = require('gulp-changed'),
-    gulpImagemin = require('gulp-imagemin'),
-    gulpSize     = require('gulp-size'),
-    gulpNotify   = require('gulp-notify'),
-    bundleNames  = [];
+    _             = require('lodash'),
+    fs            = require('fs'),
+    rimraf        = require('rimraf'),
+    gulp          = require('gulp'),
+    gulpUtil      = require('gulp-util'),
+    gulpIf        = require('gulp-if'),
+    gulpPlumber   = require('gulp-plumber'),
+    gulpChanged   = require('gulp-changed'),
+    gulpImagemin  = require('gulp-imagemin'),
+    gulpSize      = require('gulp-size'),
+    gulpNotify    = require('gulp-notify'),
+    resourceNames = [];
 
 var
     dest = 'web/assets/images';
@@ -19,22 +19,22 @@ var
 gulpNotify.logLevel(0);
 
 _.forEach(
-    global.bundles,
-    function(bundleDir, bundleName) {
+    global.resources,
+    function(resourceDir, resourceName) {
 
-        if (!fs.existsSync(bundleDir + '/images')) {
+        if (!fs.existsSync(resourceDir + '/images')) {
             return;
         }
 
-        bundleNames.push(bundleName);
+        resourceNames.push(resourceName);
 
         // Check - Images
-        gulp.task('check:images:' + bundleName);
+        gulp.task('check:images:' + resourceName);
 
         // Build - Images
-        gulp.task('build:images:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('build:images:' + resourceName, function(resourceName, resourceDir) {
 
-            return gulp.src(bundleDir + '/images/**')
+            return gulp.src(resourceDir + '/images/**')
                 .pipe(gulpPlumber({
                     errorHandler: gulpNotify.onError({
                         title:  'Gulp - Error',
@@ -49,24 +49,24 @@ _.forEach(
                     gulpImagemin()
                 ))
                 .pipe(gulpSize({
-                    title: bundleName,
+                    title: resourceName,
                     showFiles: true
                 }))
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
-                    message : "\n" + 'build:images:' + bundleName,
+                    message : "\n" + 'build:images:' + resourceName,
                     onLast  : true
                 }));
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
         // Watch - Images
-        gulp.task('watch:images:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('watch:images:' + resourceName, function(resourceName, resourceDir) {
 
             return gulp.watch(
-                bundleDir + '/images/**',
-                ['check:images:' + bundleName, 'build:images:' + bundleName]
+                resourceDir + '/images/**',
+                ['check:images:' + resourceName, 'build:images:' + resourceName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -77,7 +77,7 @@ _.forEach(
                 );
             });
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
     }
 );
@@ -89,7 +89,7 @@ gulp.task('clean:images', function(callback) {
 
 // Global Check - Images
 gulp.task('check:images', _.map(
-    bundleNames,
+    resourceNames,
     function(name) {return 'check:images:' + name;}
 ));
 
@@ -98,7 +98,7 @@ gulp.task('build:images',
     ['clean:images']
         .concat(
             _.map(
-                bundleNames,
+                resourceNames,
                 function(name) {return 'build:images:' + name;}
             )
         )
@@ -106,6 +106,6 @@ gulp.task('build:images',
 
 // Global Watch - Images
 gulp.task('watch:images', _.map(
-    bundleNames,
+    resourceNames,
     function(name) {return 'watch:images:' + name;})
 );

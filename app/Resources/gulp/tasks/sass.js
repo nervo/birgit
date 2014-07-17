@@ -10,7 +10,7 @@ var
     gulpScssLint  = require('gulp-scss-lint'),
     gulpSize      = require('gulp-size'),
     gulpNotify    = require('gulp-notify'),
-    bundleNames   = [];
+    resourceNames = [];
 
 var
     dest = 'web/assets/css';
@@ -19,20 +19,20 @@ var
 gulpNotify.logLevel(0);
 
 _.forEach(
-    global.bundles,
-    function(bundleDir, bundleName) {
+    global.resources,
+    function(resourceDir, resourceName) {
 
-        // Don't treat bundles without sass assets
-        if (!fs.existsSync(bundleDir + '/sass')) {
+        // Don't treat resources without sass assets
+        if (!fs.existsSync(resourceDir + '/sass')) {
             return;
         }
 
-        bundleNames.push(bundleName);
+        resourceNames.push(resourceName);
 
         // Check - Sass
-        gulp.task('check:sass:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('check:sass:' + resourceName, function(resourceName, resourceDir) {
 
-            return gulp.src(bundleDir + '/sass/**/*.scss')
+            return gulp.src(resourceDir + '/sass/**/*.scss')
                 .pipe(gulpScssLint({
                     config: 'app/Resources/sass/scss-lint.yml'
                 }))
@@ -47,12 +47,12 @@ _.forEach(
                     return "\n" + file.relative + "\n" + issues;
                 }));
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
         // Build - Sass
-        gulp.task('build:sass:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('build:sass:' + resourceName, function(resourceName, resourceDir) {
 
-            return gulp.src(bundleDir + '/sass/**/*.scss')
+            return gulp.src(resourceDir + '/sass/**/*.scss')
                 .pipe(gulpPlumber({
                     errorHandler: gulpNotify.onError({
                         title:  'Gulp - Error',
@@ -69,24 +69,24 @@ _.forEach(
                     sourceComments: global.dev ? 'map' : 'none'
                 }))
                 .pipe(gulpSize({
-                    title: bundleName,
+                    title: resourceName,
                     showFiles: true
                 }))
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
-                    message : "\n" + 'build:sass:' + bundleName,
+                    message : "\n" + 'build:sass:' + resourceName,
                     onLast  : true
                 }));
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
         // Watch - Sass
-        gulp.task('watch:sass:' + bundleName, function(bundleName, bundleDir) {
+        gulp.task('watch:sass:' + resourceName, function(resourceName, resourceDir) {
 
             return gulp.watch(
-                bundleDir + '/sass/**',
-                ['check:sass:' + bundleName, 'build:sass:' + bundleName]
+                resourceDir + '/sass/**',
+                ['check:sass:' + resourceName, 'build:sass:' + resourceName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -97,7 +97,7 @@ _.forEach(
                 );
             });
 
-        }.bind(this, bundleName, bundleDir));
+        }.bind(this, resourceName, resourceDir));
 
     }
 );
@@ -109,7 +109,7 @@ gulp.task('clean:sass', function(callback) {
 
 // Global Check - Sass
 gulp.task('check:sass', _.map(
-    bundleNames,
+    resourceNames,
     function(name) {return 'check:sass:' + name;}
 ));
 
@@ -118,7 +118,7 @@ gulp.task('build:sass',
     ['clean:sass']
         .concat(
             _.map(
-                bundleNames,
+                resourceNames,
                 function(name) {return 'build:sass:' + name;}
             )
         )
@@ -126,6 +126,6 @@ gulp.task('build:sass',
 
 // Global Watch - Sass
 gulp.task('watch:sass', _.map(
-    bundleNames,
+    resourceNames,
     function(name) {return 'watch:sass:' + name;})
 );
