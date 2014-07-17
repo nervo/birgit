@@ -1,0 +1,12 @@
+---
+
+- name: packages
+  apt: >
+    pkg={{ item }}
+    state=present
+  with_items:
+    - imagemagick
+  notify:
+    - php restart
+  when: ansible_os_family == "Debian"
+  sudo: yes
