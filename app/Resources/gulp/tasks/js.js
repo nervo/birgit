@@ -51,7 +51,7 @@ _.forEach(
                         title:  'Gulp - Error',
                         message: '<%= error.message %>'})
                 }))
-                .pipe(gulpJsHint('app/Resources/js/.jshintrc'))
+                .pipe(gulpJsHint('app/Resources/jshint.json'))
                 .pipe(gulpJsHint.reporter('jshint-stylish'))
                 .pipe(gulpNotify(function (file) {
                     if (file.jshint.success) {
@@ -65,7 +65,7 @@ _.forEach(
 
                     return "\n" + file.relative + "\n" + errors;
                 }))
-                .pipe(gulpJsCs('app/Resources/js/.jscsrc'))
+                .pipe(gulpJsCs('app/Resources/jscs.json'))
                 .pipe(gulpLogWarn([]));
 
         }.bind(this, assetsName, assetsDir));

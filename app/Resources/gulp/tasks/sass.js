@@ -34,7 +34,7 @@ _.forEach(
 
             return gulp.src(assetsDir + '/sass/**/*.scss')
                 .pipe(gulpScssLint({
-                    config: 'app/Resources/sass/scss-lint.yml'
+                    config: 'app/Resources/scss-lint.yml'
                 }))
                 .pipe(gulpNotify(function (file) {
                     if (file.scsslint.success) {
