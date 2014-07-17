@@ -83,6 +83,7 @@
     - name: project acl
       shell: >
         setfacl -R -m u:www-data:rwX -m u:{{ user }}:rwX /home/{{ user }}/cache /home/{{ user }}/logs && setfacl -dR -m u:www-data:rwx -m u:{{ user }}:rwx /home/{{ user }}/cache /home/{{ user }}/logs
+      sudo: yes
 
   handlers:
 
