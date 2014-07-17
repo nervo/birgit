@@ -1,16 +1,16 @@
 var
-    _             = require('lodash'),
-    fs            = require('fs'),
-    rimraf        = require('rimraf'),
-	gulp          = require('gulp'),
-    gulpUtil      = require('gulp-util'),
-    gulpPlumber   = require('gulp-plumber'),
-    gulpFilter    = require('gulp-filter'),
-    gulpSass      = require('gulp-sass'),
-    gulpScssLint  = require('gulp-scss-lint'),
-    gulpSize      = require('gulp-size'),
-    gulpNotify    = require('gulp-notify'),
-    resourceNames = [];
+    _            = require('lodash'),
+    fs           = require('fs'),
+    rimraf       = require('rimraf'),
+	gulp         = require('gulp'),
+    gulpUtil     = require('gulp-util'),
+    gulpPlumber  = require('gulp-plumber'),
+    gulpFilter   = require('gulp-filter'),
+    gulpSass     = require('gulp-sass'),
+    gulpScssLint = require('gulp-scss-lint'),
+    gulpSize     = require('gulp-size'),
+    gulpNotify   = require('gulp-notify'),
+    assetsNames  = [];
 
 var
     dest = 'web/assets/css';
@@ -19,20 +19,20 @@ var
 gulpNotify.logLevel(0);
 
 _.forEach(
-    global.resources,
-    function(resourceDir, resourceName) {
+    global.assets,
+    function(assetsDir, assetsName) {
 
-        // Don't treat resources without sass assets
-        if (!fs.existsSync(resourceDir + '/sass')) {
+        // Don't treat assets without sass
+        if (!fs.existsSync(assetsDir + '/sass')) {
             return;
         }
 
-        resourceNames.push(resourceName);
+        assetsNames.push(assetsName);
 
         // Check - Sass
-        gulp.task('check:sass:' + resourceName, function(resourceName, resourceDir) {
+        gulp.task('check:sass:' + assetsName, function(assetsName, assetsDir) {
 
-            return gulp.src(resourceDir + '/sass/**/*.scss')
+            return gulp.src(assetsDir + '/sass/**/*.scss')
                 .pipe(gulpScssLint({
                     config: 'app/Resources/sass/scss-lint.yml'
                 }))
@@ -47,12 +47,12 @@ _.forEach(
                     return "\n" + file.relative + "\n" + issues;
                 }));
 
-        }.bind(this, resourceName, resourceDir));
+        }.bind(this, assetsName, assetsDir));
 
         // Build - Sass
-        gulp.task('build:sass:' + resourceName, function(resourceName, resourceDir) {
+        gulp.task('build:sass:' + assetsName, function(assetsName, assetsDir) {
 
-            return gulp.src(resourceDir + '/sass/**/*.scss')
+            return gulp.src(assetsDir + '/sass/**/*.scss')
                 .pipe(gulpPlumber({
                     errorHandler: gulpNotify.onError({
                         title:  'Gulp - Error',
@@ -69,24 +69,24 @@ _.forEach(
                     sourceComments: global.dev ? 'map' : 'none'
                 }))
                 .pipe(gulpSize({
-                    title: resourceName,
+                    title: assetsName,
                     showFiles: true
                 }))
                 .pipe(gulp.dest(dest))
                 .pipe(gulpNotify({
                     title   : 'Gulp - Success',
-                    message : "\n" + 'build:sass:' + resourceName,
+                    message : "\n" + 'build:sass:' + assetsName,
                     onLast  : true
                 }));
 
-        }.bind(this, resourceName, resourceDir));
+        }.bind(this, assetsName, assetsDir));
 
         // Watch - Sass
-        gulp.task('watch:sass:' + resourceName, function(resourceName, resourceDir) {
+        gulp.task('watch:sass:' + assetsName, function(assetsName, assetsDir) {
 
             return gulp.watch(
-                resourceDir + '/sass/**',
-                ['check:sass:' + resourceName, 'build:sass:' + resourceName]
+                assetsDir + '/sass/**',
+                ['check:sass:' + assetsName, 'build:sass:' + assetsName]
             )
             .on('change', function(event) {
                 gulpUtil.log(
@@ -97,7 +97,7 @@ _.forEach(
                 );
             });
 
-        }.bind(this, resourceName, resourceDir));
+        }.bind(this, assetsName, assetsDir));
 
     }
 );
@@ -109,7 +109,7 @@ gulp.task('clean:sass', function(callback) {
 
 // Global Check - Sass
 gulp.task('check:sass', _.map(
-    resourceNames,
+    assetsNames,
     function(name) {return 'check:sass:' + name;}
 ));
 
@@ -118,7 +118,7 @@ gulp.task('build:sass',
     ['clean:sass']
         .concat(
             _.map(
-                resourceNames,
+                assetsNames,
                 function(name) {return 'build:sass:' + name;}
             )
         )
@@ -126,6 +126,6 @@ gulp.task('build:sass',
 
 // Global Watch - Sass
 gulp.task('watch:sass', _.map(
-    resourceNames,
+    assetsNames,
     function(name) {return 'watch:sass:' + name;})
 );

@@ -5,8 +5,8 @@ var
     glob     = require('glob'),
     gulpUtil = require('gulp-util');
 
-// Resources
-global.resources = {};
+// Assets
+global.assets = {};
 _.forEach(
     glob.sync('src/**/*Bundle/Resources/assets')
         .concat(glob.sync('app/Resources/assets')),
@@ -16,12 +16,12 @@ _.forEach(
             .replace('/Resources/assets', '')
             .replace(/Bundle/g, '')
             .replace(/\//g, '');
-        global.resources[name] = dir;
+        global.assets[name] = dir;
 
         gulpUtil.log(
             'Found',
             "'" + gulpUtil.colors.cyan(name) + "'",
-            'resource assets at',
+            'assets at',
             gulpUtil.colors.magenta(dir)
         );
     }
