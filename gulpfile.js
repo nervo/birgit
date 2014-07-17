@@ -7,11 +7,6 @@ global.js = {
     }
 };
 
-// Robots
-global.robots = {
-    useragent: '*'
-};
-
 // Tasks
 require('./app/Resources/gulp');
 
@@ -100,7 +95,6 @@ gulp.task('install', [
 
 // Clean
 gulp.task('clean', [
-    'clean:favicon', 'clean:metaimage', 'clean:robots',
     'clean:images', 'clean:js', 'clean:sass'
 ]);
 
@@ -111,7 +105,6 @@ gulp.task('check', [
 
 // Build
 gulp.task('build', [
-    'build:favicon', 'build:metaimage', 'build:robots',
     'build:images', 'build:js', 'build:sass'
 ]);
 

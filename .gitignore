@@ -20,17 +20,6 @@
 # Sass
 /.sass-cache/
 
-# Robots
-/web/robots.txt
-
-# Favicon
-/web/favicon.ico
-
-# Meta Images
-/web/apple-touch-icon.png
-/web/android-touch-icon.png
-/web/open-graph.png
-/web/windows-touch-icon.png
 # Assets
 /web/assets/
 

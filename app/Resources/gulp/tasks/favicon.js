@@ -1,11 +1,9 @@
 var
-    _                = require('lodash'),
-    fs               = require('fs'),
-    gulp             = require('gulp'),
-    gulpUtil         = require('gulp-util'),
-    gulpRimraf       = require('gulp-rimraf'),
-    faviconGenerator = require('favicon-generator'),
-    bundleNames      = [];
+    _           = require('lodash'),
+    fs          = require('fs'),
+    gulp        = require('gulp'),
+    favicons    = require('favicons'),
+    bundleNames = [];
 
 var
     dest = 'web';
@@ -14,39 +12,36 @@ _.forEach(
     global.bundles,
     function(bundleDir, bundleName) {
 
-        if (!fs.existsSync(bundleDir + '/favicon')) {
+        if (!fs.existsSync(bundleDir + '/favicon/favicon.png')) {
             return;
         }
 
         bundleNames.push(bundleName);
 
-        // Build - Favicon
-        gulp.task('build:favicon:' + bundleName, function(bundleName, bundleDir, callback) {
+        // Favicon
+        gulp.task('favicon:' + bundleName, function(bundleName, bundleDir, callback) {
 
-            faviconGenerator({
+            favicons({
+                // I/O
                 source: bundleDir + '/favicon/favicon.png',
-                sizes: [16, 32, 48, 64],
-                out: dest + '/favicon.ico',
-                upscale: false,
-                callback: callback
-            });
+                dest: dest,
 
-        }.bind(this, bundleName, bundleDir));
+                // Icon Types
+                android: false,
+                apple: false,
+                coast: false,
+                favicons: true,
+                firefox: false,
+                windows: false,
 
-        // Watch - Favicon
-        gulp.task('watch:favicon:' + bundleName, function(bundleName, bundleDir) {
-
-            return gulp.watch(
-                bundleDir + '/favicon/**',
-                ['build:favicon:' + bundleName]
-            )
-            .on('change', function(event) {
-                gulpUtil.log(
-                    'Watch',
-                    "'" + gulpUtil.colors.cyan(event.path) + "'",
-                    'has',
-                    gulpUtil.colors.magenta(event.type)
-                );
+                // Miscellaneous
+                html: null,
+                background: '#000000',
+                tileBlackWhite: true,
+                manifest: null,
+                trueColor: false,
+                logging: true,
+                callback: null
             });
 
         }.bind(this, bundleName, bundleDir));
@@ -54,19 +49,10 @@ _.forEach(
     }
 );
 
-// Global Clean - Favicon
-gulp.task('clean:favicon', function() {
-    return gulp.src(dest + '/favicon.ico', {read: false})
-        .pipe(gulpRimraf());
-});
-
-// Global Build - Favicon
-gulp.task('build:favicon',
-    ['clean:favicon']
-        .concat(
-            _.map(
-                bundleNames,
-                function(name) {return 'build:favicon:' + name;}
-            )
-        )
+// Global - Favicon
+gulp.task('favicon',
+    _.map(
+        bundleNames,
+        function(name) {return 'favicon:' + name;}
+    )
 );

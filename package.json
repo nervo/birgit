@@ -18,9 +18,7 @@
         "gulp-filter": "0.5.*",
         "gulp-size": "0.4.*",
 
-        "favicon-generator": "1.1.*",
-
-        "metaimage-generator": "1.2.*",
+        "favicons": "1.2.*",
 
         "gulp-imagemin": "0.6.*",
 
@@ -32,8 +30,6 @@
         "jshint-stylish": "0.4.*",
         "gulp-jscs": "0.6.*",
         "gulp-logwarn": "0.0.*",
-
-        "robots-generator": "1.1.*",
 
         "gulp-sass": "0.7.1",
         "gulp-scss-lint": "0.1.*",
