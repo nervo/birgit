@@ -23,7 +23,10 @@
         "cboden/ratchet": "0.3.*"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+
+        "behat/symfony2-extension": "@dev",
+        "behat/mink-selenium2-driver": "1.1.*"
     },
     "scripts": {
         "post-install-cmd": [
