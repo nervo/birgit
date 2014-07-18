@@ -10,6 +10,7 @@ var
     gulpImagemin = require('gulp-imagemin'),
     gulpSize     = require('gulp-size'),
     gulpNotify   = require('gulp-notify'),
+    assets       = require('../assets'),
     assetsNames  = [];
 
 var
@@ -19,7 +20,7 @@ var
 gulpNotify.logLevel(0);
 
 _.forEach(
-    global.assets,
+    assets(),
     function(assetsDir, assetsName) {
 
         if (!fs.existsSync(assetsDir + '/images')) {

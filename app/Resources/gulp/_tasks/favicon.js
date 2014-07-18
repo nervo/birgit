@@ -3,13 +3,14 @@ var
     fs          = require('fs'),
     gulp        = require('gulp'),
     favicons    = require('favicons'),
+    assets      = require('../assets'),
     assetsNames = [];
 
 var
     dest = 'web';
 
 _.forEach(
-    global.assets,
+    assets(),
     function(assetsDir, assetsName) {
 
         if (!fs.existsSync(assetsDir + '/favicon/favicon.png')) {

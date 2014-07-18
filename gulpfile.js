@@ -7,13 +7,17 @@ global.js = {
     }
 };
 
-// Tasks
-require('./app/Resources/gulp');
-
 // Gulp
 var
-    gulp = require('gulp'),
+    gulp     = require('gulp'),
     gulpUtil = require('gulp-util');
+
+// Flags
+gulpUtil.env.dev = gulpUtil.env.dev || false;
+gulpUtil.env.notify = gulpUtil.env.notify || false;
+
+// Tasks
+require('require-dir')('./app/Resources/gulp/tasks', {recurse: true});
 
 gulp.task('reset', function(callback) {
     var

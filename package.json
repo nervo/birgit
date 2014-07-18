@@ -1,6 +1,7 @@
 {
     "private": true,
     "devDependencies": {
+        "require-dir": "0.1.*",
         "lodash": "2.4.*",
         "rimraf": "2.2.*",
         "pretty-hrtime": "0.2.*",
@@ -9,6 +10,7 @@
         "glob": "4.0.*",
         "gulp": "3.8.*",
         "gulp-util": "2.2.*",
+        "gulp-load-plugins": "0.5.*",
         "gulp-rimraf": "0.1.*",
         "gulp-plumber": "0.6.*",
         "gulp-streamify": "0.0.*",

@@ -19,6 +19,7 @@ var
     gulpJsCs     = require('gulp-jscs'),
     gulpLogWarn  = require('gulp-logwarn'),
     gulpNotify   = require('gulp-notify'),
+    assets       = require('../assets'),
     assetsNames  = [];
 
 var
@@ -28,7 +29,7 @@ var
 gulpNotify.logLevel(0);
 
 _.forEach(
-    global.assets,
+    assets(),
     function(assetsDir, assetsName) {
 
         // Don't treat assets without js
