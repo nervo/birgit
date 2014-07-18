@@ -3,6 +3,8 @@
 
 VAGRANTFILE_API_VERSION = '2'
 
+Vagrant.require_version ">= 1.6.3"
+
 options = {
     :name   => 'birgit',
     :memory => 512,
