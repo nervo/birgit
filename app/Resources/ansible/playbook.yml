@@ -32,6 +32,10 @@
         dest=~/.zshrc
         line="PROMPT='%{$fg[cyan]%}%n%{$fg[red]%}@%{$fg[cyan]%}%m %{$fg_bold[red]%} %{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'"
         regexp="^PROMPT="
+    - name: oh-my-zsh config cwd
+      template: >
+        src=templates/oh-my-zsh/cwd.zsh.j2
+        dest=~/.oh-my-zsh/custom/cwd.zsh
     - name: oh-my-zsh config project
       template: >
         src=templates/oh-my-zsh/project.zsh.j2
