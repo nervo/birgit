@@ -77,6 +77,10 @@
       sudo: yes
 
     # Project
+    - name: project git pre-commit
+      template: >
+        src=templates/git/pre-commit.j2
+        dest=/home/{{ user }}/www/.git/hooks/pre-commit
     - name: project cache
       file: >
         path=/home/{{ user }}/cache
