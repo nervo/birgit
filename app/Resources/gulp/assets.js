@@ -1,50 +1,77 @@
-var assets = null;
+var
+    plugins    = require('gulp-load-plugins')(),
+    assets     = null,
+    assetsName = null;
+
+// Assets name from command line
+assetsName = plugins.util.env.assets || null;
 
 module.exports = {
-    get: function () {
+    get: function (suffix) {
+
+        var
+            _ = require('lodash');
 	
-    	if (assets !== null) {
-    		return assets;
-    	}
+        // On first run, find assets
+    	if (assets === null) {
 
-    	assets = [];
+        	assets = [];
 
-    	var
-    	    _        = require('lodash'),
-    	    glob     = require('glob'),
-            path     = require('path'),
-    	    gulpUtil = require('gulp-util');
+        	var
+        	    glob    = require('glob'),
+                path    = require('path'),
+                plugins = require('gulp-load-plugins')();
 
-        _.forEach(
-            glob.sync('src/**/*Bundle/Resources/assets')
-                .concat(glob.sync('app/Resources/assets')),
-            function(assetPath) {
-                
-                assetName = assetPath
-                    .replace('src/', '')
-                    .replace('/Resources/assets', '')
-                    .replace(/Bundle/g, '')
-                    .replace(/\//g, '');
-                
-                assets.push({
-                    name: assetName,
-                    path: path.resolve(assetPath)
-                });
+            _.forEach(
+                glob.sync('src/**/*Bundle/Resources/assets')
+                    .concat(glob.sync('app/Resources/assets')),
+                function(assetPath) {
+                    
+                    assetName = assetPath
+                        .replace('src/', '')
+                        .replace('/Resources/assets', '')
+                        .replace(/Bundle/g, '')
+                        .replace(/\//g, '');
+                    
+                    assets.push({
+                        name: assetName,
+                        path: path.resolve(assetPath)
+                    });
 
-                gulpUtil.log(
-                    'Found', "'" + gulpUtil.colors.cyan(assetName) + "'",
-                    'assets at', gulpUtil.colors.magenta(assetPath)
-                );
-            }
-        );
+                    plugins.util.log(
+                        'Found', "'" + plugins.util.colors.cyan(assetName) + "'",
+                        'assets at', plugins.util.colors.magenta(assetPath)
+                    );
+                }
+            );
+        }
 
-        return assets;
+        // Results to return
+        var
+            results = assets;
+
+        // Filter on assets Name
+        if (assetsName) {
+            results = _.filter(results, {name: assetsName});
+        }
+
+        // Suffix results
+        if (suffix) {
+            return _.map(results, function(asset) {
+                return asset.path + suffix;
+            });
+        }
+
+        return results;
+    },
+    setName: function(path) {
+        assetsName = this.find(path).name;
     },
     find: function(path) {
         var
             _ = require('lodash');
 
-        return _.find(this.get(), function(asset) {
+        return _.find(assets, function(asset) {
             return path.indexOf(asset.path) === 0;
         });
     }

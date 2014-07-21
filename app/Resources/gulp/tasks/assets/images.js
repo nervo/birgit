@@ -6,25 +6,11 @@ gulp.task('images', function() {
     var
         _       = require('lodash'),
         plugins = require('gulp-load-plugins')(),
-        assets  = require('../../assets').get();
+        assets  = require('../../assets');
 
-    // Filter on assets
-    if (plugins.util.env.assets) {
-        assets = _.filter(assets, {name: plugins.util.env.assets});
-    }
-
-    return gulp.src(_.map(assets, function(asset) {
-            return asset.path + '/images/**';
-        }))
-        .pipe(plugins.if(
-            plugins.util.env.notify,
-            plugins.plumber({
-                errorHandler: plugins.notify.onError({
-                    title:  'Gulp - Error',
-                    message: '<%= error.message %>'
-                })
-            })
-        ))
+    return gulp
+        .src(assets.get('/images/**'))
+        .pipe(plugins.plumber())
         .pipe(plugins.if(
             plugins.util.env.dev,
             plugins.changed(dest)
@@ -33,9 +19,7 @@ gulp.task('images', function() {
             !plugins.util.env.dev,
             plugins.imagemin()
         ))
-        .pipe(plugins.size({
-            showFiles: true
-        }))
+        .pipe(plugins.size({showFiles: true}))
         .pipe(gulp.dest(dest))
         .pipe(plugins.if(
             plugins.util.env.notify,
@@ -47,25 +31,30 @@ gulp.task('images', function() {
         ));
 });
 
+// Watch
 gulp.task('watch:images', function() {
     var
         _        = require('lodash'),
         plugins  = require('gulp-load-plugins')(),
         assets   = require('../../assets');
 
-    return gulp.watch(
-        _.map(assets.get(), function(asset) {
-            return asset.path + '/images/**';
-        }),
-        ['images']
-    )
-    .on('change', function(event) {
-        // Set assets name
-        plugins.util.env.assets = assets.find(event.path).name;
-        // Log
-        plugins.util.log(
-            'Watched', "'" + plugins.util.colors.cyan(event.path) + "'",
-            'has', plugins.util.colors.magenta(event.type)
-        );
-    });
+    return gulp
+        .watch(assets.get('/images/**'), ['images'])
+        .on('change', function(event) {
+            // Set assets name
+            assets.setName(event.path);
+            // Log
+            plugins.util.log(
+                'Watched', "'" + plugins.util.colors.cyan(event.path) + "'",
+                'has', plugins.util.colors.magenta(event.type)
+            );
+        });
+});
+
+// Clean
+gulp.task('clean:images', function(callback) {
+    var
+        rimraf = require('rimraf');
+
+    rimraf(dest, callback);
 });

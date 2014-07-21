@@ -6,27 +6,11 @@ gulp.task('sass', function() {
     var
         _       = require('lodash'),
         plugins = require('gulp-load-plugins')(),
-        assets  = require('../../assets').get();
+        assets  = require('../../assets');
 
-    // Filter on assets
-    if (plugins.util.env.assets) {
-        assets = _.filter(assets, {name: plugins.util.env.assets});
-    }
-
-    return gulp.src(_.map(assets, function(asset) {
-            return asset.path + '/sass/**/*.scss';
-        }))
-        .pipe(plugins.if(
-            plugins.util.env.notify,
-            plugins.plumber({
-                errorHandler: plugins.notify.onError({
-                    title:  'Gulp - Error',
-                    message: '<%= error.message %>'
-                })
-            })
-        ))
-
-        .pipe(plugins.filter('**/!(_)'))
+    return gulp
+        .src(assets.get('/sass/**/!(_)*.scss'))
+        .pipe(plugins.plumber())
         .pipe(plugins.sass({
             errLogToConsole: true,
             includePaths: [
@@ -34,11 +18,10 @@ gulp.task('sass', function() {
             ],
             outputStyle: plugins.util.env.dev ? 'nested' : 'compressed',
             precision: 10,
-            sourceComments: plugins.util.env.dev ? 'map' : 'none'
+            sourceComments: plugins.util.env.dev ? 'map' : 'none',
+            sourceMap: 'sass' // See : https://github.com/dlmanning/gulp-sass/issues/57
         }))
-        .pipe(plugins.size({
-            showFiles: true
-        }))
+        .pipe(plugins.size({showFiles: true}))
         .pipe(gulp.dest(dest))
         .pipe(plugins.if(
             plugins.util.env.notify,
@@ -50,25 +33,30 @@ gulp.task('sass', function() {
         ));
 });
 
+// Watch
 gulp.task('watch:sass', function() {
     var
         _       = require('lodash'),
         plugins = require('gulp-load-plugins')(),
         assets  = require('../../assets');
 
-    return gulp.watch(
-        _.map(assets.get(), function(asset) {
-            return asset.path + '/sass/**';
-        }),
-        ['sass']
-    )
-    .on('change', function(event) {
-        // Set assets name
-        plugins.util.env.assets = assets.find(event.path).name;
-        // Log
-        plugins.util.log(
-            'Watched', "'" + plugins.util.colors.cyan(event.path) + "'",
-            'has', plugins.util.colors.magenta(event.type)
-        );
-    });
+    return gulp
+        .watch(assets.get('/sass/**'), ['sass'])
+        .on('change', function(event) {
+            // Set assets name
+            assets.setName(event.path);
+            // Log
+            plugins.util.log(
+                'Watched', "'" + plugins.util.colors.cyan(event.path) + "'",
+                'has', plugins.util.colors.magenta(event.type)
+            );
+        });
+});
+
+// Clean
+gulp.task('clean:sass', function(callback) {
+    var
+        rimraf = require('rimraf');
+
+    rimraf(dest, callback);
 });
