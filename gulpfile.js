@@ -92,11 +92,6 @@ gulp.task('service:worker', function() {
 gulp.task('service', ['service:web', 'service:websocket', 'service:worker']);
 
 
-// Install
-gulp.task('install', [
-    'install:bower'
-]);
-
 // Clean
 gulp.task('clean', [
     'clean:images', 'clean:js', 'clean:sass'
@@ -105,6 +100,11 @@ gulp.task('clean', [
 // Check
 gulp.task('check', [
     'check:images', 'check:js', 'check:sass'
+]);
+
+// Lint
+gulp.task('lint', [
+    'lint:sass'
 ]);
 
 // Build
