@@ -36,8 +36,6 @@
         "gulp-sass": "0.7.*",
         "gulp-scss-lint": "0.1.*",
 
-        "gulp-install": "0.1.*",
-
         "async": "0.9.*",
         "forever-monitor": "1.2.*"
     }
