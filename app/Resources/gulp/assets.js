@@ -38,10 +38,12 @@ module.exports = {
                         path: path.resolve(assetPath)
                     });
 
-                    plugins.util.log(
-                        'Found', "'" + plugins.util.colors.cyan(assetName) + "'",
-                        'assets at', plugins.util.colors.magenta(assetPath)
-                    );
+                    if (plugins.util.env.verbose) {
+                        plugins.util.log(
+                            'Found', "'" + plugins.util.colors.cyan(assetName) + "'",
+                            'assets at', plugins.util.colors.magenta(assetPath)
+                        );
+                    }
                 }
             );
         }

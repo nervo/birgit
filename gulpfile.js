@@ -15,6 +15,7 @@ var
 // Flags
 plugins.util.env.dev = plugins.util.env.dev || false;
 plugins.util.env.notify = plugins.util.env.notify || false;
+plugins.util.env.verbose = plugins.util.env.verbose || false;
 
 // Tasks
 require('require-dir')('./app/Resources/gulp/tasks', {recurse: true});
