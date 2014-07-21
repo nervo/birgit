@@ -53,6 +53,20 @@ gulp.task('watch:sass', function() {
         });
 });
 
+// Lint
+gulp.task('lint:sass', function() {
+    var
+        _       = require('lodash'),
+        plugins = require('gulp-load-plugins')(),
+        assets  = require('../../assets');
+
+    return gulp
+        .src(assets.get('/sass/**/!(_)*.scss'))
+        .pipe(plugins.scssLint({
+            config: 'app/Resources/scss-lint.yml'
+        }));
+});
+
 // Clean
 gulp.task('clean:sass', function(callback) {
     var
