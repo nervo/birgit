@@ -9,12 +9,12 @@ global.js = {
 
 // Gulp
 var
-    gulp     = require('gulp'),
-    gulpUtil = require('gulp-util');
+    gulp    = require('gulp'),
+    plugins = require('gulp-load-plugins')();
 
 // Flags
-gulpUtil.env.dev = gulpUtil.env.dev || false;
-gulpUtil.env.notify = gulpUtil.env.notify || false;
+plugins.util.env.dev = plugins.util.env.dev || false;
+plugins.util.env.notify = plugins.util.env.notify || false;
 
 // Tasks
 require('require-dir')('./app/Resources/gulp/tasks', {recurse: true});
@@ -32,7 +32,7 @@ gulp.task('reset', function(callback) {
         ['birgit:test:fixtures', true]
     ].forEach(function(parameters) {
         execs.push(function(command, failOnError, callback) {
-            gulpUtil.log('Exec', gulpUtil.colors.green(command));
+            plugins.util.log('Exec', plugins.util.colors.green(command));
             require('child_process')
                 .exec('bin/console ' + command + ' --ansi', function(error, stdout, stderr) {
                     console.log(stderr);
