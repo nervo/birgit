@@ -1,6 +1,6 @@
 {
     "private": true,
-    "devDependencies": {
+    "dependencies": {
         "require-dir": "0.1.*",
         "lodash": "2.4.*",
         "rimraf": "2.2.*",
